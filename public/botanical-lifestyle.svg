@@ -1,0 +1,29 @@
+<svg width="800" height="560" viewBox="0 0 800 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="560" rx="32" fill="#F5EFE4"/>
+  <rect x="32" y="32" width="736" height="496" rx="28" fill="url(#bg)" stroke="#E6D9C5" stroke-width="2"/>
+  <circle cx="615" cy="157" r="76" fill="#FBF8F1"/>
+  <path d="M245 396C245 355.131 278.131 322 319 322H476C516.869 322 550 355.131 550 396V434C550 455.539 532.539 473 511 473H284C262.461 473 245 455.539 245 434V396Z" fill="url(#pot)"/>
+  <path d="M265 336C265 320.536 277.536 308 293 308H502C517.464 308 530 320.536 530 336C530 351.464 517.464 364 502 364H293C277.536 364 265 351.464 265 336Z" fill="#B78A2A"/>
+  <path d="M392 145C337.741 178.582 304.87 217.892 293.388 262.93C286.123 291.429 292.423 323.823 312.287 360.112C337.677 328.877 368.46 303.547 404.636 284.123C455.138 257.02 497.365 219.813 531.319 172.503C556.141 137.922 572.193 101.103 579.475 62.0465C511.203 73.0805 448.711 100.065 392 145Z" fill="url(#leafA)"/>
+  <path d="M396 200C477.843 180.762 545.51 136.631 599 67.6077" stroke="#F7FFF2" stroke-width="10" stroke-linecap="round"/>
+  <path d="M507 213C556.108 194.251 602.572 193.107 646.392 209.567C674.117 219.98 696.731 240.913 714.235 272.366C679.077 279.896 645.798 280.246 614.396 273.415C570.549 263.879 525.431 265.966 479.043 279.675C445.18 289.681 413.832 304.189 384.997 323.198C388.401 262.492 413.116 224.04 459.145 207.841" fill="url(#leafB)"/>
+  <path d="M446 248C513.557 242.019 579.353 249.785 643.388 271.298" stroke="#EFF8E7" stroke-width="9" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="bg" x1="103" y1="98" x2="683" y2="475" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF8"/>
+      <stop offset="1" stop-color="#EEE4D2"/>
+    </linearGradient>
+    <linearGradient id="pot" x1="397.5" y1="308" x2="397.5" y2="473" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E0BF85"/>
+      <stop offset="1" stop-color="#AE7428"/>
+    </linearGradient>
+    <linearGradient id="leafA" x1="314" y1="92" x2="572" y2="364" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A8C97D"/>
+      <stop offset="1" stop-color="#648E50"/>
+    </linearGradient>
+    <linearGradient id="leafB" x1="689" y1="216" x2="400" y2="322" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D9EBBF"/>
+      <stop offset="1" stop-color="#7DA268"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,43 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="40" fill="#F5EFE4"/>
+  <rect x="36" y="36" width="1128" height="828" rx="32" fill="#FFFDF8" stroke="#E7DCC6" stroke-width="2"/>
+  <ellipse cx="442" cy="735" rx="298" ry="58" fill="#D8C7A8" fill-opacity="0.24"/>
+  <ellipse cx="904" cy="752" rx="198" ry="44" fill="#D6E3CD" fill-opacity="0.58"/>
+  <path d="M225 582C225 539.474 259.474 505 302 505H590C632.526 505 667 539.474 667 582V653C667 681.166 644.166 704 616 704H276C247.834 704 225 681.166 225 653V582Z" fill="url(#protoPot)"/>
+  <path d="M251 523C251 505.879 264.879 492 282 492H609C626.121 492 640 505.879 640 523C640 540.121 626.121 554 609 554H282C264.879 554 251 540.121 251 523Z" fill="#BF8A32"/>
+  <path d="M388 268C336.371 298.11 303.475 337.396 289.312 385.858C280.35 416.514 284.77 451.619 302.57 491.173C331.215 459.35 365.633 433.292 405.823 412.998C461.93 384.678 510.062 345.362 550.217 295.049C579.576 258.261 600.091 218.825 611.763 176.74C535.277 187.394 460.689 217.813 388 268Z" fill="url(#protoLeafA)"/>
+  <path d="M392 321C481.205 300.825 556.449 255.022 617.731 183.591" stroke="#F7FFF0" stroke-width="11" stroke-linecap="round"/>
+  <path d="M566 336C625.978 314.771 683.801 315.168 739.47 337.191C774.686 351.128 802.746 378.251 823.651 418.562C778.467 427.334 736.08 427.115 696.488 417.905C641.227 405.047 584.391 406.196 525.982 421.35C483.353 432.412 443.511 448.692 406.457 470.189C412.098 393.063 440.774 347.112 492.486 332.337" fill="url(#protoLeafB)"/>
+  <path d="M501 369C584.975 362.019 664.138 378.468 738.49 418.347" stroke="#F1F9EA" stroke-width="10" stroke-linecap="round"/>
+  <rect x="752" y="214" width="178" height="328" rx="68" fill="url(#protoDevice)" stroke="#D8C8AE" stroke-width="2.5"/>
+  <rect x="784" y="248" width="114" height="202" rx="34" fill="#1F241F"/>
+  <circle cx="841" cy="336" r="51" fill="#B78A2A" fill-opacity="0.16"/>
+  <circle cx="841" cy="336" r="23" fill="#C89431"/>
+  <path d="M873 306C895.426 334.95 906.78 360.335 907.061 382.157C907.343 403.979 898.881 427.908 881.676 453.943" stroke="#CBECAE" stroke-width="6" stroke-linecap="round"/>
+  <rect x="787" y="472" width="108" height="16" rx="8" fill="#E5DCCF"/>
+  <rect x="806" y="500" width="70" height="10" rx="5" fill="#D2C5B4"/>
+  <rect x="872" y="576" width="214" height="146" rx="26" fill="#FFFDF8" stroke="#E7DCC6" stroke-width="2"/>
+  <text x="905" y="614" fill="#B78A2A" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2.4">PROTOTYPE STATUS</text>
+  <text x="905" y="655" fill="#2B2925" font-family="Arial, sans-serif" font-size="30" font-weight="700">Working hardware loop</text>
+  <text x="905" y="691" fill="#5C584F" font-family="Arial, sans-serif" font-size="20">Sensors online, enclosure refinement in progress</text>
+  <rect x="905" y="712" width="150" height="8" rx="4" fill="#E8DED0"/>
+  <rect x="905" y="712" width="114" height="8" rx="4" fill="#87A85E"/>
+  <defs>
+    <linearGradient id="protoPot" x1="446" y1="492" x2="446" y2="704" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E2C487"/>
+      <stop offset="1" stop-color="#B1772A"/>
+    </linearGradient>
+    <linearGradient id="protoLeafA" x1="300" y1="199" x2="617" y2="492" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A9CA7D"/>
+      <stop offset="1" stop-color="#628D50"/>
+    </linearGradient>
+    <linearGradient id="protoLeafB" x1="794" y1="332" x2="428" y2="468" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D4E8B8"/>
+      <stop offset="1" stop-color="#739A5E"/>
+    </linearGradient>
+    <linearGradient id="protoDevice" x1="841" y1="214" x2="841" y2="542" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBF7EE"/>
+      <stop offset="1" stop-color="#EFE2CF"/>
+    </linearGradient>
+  </defs>
+</svg>

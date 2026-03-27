@@ -1,0 +1,50 @@
+<svg width="1200" height="960" viewBox="0 0 1200 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="960" rx="44" fill="#FBF7EF"/>
+  <rect x="36" y="36" width="1128" height="888" rx="36" fill="url(#panelGlow)" stroke="#E7DCC6" stroke-width="2"/>
+  <ellipse cx="330" cy="794" rx="220" ry="56" fill="#D8C6A5" fill-opacity="0.24"/>
+  <ellipse cx="846" cy="782" rx="188" ry="46" fill="#D9E5D2" fill-opacity="0.58"/>
+  <path d="M274 690C274 652.445 304.445 622 342 622H504C541.555 622 572 652.445 572 690V758C572 775.673 557.673 790 540 790H306C288.327 790 274 775.673 274 758V690Z" fill="url(#potBody)"/>
+  <path d="M292 638C292 621.431 305.431 608 322 608H522C538.569 608 552 621.431 552 638C552 654.569 538.569 668 522 668H322C305.431 668 292 654.569 292 638Z" fill="#C28E34"/>
+  <path d="M406 348C352.217 384.827 322.406 430.919 316.57 486.277C312.878 521.293 324.722 560.173 356.162 601.325C375.998 565.768 402.441 534.829 435.49 508.509C481.64 471.765 518.238 423.728 545.283 364.391C565.045 321.045 573.507 276.197 570.667 230C503.236 245.028 448.015 284.461 406 348Z" fill="url(#leafMain)"/>
+  <path d="M398 408C486.649 385.228 554.31 338.089 601 266.583" stroke="#EAF6E4" stroke-width="12" stroke-linecap="round"/>
+  <path d="M594 450C642.763 391.77 697.228 357.114 757.394 346.032C795.451 339.023 836.34 347.658 880.061 371.938C849.199 402.431 813.618 425.917 773.32 442.398C717.048 465.411 665.189 501.262 617.754 549.949C583.109 585.495 559.033 624.303 545.527 666.373C497.451 615.403 480.9 557.267 495.874 491.966C506.013 447.753 539.389 412.522 596 386.273" fill="url(#leafSide)"/>
+  <path d="M555 550C627.699 542.415 695.478 507.591 758.336 445.527" stroke="#F4FBF0" stroke-width="11" stroke-linecap="round"/>
+  <path d="M824 238C867.773 238 903.611 273.838 903.611 317.611V478.389C903.611 522.162 867.773 558 824 558C780.227 558 744.389 522.162 744.389 478.389V317.611C744.389 273.838 780.227 238 824 238Z" fill="url(#deviceBody)" stroke="#D9CCB3" stroke-width="2.5"/>
+  <rect x="775" y="270" width="98" height="154" rx="26" fill="#1E241D"/>
+  <circle cx="824" cy="344" r="43" fill="#B78A2A" fill-opacity="0.18"/>
+  <circle cx="824" cy="344" r="21" fill="#C89A39"/>
+  <rect x="779" y="445" width="90" height="16" rx="8" fill="#E6DED0"/>
+  <rect x="792" y="474" width="64" height="10" rx="5" fill="#D6CAB8"/>
+  <path d="M844 321C861.248 337.736 873.189 354.366 879.821 370.89C889.728 395.578 886.576 420.259 870.364 444.933" stroke="#D1F2BB" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="972" cy="274" r="76" fill="#FFFDF8" stroke="#E7DCC6" stroke-width="2"/>
+  <path d="M948 263C966.993 246.228 988.861 237.954 1013.6 238.179C1008.37 262.418 997.364 282.447 980.584 298.264C967.176 310.906 952.448 320.13 936.4 325.936C932.945 299.636 936.811 278.657 948 263Z" fill="#8EAD68"/>
+  <path d="M951 276C974.165 271.017 995.427 259.375 1014.79 241.074" stroke="#F7FFF1" stroke-width="5" stroke-linecap="round"/>
+  <rect x="890" y="608" width="212" height="166" rx="28" fill="#FFFDF8" stroke="#E7DCC6" stroke-width="2"/>
+  <text x="926" y="648" fill="#B78A2A" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2.8">CANOPY AI</text>
+  <text x="926" y="692" fill="#2C2A26" font-family="Arial, sans-serif" font-size="34" font-weight="700">Stress risk</text>
+  <text x="926" y="732" fill="#5C584F" font-family="Arial, sans-serif" font-size="22">Mild dehydration detected</text>
+  <rect x="926" y="754" width="140" height="8" rx="4" fill="#E6DED0"/>
+  <rect x="926" y="754" width="96" height="8" rx="4" fill="#86A95D"/>
+  <defs>
+    <linearGradient id="panelGlow" x1="124" y1="102" x2="1027" y2="855" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF8"/>
+      <stop offset="1" stop-color="#F2EADC"/>
+    </linearGradient>
+    <linearGradient id="potBody" x1="423" y1="608" x2="423" y2="790" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E1C287"/>
+      <stop offset="1" stop-color="#B47C2C"/>
+    </linearGradient>
+    <linearGradient id="leafMain" x1="355" y1="260" x2="589" y2="598" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A8CA7D"/>
+      <stop offset="1" stop-color="#5D8D4E"/>
+    </linearGradient>
+    <linearGradient id="leafSide" x1="815" y1="358" x2="528" y2="667" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#CAE0B3"/>
+      <stop offset="1" stop-color="#6E9C5F"/>
+    </linearGradient>
+    <linearGradient id="deviceBody" x1="824" y1="238" x2="824" y2="558" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBF7EE"/>
+      <stop offset="1" stop-color="#EFE4D2"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import EarlyAccessForm from './components/EarlyAccessForm';
@@ -78,16 +79,19 @@ export default function Home() {
             <div className="relative rounded-[2rem] border border-[#E5DBCC] bg-white p-5 shadow-[0_20px_70px_rgba(60,48,25,0.08)]">
               <div className="rounded-[1.6rem] bg-gradient-to-br from-[#FCFBF8] to-[#EFE7D9] p-5">
                 <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
-                  <div className="rounded-[1.5rem] border border-dashed border-[#D8CAB1] bg-[#F8F4EC] p-5">
+                  <div className="rounded-[1.5rem] border border-[#D8CAB1] bg-[#F8F4EC] p-5 shadow-sm">
                     <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
-                      Hero Image Placeholder
+                      Hero Visual
                     </p>
-                    <div className="mt-4 flex h-72 items-center justify-center rounded-[1.25rem] bg-white text-center text-sm leading-6 text-[#7A7468]">
-                      Add a premium plant image,
-                      <br />
-                      product render,
-                      <br />
-                      or Canopy AI mockup here.
+                    <div className="relative mt-4 h-72 overflow-hidden rounded-[1.25rem] bg-white">
+                      <Image
+                        src="/hero-canopy-ai.svg"
+                        alt="Illustration of Verdant Labs Canopy AI plant monitoring system"
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 34vw"
+                        className="object-cover"
+                        priority
+                      />
                     </div>
                   </div>
 
@@ -110,10 +114,14 @@ export default function Home() {
                         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                           Product Visual
                         </p>
-                        <div className="mt-3 flex h-28 items-center justify-center rounded-2xl bg-[#F7F3EC] text-center text-xs text-[#7A7468]">
-                          Shell / enclosure
-                          <br />
-                          render placeholder
+                        <div className="relative mt-3 h-28 overflow-hidden rounded-2xl bg-[#F7F3EC]">
+                          <Image
+                            src="/product-shell.svg"
+                            alt="Illustration of the Verdant Labs device shell and enclosure"
+                            fill
+                            sizes="(max-width: 640px) 100vw, 14vw"
+                            className="object-cover"
+                          />
                         </div>
                       </div>
 
@@ -121,10 +129,14 @@ export default function Home() {
                         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                           Botanical Brand
                         </p>
-                        <div className="mt-3 flex h-28 items-center justify-center rounded-2xl bg-[#F7F3EC] text-center text-xs text-[#7A7468]">
-                          Plant lifestyle
-                          <br />
-                          image placeholder
+                        <div className="relative mt-3 h-28 overflow-hidden rounded-2xl bg-[#F7F3EC]">
+                          <Image
+                            src="/botanical-lifestyle.svg"
+                            alt="Illustration of Verdant Labs botanical lifestyle branding"
+                            fill
+                            sizes="(max-width: 640px) 100vw, 14vw"
+                            className="object-cover"
+                          />
                         </div>
                       </div>
                     </div>
@@ -335,16 +347,18 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-[1.9rem] border border-dashed border-[#D9CDBA] bg-[#F3EDE2] p-8">
+            <div className="rounded-[1.9rem] border border-[#D9CDBA] bg-[#F3EDE2] p-8 shadow-sm">
               <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#B78A2A]">
                 Prototype Visual
               </p>
-              <div className="mt-4 flex h-80 items-center justify-center rounded-[1.4rem] bg-white text-center text-sm leading-7 text-[#7A7468]">
-                Add your real prototype photo,
-                <br />
-                shell render,
-                <br />
-                or Canopy AI device image here.
+              <div className="relative mt-4 h-80 overflow-hidden rounded-[1.4rem] bg-white">
+                <Image
+                  src="/prototype-visual.svg"
+                  alt="Illustration of the Verdant Labs prototype hardware and status panel"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 32vw"
+                  className="object-cover"
+                />
               </div>
             </div>
           </div>
