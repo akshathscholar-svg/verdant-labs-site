@@ -4,9 +4,11 @@ export default function Home() {
       <header className="sticky top-0 z-50 border-b border-[#E7DECF] bg-[#F7F3EC]/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10 lg:px-12">
           <a href="#top" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[#C7A14A] bg-white text-sm font-semibold text-[#B78A2A]">
-              VL
-            </div>
+            <img 
+              src="/logo-icon.png" 
+              alt="Verdant Labs" 
+              className="h-10 w-10"
+            />
             <div>
               <p className="text-xs uppercase tracking-[0.28em] text-[#B78A2A]">
                 Verdant Labs
@@ -409,6 +411,30 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <footer className="border-t border-[#E7DECF] bg-[#F7F3EC] px-6 py-12 md:px-10 lg:px-12">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col items-center justify-between gap-8 sm:flex-row">
+            <div className="flex items-center gap-3">
+              <img 
+                src="/logo-icon.png" 
+                alt="Verdant Labs" 
+                className="h-12 w-12"
+              />
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#B78A2A]">
+                  Verdant Labs
+                </p>
+                <p className="text-xs text-[#5C584F]">Botanical Intelligence</p>
+              </div>
+            </div>
+            
+            <p className="text-sm text-[#5C584F]">
+              © 2025 Verdant Labs. Building the future of plant care.
+            </p>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
