@@ -8,7 +8,7 @@ const navLinks = [
   { href: '#solution', label: 'Solution' },
   { href: '#tiers', label: 'Product' },
   { href: '#prototype', label: 'Prototype' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#early-access', label: 'Early Access' },
 ];
 
 export default function Header() {

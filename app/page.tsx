@@ -1,5 +1,6 @@
 import Header from './components/Header';
 import Footer from './components/Footer';
+import EarlyAccessForm from './components/EarlyAccessForm';
 
 export default function Home() {
   return (
@@ -33,10 +34,10 @@ export default function Home() {
               </a>
 
               <a
-                href="#contact"
+                href="#early-access"
                 className="rounded-full border border-[#CFC3AE] bg-white px-6 py-3 text-center font-medium text-[#1F1F1B] transition hover:border-[#B78A2A]"
               >
-                Contact Verdant Labs
+                Join Early Access
               </a>
             </div>
 
@@ -350,52 +351,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Contact */}
+      {/* Early Access */}
       <section
-        id="contact"
+        id="early-access"
         className="scroll-mt-20 border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-4xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
-            Contact
+            Early Access
           </p>
 
           <h2 className="max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">
-            Follow Verdant Labs as Canopy AI develops.
+            Reserve your spot for Canopy AI.
           </h2>
 
           <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5A564E]">
-            Interested in early access, prototype updates, or the future of
-            predictive plant care? Reach out and stay connected.
+            Be among the first to experience predictive plant care. Join the
+            waitlist and we&apos;ll reach out as soon as Canopy AI is ready.
           </p>
 
           <div className="mt-10 rounded-[1.9rem] border border-[#E2D6C2] bg-white p-8">
-            <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#B78A2A]">
-              Early Access
-            </p>
-            <p className="mt-3 text-base leading-7 text-[#4F4B44]">
-              Email:{' '}
-              <a
-                href="mailto:akshath.scholar@gmail.com"
-                className="text-[#B78A2A] underline underline-offset-2 transition hover:text-[#9D7620]"
-              >
-                akshath.scholar@gmail.com
-              </a>
-            </p>
-            <p className="mt-2 text-base leading-7 text-[#4F4B44]">
-              Phone:{' '}
-              <a
-                href="tel:+18124315458"
-                className="text-[#B78A2A] underline underline-offset-2 transition hover:text-[#9D7620]"
-              >
-                812-431-5458
-              </a>
-            </p>
-            <p className="mt-2 text-base leading-7 text-[#4F4B44]">
-              Prototype progress, design updates, and product development coming
-              soon.
-            </p>
+            <EarlyAccessForm />
           </div>
+
+          <p className="mt-6 text-center text-sm text-[#8A857C]">
+            Questions? Reach out at{' '}
+            <a
+              href="mailto:akshath.scholar@gmail.com"
+              className="text-[#B78A2A] underline underline-offset-2 transition hover:text-[#9D7620]"
+            >
+              akshath.scholar@gmail.com
+            </a>
+          </p>
         </div>
       </section>
 
