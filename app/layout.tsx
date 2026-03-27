@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://verdantlabs.co"),
+  metadataBase: new URL("https://verdantlabs.app"),
   title: "Verdant Labs - Botanical Intelligence",
   description: "Verdant Labs builds Canopy AI, a botanical intelligence system for predictive plant care.",
   icons: {
