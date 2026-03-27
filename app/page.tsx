@@ -376,10 +376,10 @@ export default function Home() {
             <p className="mt-3 text-base leading-7 text-[#4F4B44]">
               Email:{' '}
               <a
-                href="mailto:akshathsaravanan@gmail.com"
+                href="mailto:akshath.scholar@gmail.com"
                 className="text-[#B78A2A] underline underline-offset-2 transition hover:text-[#9D7620]"
               >
-                akshathsaravanan@gmail.com
+                akshath.scholar@gmail.com
               </a>
             </p>
             <p className="mt-2 text-base leading-7 text-[#4F4B44]">
