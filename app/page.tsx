@@ -1,43 +1,13 @@
+import Header from './components/Header';
+import Footer from './components/Footer';
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
-      <header className="sticky top-0 z-50 border-b border-[#E7DECF] bg-[#F7F3EC]/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10 lg:px-12">
-          <a href="#top" className="flex items-center gap-3">
-            <img 
-              src="/logo-icon.png" 
-              alt="Verdant Labs" 
-              className="h-10 w-10"
-            />
-            <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-[#B78A2A]">
-                Verdant Labs
-              </p>
-              <p className="text-sm text-[#5C584F]">Botanical Intelligence</p>
-            </div>
-          </a>
+      <Header />
 
-          <nav className="hidden items-center gap-8 text-sm font-medium text-[#3B3933] md:flex">
-            <a href="#problem" className="transition hover:text-[#B78A2A]">
-              Problem
-            </a>
-            <a href="#solution" className="transition hover:text-[#B78A2A]">
-              Solution
-            </a>
-            <a href="#tiers" className="transition hover:text-[#B78A2A]">
-              Product
-            </a>
-            <a href="#prototype" className="transition hover:text-[#B78A2A]">
-              Prototype
-            </a>
-            <a href="#contact" className="transition hover:text-[#B78A2A]">
-              Contact
-            </a>
-          </nav>
-        </div>
-      </header>
-
-      <section id="top" className="px-6 pb-20 pt-12 md:px-10 lg:px-12 lg:pt-16">
+      {/* Hero */}
+      <section id="top" className="scroll-mt-20 px-6 pb-20 pt-12 md:px-10 lg:px-12 lg:pt-16">
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="max-w-3xl">
             <p className="mb-4 text-sm font-medium uppercase tracking-[0.28em] text-[#B78A2A]">
@@ -71,7 +41,7 @@ export default function Home() {
             </div>
 
             <div className="mt-12 grid max-w-2xl gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4">
+              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
                 <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
                   Core Signals
                 </p>
@@ -80,7 +50,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4">
+              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
                 <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
                   Outcome
                 </p>
@@ -89,7 +59,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4">
+              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
                 <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
                   Vision
                 </p>
@@ -165,9 +135,10 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Problem */}
       <section
         id="problem"
-        className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
+        className="scroll-mt-20 border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -179,7 +150,7 @@ export default function Home() {
           </h2>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7">
+            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="text-xl font-semibold">Guesswork</h3>
               <p className="mt-3 text-base leading-7 text-[#5A564E]">
                 Most plant owners rely on schedules, intuition, and generic care
@@ -187,7 +158,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7">
+            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="text-xl font-semibold">Late detection</h3>
               <p className="mt-3 text-base leading-7 text-[#5A564E]">
                 By the time leaves curl, yellow, or droop, the plant may already
@@ -195,7 +166,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7">
+            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="text-xl font-semibold">High-value risk</h3>
               <p className="mt-3 text-base leading-7 text-[#5A564E]">
                 Rare and specialty plants can be expensive, making poor care
@@ -206,9 +177,10 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Solution */}
       <section
         id="solution"
-        className="bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
+        className="scroll-mt-20 bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -220,7 +192,7 @@ export default function Home() {
           </h2>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            <div className="rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm">
+            <div className="rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
               <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                 01
               </p>
@@ -231,7 +203,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm">
+            <div className="rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
               <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                 02
               </p>
@@ -242,7 +214,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm">
+            <div className="rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
               <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                 03
               </p>
@@ -256,9 +228,10 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Product Tiers */}
       <section
         id="tiers"
-        className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
+        className="scroll-mt-20 border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -270,20 +243,20 @@ export default function Home() {
           </h2>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7">
+            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="text-2xl font-semibold">Foundation</h3>
               <p className="mt-3 text-base leading-7 text-[#5A564E]">
                 Core environmental monitoring for serious plant owners.
               </p>
               <ul className="mt-6 space-y-3 text-sm leading-6 text-[#4F4B44]">
-                <li>• Soil moisture monitoring</li>
-                <li>• Temperature and humidity tracking</li>
-                <li>• Light sensing</li>
-                <li>• App access and recommendations</li>
+                <li>&#8226; Soil moisture monitoring</li>
+                <li>&#8226; Temperature and humidity tracking</li>
+                <li>&#8226; Light sensing</li>
+                <li>&#8226; App access and recommendations</li>
               </ul>
             </div>
 
-            <div className="rounded-[1.75rem] border border-[#CFA74F] bg-white p-7 shadow-[0_18px_50px_rgba(120,92,28,0.08)]">
+            <div className="rounded-[1.75rem] border border-[#CFA74F] bg-white p-7 shadow-[0_18px_50px_rgba(120,92,28,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(120,92,28,0.14)]">
               <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                 Featured
               </p>
@@ -292,32 +265,33 @@ export default function Home() {
                 Adds visual intelligence to the core system.
               </p>
               <ul className="mt-6 space-y-3 text-sm leading-6 text-[#4F4B44]">
-                <li>• Everything in Foundation</li>
-                <li>• Camera add-on module</li>
-                <li>• Visual monitoring</li>
-                <li>• Richer plant insight over time</li>
+                <li>&#8226; Everything in Foundation</li>
+                <li>&#8226; Camera add-on module</li>
+                <li>&#8226; Visual monitoring</li>
+                <li>&#8226; Richer plant insight over time</li>
               </ul>
             </div>
 
-            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7">
+            <div className="rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="text-2xl font-semibold">Elite</h3>
               <p className="mt-3 text-base leading-7 text-[#5A564E]">
                 Premium intelligence for advanced collectors.
               </p>
               <ul className="mt-6 space-y-3 text-sm leading-6 text-[#4F4B44]">
-                <li>• Everything in Canopy AI</li>
-                <li>• Long-term stress analysis</li>
-                <li>• Advanced alerts and insights</li>
-                <li>• Early access to new features</li>
+                <li>&#8226; Everything in Canopy AI</li>
+                <li>&#8226; Long-term stress analysis</li>
+                <li>&#8226; Advanced alerts and insights</li>
+                <li>&#8226; Early access to new features</li>
               </ul>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Prototype */}
       <section
         id="prototype"
-        className="bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
+        className="scroll-mt-20 bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -376,9 +350,10 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Contact */}
       <section
         id="contact"
-        className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
+        className="scroll-mt-20 border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-4xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -399,10 +374,22 @@ export default function Home() {
               Early Access
             </p>
             <p className="mt-3 text-base leading-7 text-[#4F4B44]">
-              Email: akshathsaravanan@gmail.com
+              Email:{' '}
+              <a
+                href="mailto:akshathsaravanan@gmail.com"
+                className="text-[#B78A2A] underline underline-offset-2 transition hover:text-[#9D7620]"
+              >
+                akshathsaravanan@gmail.com
+              </a>
             </p>
             <p className="mt-2 text-base leading-7 text-[#4F4B44]">
-              Phone: 812-431-5458
+              Phone:{' '}
+              <a
+                href="tel:+18124315458"
+                className="text-[#B78A2A] underline underline-offset-2 transition hover:text-[#9D7620]"
+              >
+                812-431-5458
+              </a>
             </p>
             <p className="mt-2 text-base leading-7 text-[#4F4B44]">
               Prototype progress, design updates, and product development coming
@@ -412,29 +399,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-[#E7DECF] bg-[#F7F3EC] px-6 py-12 md:px-10 lg:px-12">
-        <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col items-center justify-between gap-8 sm:flex-row">
-            <div className="flex items-center gap-3">
-              <img 
-                src="/logo-icon.png" 
-                alt="Verdant Labs" 
-                className="h-12 w-12"
-              />
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#B78A2A]">
-                  Verdant Labs
-                </p>
-                <p className="text-xs text-[#5C584F]">Botanical Intelligence</p>
-              </div>
-            </div>
-            
-            <p className="text-sm text-[#5C584F]">
-              © 2025 Verdant Labs. Building the future of plant care.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

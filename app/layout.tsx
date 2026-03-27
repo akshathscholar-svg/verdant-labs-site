@@ -13,12 +13,38 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://verdantlabs.co"),
   title: "Verdant Labs - Botanical Intelligence",
   description: "Verdant Labs builds Canopy AI, a botanical intelligence system for predictive plant care.",
   icons: {
-    icon: "/favicon.png",
+    icon: [
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-64.png", sizes: "64x64", type: "image/png" },
+    ],
     shortcut: "/favicon.png",
     apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "Verdant Labs - Botanical Intelligence",
+    description:
+      "Canopy AI helps plant owners detect environmental stress early and act with confidence.",
+    siteName: "Verdant Labs",
+    type: "website",
+    images: [
+      {
+        url: "/logo-icon-512.png",
+        width: 512,
+        height: 512,
+        alt: "Verdant Labs",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Verdant Labs - Botanical Intelligence",
+    description:
+      "Canopy AI helps plant owners detect environmental stress early and act with confidence.",
+    images: ["/logo-icon-512.png"],
   },
 };
 
