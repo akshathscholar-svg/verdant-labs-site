@@ -3,138 +3,180 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import EarlyAccessForm from './components/EarlyAccessForm';
 
+const photoAssets = {
+  hero: {
+    src: 'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1400&q=80',
+    alt: 'Young seedlings growing in a tray under soft natural light',
+  },
+  detailPrimary: {
+    src: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=80',
+    alt: 'Healthy striped succulent in a pastel planter on a bright surface',
+  },
+  detailSecondary: {
+    src: 'https://images.unsplash.com/photo-1512428813834-c702c7702b78?auto=format&fit=crop&w=900&q=80',
+    alt: 'Compact succulent in a minimal white planter against a clean backdrop',
+  },
+  prototype: {
+    src: 'https://images.unsplash.com/photo-1497250681960-ef046c08a56e?auto=format&fit=crop&w=1400&q=80',
+    alt: 'Dense green fern foliage in low light',
+  },
+} as const;
+
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
+    <main className="min-h-screen overflow-x-hidden bg-[#F7F3EC] text-[#1F1F1B]">
       <Header />
 
       {/* Hero */}
-      <section id="top" className="scroll-mt-20 px-6 pb-20 pt-12 md:px-10 lg:px-12 lg:pt-16">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div className="max-w-3xl">
-            <p className="mb-4 text-sm font-medium uppercase tracking-[0.28em] text-[#B78A2A]">
-              Predictive plant care
-            </p>
+      <section
+        id="top"
+        className="px-6 pb-20 pt-12 md:px-10 lg:px-12 lg:pt-14 xl:pt-16"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="grid items-start gap-12 xl:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)]">
+            <div className="max-w-3xl">
+              <p className="mb-4 text-sm font-medium uppercase tracking-[0.28em] text-[#B78A2A]">
+                Predictive plant care
+              </p>
 
-            <h1 className="text-5xl font-semibold leading-[1.05] tracking-tight md:text-7xl">
-              Protect your plants before stress becomes visible.
-            </h1>
+              <h1 className="text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl lg:text-6xl 2xl:text-7xl">
+                Protect your plants before stress becomes visible.
+              </h1>
 
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5A564E] md:text-xl">
-              Verdant Labs builds Canopy AI, a botanical intelligence system
-              that helps plant owners detect environmental stress early and act
-              with confidence.
-            </p>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5A564E] md:text-xl">
+                Verdant Labs builds Canopy AI, a botanical intelligence system
+                that helps plant owners detect environmental stress early and act
+                with confidence.
+              </p>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <a
-                href="#prototype"
-                className="rounded-full bg-[#B78A2A] px-6 py-3 text-center font-medium text-white transition hover:bg-[#9D7620]"
-              >
-                View Prototype
-              </a>
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+                <a
+                  href="#prototype"
+                  className="rounded-full bg-[#B78A2A] px-6 py-3 text-center font-medium text-white transition hover:bg-[#9D7620]"
+                >
+                  View Prototype
+                </a>
 
-              <a
-                href="#early-access"
-                className="rounded-full border border-[#CFC3AE] bg-white px-6 py-3 text-center font-medium text-[#1F1F1B] transition hover:border-[#B78A2A]"
-              >
-                Join Early Access
-              </a>
-            </div>
-
-            <div className="mt-12 grid max-w-2xl gap-4 sm:grid-cols-3">
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
-                  Core Signals
-                </p>
-                <p className="mt-2 text-sm text-[#4F4B44]">
-                  Moisture, light, temperature, humidity
-                </p>
+                <a
+                  href="#early-access"
+                  className="rounded-full border border-[#CFC3AE] bg-white px-6 py-3 text-center font-medium text-[#1F1F1B] transition hover:border-[#B78A2A]"
+                >
+                  Join Early Access
+                </a>
               </div>
 
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
-                  Outcome
+              <div className="mt-12 rounded-[1.9rem] border border-[#E5DBCC] bg-white/80 p-6 shadow-sm">
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
+                  Built For Valuable Collections
                 </p>
-                <p className="mt-2 text-sm text-[#4F4B44]">
-                  Clear recommendations, not raw data
+                <h3 className="mt-3 text-2xl font-semibold tracking-tight">
+                  Botanical intelligence for premium plant owners.
+                </h3>
+                <p className="mt-3 max-w-2xl text-base leading-7 text-[#5C584F]">
+                  Designed for collectors who care about prevention, not guesswork,
+                  with context-rich recommendations that are easier to trust than
+                  a dashboard full of raw sensor data.
                 </p>
-              </div>
 
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
-                <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
-                  Vision
-                </p>
-                <p className="mt-2 text-sm text-[#4F4B44]">
-                  A smarter future for plant ownership
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative">
-            <div className="absolute -left-8 top-8 h-40 w-40 rounded-full bg-[#E9DFC9] blur-3xl" />
-            <div className="absolute -bottom-6 right-0 h-40 w-40 rounded-full bg-[#DDE6D8] blur-3xl" />
-
-            <div className="relative rounded-[2rem] border border-[#E5DBCC] bg-white p-5 shadow-[0_20px_70px_rgba(60,48,25,0.08)]">
-              <div className="rounded-[1.6rem] bg-gradient-to-br from-[#FCFBF8] to-[#EFE7D9] p-5">
-                <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
-                  <div className="rounded-[1.5rem] border border-[#D8CAB1] bg-[#F8F4EC] p-5 shadow-sm">
-                    <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
-                      Hero Visual
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-2xl bg-[#F7F3EC] px-4 py-3">
+                    <p className="text-xs uppercase tracking-[0.16em] text-[#B78A2A]">
+                      Inputs
                     </p>
-                    <div className="relative mt-4 h-72 overflow-hidden rounded-[1.25rem] bg-white">
+                    <p className="mt-2 text-sm text-[#4F4B44]">
+                      Moisture, humidity, heat, and light.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl bg-[#F7F3EC] px-4 py-3">
+                    <p className="text-xs uppercase tracking-[0.16em] text-[#B78A2A]">
+                      Output
+                    </p>
+                    <p className="mt-2 text-sm text-[#4F4B44]">
+                      Plain-language next steps with context.
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl bg-[#F7F3EC] px-4 py-3">
+                    <p className="text-xs uppercase tracking-[0.16em] text-[#B78A2A]">
+                      Use Case
+                    </p>
+                    <p className="mt-2 text-sm text-[#4F4B44]">
+                      Rare plants, home collections, and high-value specimens.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative xl:pl-4">
+              <div className="absolute left-2 top-8 hidden h-32 w-32 rounded-full bg-[#E9DFC9] blur-3xl sm:block xl:-left-4 xl:h-40 xl:w-40" />
+              <div className="absolute -bottom-6 right-0 h-32 w-32 rounded-full bg-[#DDE6D8] blur-3xl sm:h-40 sm:w-40" />
+
+              <div className="relative rounded-[2rem] border border-[#E5DBCC] bg-white p-4 shadow-[0_20px_70px_rgba(60,48,25,0.08)] sm:p-5">
+                <div className="rounded-[1.6rem] bg-gradient-to-br from-[#FCFBF8] to-[#EFE7D9] p-4 sm:p-5">
+                  <div className="grid gap-4">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-[#D8CAB1] bg-[#F8F4EC] shadow-sm">
                       <Image
-                        src="/hero-canopy-ai.svg"
-                        alt="Illustration of Verdant Labs Canopy AI plant monitoring system"
+                        src={photoAssets.hero.src}
+                        alt={photoAssets.hero.alt}
                         fill
-                        sizes="(max-width: 1024px) 100vw, 34vw"
+                        sizes="(max-width: 1279px) 100vw, 42vw"
                         className="object-cover"
                         priority
                       />
-                    </div>
-                  </div>
 
-                  <div className="flex flex-col gap-4">
-                    <div className="rounded-[1.5rem] border border-[#E5DBCC] bg-white p-5">
-                      <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
-                        Canopy AI
-                      </p>
-                      <h3 className="mt-3 text-2xl font-semibold">
-                        Environmental stress, interpreted.
-                      </h3>
-                      <p className="mt-3 text-sm leading-7 text-[#5C584F]">
-                        A hardware + software system designed to help plant
-                        owners act before visible decline appears.
-                      </p>
-                    </div>
-
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="rounded-[1.5rem] border border-[#E5DBCC] bg-white p-5">
-                        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
-                          Product Visual
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1C2118]/80 via-[#1C2118]/25 to-transparent p-5 sm:p-6">
+                        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#F0E5C7]">
+                          Live Conditions
                         </p>
-                        <div className="relative mt-3 h-28 overflow-hidden rounded-2xl bg-[#F7F3EC]">
+                        <p className="mt-2 max-w-md text-sm leading-6 text-white/88 sm:text-base">
+                          A clearer read on moisture, light, and ambient stress
+                          before leaves ever start to curl.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="rounded-[1.5rem] border border-[#E5DBCC] bg-white p-5 md:col-span-2">
+                        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
+                          Canopy AI
+                        </p>
+                        <h3 className="mt-3 text-2xl font-semibold">
+                          Environmental stress, interpreted.
+                        </h3>
+                        <p className="mt-3 text-sm leading-7 text-[#5C584F]">
+                          Verdant Labs pairs ambient sensing with plant-specific
+                          recommendations so owners can act while the plant still
+                          looks healthy.
+                        </p>
+                      </div>
+
+                      <div className="rounded-[1.5rem] border border-[#E5DBCC] bg-white p-4 sm:p-5">
+                        <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
+                          Healthy Baseline
+                        </p>
+                        <div className="relative mt-3 aspect-[4/5] overflow-hidden rounded-[1.2rem] bg-[#F7F3EC] sm:aspect-[5/6]">
                           <Image
-                            src="/product-shell.svg"
-                            alt="Illustration of the Verdant Labs device shell and enclosure"
+                            src={photoAssets.detailPrimary.src}
+                            alt={photoAssets.detailPrimary.alt}
                             fill
-                            sizes="(max-width: 640px) 100vw, 14vw"
+                            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 42vw, 16vw"
                             className="object-cover"
                           />
                         </div>
                       </div>
 
-                      <div className="rounded-[1.5rem] border border-[#E5DBCC] bg-white p-5">
+                      <div className="rounded-[1.5rem] border border-[#E5DBCC] bg-white p-4 sm:p-5">
                         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
-                          Botanical Brand
+                          Collector Profile
                         </p>
-                        <div className="relative mt-3 h-28 overflow-hidden rounded-2xl bg-[#F7F3EC]">
+                        <div className="relative mt-3 aspect-[4/5] overflow-hidden rounded-[1.2rem] bg-[#F7F3EC] sm:aspect-[5/6]">
                           <Image
-                            src="/botanical-lifestyle.svg"
-                            alt="Illustration of Verdant Labs botanical lifestyle branding"
+                            src={photoAssets.detailSecondary.src}
+                            alt={photoAssets.detailSecondary.alt}
                             fill
-                            sizes="(max-width: 640px) 100vw, 14vw"
+                            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 42vw, 16vw"
                             className="object-cover"
                           />
                         </div>
@@ -145,13 +187,53 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_minmax(0,1.3fr)]">
+            <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
+              <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
+                Core Signals
+              </p>
+              <p className="mt-2 text-sm leading-6 text-[#4F4B44]">
+                Moisture, light, temperature, and humidity tracked in real time.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
+              <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
+                Outcome
+              </p>
+              <p className="mt-2 text-sm leading-6 text-[#4F4B44]">
+                Clear recommendations instead of dashboards full of raw numbers.
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 transition hover:shadow-md">
+              <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
+                Vision
+              </p>
+              <p className="mt-2 text-sm leading-6 text-[#4F4B44]">
+                A smarter, more proactive future for plant ownership.
+              </p>
+            </div>
+
+            <div className="rounded-[1.75rem] border border-[#D8CAB1] bg-[#F3EDE2] p-5 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.18em] text-[#B78A2A]">
+                Why It Matters
+              </p>
+              <p className="mt-3 text-base leading-7 text-[#5C584F]">
+                Plant stress compounds quietly. A better product experience is not
+                just about more sensing. It is about surfacing the right signal in
+                time for someone to do something useful with it.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Problem */}
       <section
         id="problem"
-        className="scroll-mt-20 border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
+        className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -193,7 +275,7 @@ export default function Home() {
       {/* Solution */}
       <section
         id="solution"
-        className="scroll-mt-20 bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
+        className="bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -244,7 +326,7 @@ export default function Home() {
       {/* Product Tiers */}
       <section
         id="tiers"
-        className="scroll-mt-20 border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
+        className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -304,7 +386,7 @@ export default function Home() {
       {/* Prototype */}
       <section
         id="prototype"
-        className="scroll-mt-20 bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
+        className="bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
@@ -315,7 +397,7 @@ export default function Home() {
             A working hardware prototype is already in development.
           </h2>
 
-          <div className="mt-10 grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="mt-10 grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
             <div className="rounded-[1.9rem] border border-[#E5DBCC] bg-white p-8 shadow-sm">
               <p className="text-base leading-8 text-[#5A564E]">
                 Verdant Labs has already developed an early hardware prototype
@@ -347,18 +429,63 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rounded-[1.9rem] border border-[#D9CDBA] bg-[#F3EDE2] p-8 shadow-sm">
-              <p className="text-sm font-medium uppercase tracking-[0.16em] text-[#B78A2A]">
-                Prototype Visual
-              </p>
-              <div className="relative mt-4 h-80 overflow-hidden rounded-[1.4rem] bg-white">
+            <div className="rounded-[1.9rem] border border-[#122113] bg-[#0F180F] p-3 shadow-[0_18px_50px_rgba(16,24,15,0.18)] sm:p-4">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[1.45rem]">
                 <Image
-                  src="/prototype-visual.svg"
-                  alt="Illustration of the Verdant Labs prototype hardware and status panel"
+                  src={photoAssets.prototype.src}
+                  alt={photoAssets.prototype.alt}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 32vw"
+                  sizes="(max-width: 1279px) 100vw, 38vw"
                   className="object-cover"
                 />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-[#091009]/90 via-[#091009]/30 to-transparent" />
+
+                <div className="absolute left-4 top-4 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-white/82 backdrop-blur">
+                  Prototype Feed
+                </div>
+
+                <div className="absolute inset-x-4 bottom-4 grid gap-3 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)]">
+                  <div className="rounded-[1.35rem] border border-white/15 bg-[#10180F]/70 p-4 text-white backdrop-blur">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#E9DFC9]">
+                      Stress Forecast
+                    </p>
+                    <p className="mt-2 text-3xl font-semibold">Low risk</p>
+                    <p className="mt-2 text-sm leading-6 text-white/76">
+                      Light and moisture are holding inside the target range,
+                      with no immediate intervention needed.
+                    </p>
+                  </div>
+
+                  <div className="rounded-[1.35rem] border border-white/15 bg-white/12 p-4 text-white backdrop-blur">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#E9DFC9]">
+                      Sensor Snapshot
+                    </p>
+
+                    <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                      <div className="rounded-2xl bg-black/18 px-3 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-white/62">
+                          Moisture
+                        </p>
+                        <p className="mt-2 text-xl font-semibold">41%</p>
+                      </div>
+
+                      <div className="rounded-2xl bg-black/18 px-3 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-white/62">
+                          Humidity
+                        </p>
+                        <p className="mt-2 text-xl font-semibold">58%</p>
+                      </div>
+
+                      <div className="rounded-2xl bg-black/18 px-3 py-3">
+                        <p className="text-[11px] uppercase tracking-[0.16em] text-white/62">
+                          Light
+                        </p>
+                        <p className="mt-2 text-xl font-semibold">8.2k lux</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -368,7 +495,7 @@ export default function Home() {
       {/* Early Access */}
       <section
         id="early-access"
-        className="scroll-mt-20 border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
+        className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
         <div className="mx-auto max-w-4xl">
           <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
