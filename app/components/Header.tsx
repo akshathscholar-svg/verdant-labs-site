@@ -8,7 +8,6 @@ const navLinks = [
   { href: '#solution', label: 'Solution' },
   { href: '#tiers', label: 'Product' },
   { href: '#prototype', label: 'Prototype' },
-  { href: '#early-access', label: 'Early Access' },
 ];
 
 export default function Header() {
@@ -44,6 +43,12 @@ export default function Header() {
               {link.label}
             </a>
           ))}
+          <a
+            href="#early-access"
+            className="rounded-full bg-[#B78A2A] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#9D7620]"
+          >
+            Early Access
+          </a>
         </nav>
 
         <button
@@ -99,6 +104,13 @@ export default function Header() {
                 {link.label}
               </a>
             ))}
+            <a
+              href="#early-access"
+              className="mt-2 rounded-full bg-[#B78A2A] px-5 py-2.5 text-center text-sm font-medium text-white transition hover:bg-[#9D7620]"
+              onClick={() => setMobileOpen(false)}
+            >
+              Early Access
+            </a>
           </div>
         </nav>
       )}
