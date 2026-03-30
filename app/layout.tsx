@@ -53,12 +53,33 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Verdant Labs',
+    url: 'https://verdantlabs.app',
+    logo: 'https://verdantlabs.app/logo-icon-512.png',
+    description:
+      'Verdant Labs builds Canopy AI, a botanical intelligence system for predictive plant care.',
+    founder: {
+      '@type': 'Person',
+      name: 'Akshath Saravanan',
+    },
+    sameAs: [],
+  };
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        {children}
+      </body>
     </html>
   );
 }
