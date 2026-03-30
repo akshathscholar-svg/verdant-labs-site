@@ -4,6 +4,7 @@ import Footer from './components/Footer';
 import EarlyAccessForm from './components/EarlyAccessForm';
 import Reveal from './components/Reveal';
 import CountUp from './components/CountUp';
+import FloatingOrbs from './components/FloatingOrbs';
 
 const photoAssets = {
   hero: {
@@ -61,7 +62,7 @@ export default function Home() {
                 <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                   <a
                     href="#prototype"
-                    className="rounded-full bg-[#B78A2A] px-6 py-3 text-center font-medium text-white transition hover:bg-[#9D7620] hover:shadow-[0_8px_30px_rgba(183,138,42,0.3)]"
+                    className="cta-glow rounded-full bg-[#B78A2A] px-6 py-3 text-center font-medium text-white transition hover:bg-[#9D7620] hover:shadow-[0_8px_30px_rgba(183,138,42,0.3)]"
                   >
                     View Prototype
                   </a>
@@ -122,8 +123,7 @@ export default function Home() {
             </div>
 
             <Reveal delay={0.2} direction="right" className="relative xl:pl-4">
-              <div className="absolute left-2 top-8 hidden h-32 w-32 rounded-full bg-[#E9DFC9] blur-3xl sm:block xl:-left-4 xl:h-40 xl:w-40" />
-              <div className="absolute -bottom-6 right-0 h-32 w-32 rounded-full bg-[#DDE6D8] blur-3xl sm:h-40 sm:w-40" />
+              <FloatingOrbs />
 
               <div className="relative rounded-[2rem] border border-[#E5DBCC] bg-white p-4 shadow-[0_20px_70px_rgba(60,48,25,0.08)] sm:p-5">
                 <div className="rounded-[1.6rem] bg-gradient-to-br from-[#FCFBF8] to-[#EFE7D9] p-4 sm:p-5">
@@ -201,37 +201,43 @@ export default function Home() {
           </div>
 
           {/* Trust Metrics Strip */}
-          <Reveal delay={0.1}>
-            <div className="mt-12 grid gap-4 sm:grid-cols-4">
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:shadow-md">
+          <div className="mt-12 grid gap-4 sm:grid-cols-4">
+            <Reveal delay={0.05}>
+              <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:scale-[1.02] hover:shadow-md">
                 <p className="text-2xl font-semibold text-[#B78A2A]">4</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[#7A756C]">
                   Sensor Types
                 </p>
               </div>
+            </Reveal>
 
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:shadow-md">
+            <Reveal delay={0.15}>
+              <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:scale-[1.02] hover:shadow-md">
                 <p className="text-2xl font-semibold text-[#B78A2A]">&lt; 2s</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[#7A756C]">
                   Alert Latency
                 </p>
               </div>
+            </Reveal>
 
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:shadow-md">
+            <Reveal delay={0.25}>
+              <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:scale-[1.02] hover:shadow-md">
                 <p className="text-2xl font-semibold text-[#B78A2A]">24/7</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[#7A756C]">
                   Continuous Monitoring
                 </p>
               </div>
+            </Reveal>
 
-              <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:shadow-md">
+            <Reveal delay={0.35}>
+              <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:scale-[1.02] hover:shadow-md">
                 <p className="text-2xl font-semibold text-[#B78A2A]">3 Tiers</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[#7A756C]">
                   For Every Collector
                 </p>
               </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
 
           <Reveal delay={0.15}>
             <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_minmax(0,1.3fr)]">
@@ -295,7 +301,7 @@ export default function Home() {
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             <Reveal delay={0.1}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-xl font-semibold">Guesswork</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   Most plant owners rely on schedules, intuition, and generic care
@@ -305,7 +311,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-xl font-semibold">Late detection</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   By the time leaves curl, yellow, or droop, the plant may already
@@ -315,7 +321,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.3}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-xl font-semibold">High-value risk</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   Rare and specialty plants can be expensive, making poor care
@@ -345,7 +351,7 @@ export default function Home() {
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
             <Reveal delay={0.1}>
-              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                   01
                 </p>
@@ -358,7 +364,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                   02
                 </p>
@@ -371,7 +377,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.3}>
-              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                   03
                 </p>
@@ -404,7 +410,7 @@ export default function Home() {
 
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
             <Reveal delay={0.1}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-2xl font-semibold">Foundation</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   Core environmental monitoring for serious plant owners.
@@ -419,7 +425,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.2}>
-              <div className="h-full rounded-[1.75rem] border border-[#CFA74F] bg-white p-7 shadow-[0_18px_50px_rgba(120,92,28,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(120,92,28,0.14)]">
+              <div className="h-full rounded-[1.75rem] border border-[#CFA74F] bg-white p-7 shadow-[0_18px_50px_rgba(120,92,28,0.08)] transition hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_24px_60px_rgba(120,92,28,0.14)]">
                 <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                   Featured
                 </p>
@@ -437,7 +443,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={0.3}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-2xl font-semibold">Elite</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   Premium intelligence for advanced collectors.
