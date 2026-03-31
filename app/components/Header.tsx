@@ -11,6 +11,7 @@ const navLinks = [
   { href: '#tiers', label: 'Product' },
   { href: '#prototype', label: 'Prototype' },
   { href: '/app-preview', label: 'App Preview' },
+  { href: '/identify', label: 'Identify' },
 ];
 
 export default function Header() {
