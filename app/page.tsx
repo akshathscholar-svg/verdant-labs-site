@@ -544,31 +544,31 @@ export default function Home() {
                         Sensor Snapshot
                       </p>
 
-                      <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                        <div className="rounded-2xl bg-black/18 px-3 py-3">
-                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/62">
+                      <div className="mt-3 grid gap-2 grid-cols-3">
+                        <div className="rounded-xl bg-black/18 px-2 py-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-white/62">
                             Moisture
                           </p>
-                          <p className="mt-2 text-xl font-semibold">
+                          <p className="mt-1 text-lg font-semibold">
                             <CountUp end={41} suffix="%" />
                           </p>
                         </div>
 
-                        <div className="rounded-2xl bg-black/18 px-3 py-3">
-                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/62">
+                        <div className="rounded-xl bg-black/18 px-2 py-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-white/62">
                             Humidity
                           </p>
-                          <p className="mt-2 text-xl font-semibold">
+                          <p className="mt-1 text-lg font-semibold">
                             <CountUp end={58} suffix="%" />
                           </p>
                         </div>
 
-                        <div className="rounded-2xl bg-black/18 px-3 py-3">
-                          <p className="text-[11px] uppercase tracking-[0.16em] text-white/62">
+                        <div className="rounded-xl bg-black/18 px-2 py-2">
+                          <p className="text-[10px] uppercase tracking-[0.14em] text-white/62">
                             Light
                           </p>
-                          <p className="mt-2 text-xl font-semibold whitespace-nowrap">
-                            <CountUp end={8.2} suffix="k lux" decimals={1} />
+                          <p className="mt-1 text-lg font-semibold whitespace-nowrap">
+                            <CountUp end={8.2} suffix="k" decimals={1} />
                           </p>
                         </div>
                       </div>
