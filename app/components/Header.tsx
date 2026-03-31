@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
@@ -9,6 +10,7 @@ const navLinks = [
   { href: '#solution', label: 'Solution' },
   { href: '#tiers', label: 'Product' },
   { href: '#prototype', label: 'Prototype' },
+  { href: '/app-preview', label: 'App Preview' },
 ];
 
 export default function Header() {
@@ -53,15 +55,25 @@ export default function Header() {
         </a>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-[#3B3933] md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="transition hover:text-[#B78A2A]"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith('/') ? (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition hover:text-[#B78A2A]"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                key={link.href}
+                href={link.href}
+                className="transition hover:text-[#B78A2A]"
+              >
+                {link.label}
+              </a>
+            )
+          )}
           <a
             href="#early-access"
             className="cta-glow rounded-full bg-[#B78A2A] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#9D7620]"
@@ -120,19 +132,36 @@ export default function Header() {
             className="overflow-hidden border-t border-[#E7DECF] bg-[#F7F3EC] md:hidden"
           >
             <div className="flex flex-col gap-4 px-6 py-4">
-              {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.06 * i, duration: 0.25 }}
-                  className="text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  {link.label}
-                </motion.a>
-              ))}
+              {navLinks.map((link, i) =>
+                link.href.startsWith('/') ? (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.06 * i, duration: 0.25 }}
+                  >
+                    <Link
+                      href={link.href}
+                      className="text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ) : (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.06 * i, duration: 0.25 }}
+                    className="text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {link.label}
+                  </motion.a>
+                )
+              )}
               <motion.a
                 href="#early-access"
                 initial={{ opacity: 0, x: -12 }}
