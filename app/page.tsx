@@ -27,7 +27,7 @@ const photoAssets = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#F7F3EC] text-[#1F1F1B]">
+    <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
       <Header />
 
       {/* Hero */}
@@ -567,7 +567,7 @@ export default function Home() {
                           <p className="text-[11px] uppercase tracking-[0.16em] text-white/62">
                             Light
                           </p>
-                          <p className="mt-2 text-xl font-semibold">
+                          <p className="mt-2 text-xl font-semibold whitespace-nowrap">
                             <CountUp end={8.2} suffix="k lux" decimals={1} />
                           </p>
                         </div>
