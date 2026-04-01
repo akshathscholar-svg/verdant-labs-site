@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const featureLinks = [
   { href: '/app-preview', label: 'App Preview' },
   { href: '/identify', label: 'Plant Identifier' },
+  { href: '/journey', label: 'Our Journey' },
 ];
 
 export default function Header() {

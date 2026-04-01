@@ -1,0 +1,278 @@
+'use client';
+
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import Reveal from '../components/Reveal';
+import TextReveal from '../components/TextReveal';
+
+/* ── Timeline data ── */
+const milestones = [
+  {
+    date: 'Fall 2024',
+    title: 'The Spark',
+    description:
+      'A collection of rare tropical plants started showing stress with no visible warning signs. By the time leaves curled, the damage was done. The question became: what if you could detect stress before it was visible?',
+    icon: '💡',
+  },
+  {
+    date: 'Winter 2024',
+    title: 'Research Phase',
+    description:
+      'Deep-dived into plant physiology, environmental sensing, and how moisture, light, humidity, and heat interact to affect plant health. Studied existing solutions and found a gap: raw data everywhere, intelligence nowhere.',
+    icon: '🔬',
+  },
+  {
+    date: 'Early 2025',
+    title: 'Verdant Labs Founded',
+    description:
+      'Verdant Labs was born with a clear mission: build a botanical intelligence system that translates environmental data into actionable, plain-language care recommendations.',
+    icon: '🌱',
+  },
+  {
+    date: 'Spring 2025',
+    title: 'Canopy AI Concept',
+    description:
+      'Designed the Canopy AI architecture — a system that pairs ambient sensor data with plant-specific profiles to generate proactive care guidance, not reactive alerts.',
+    icon: '🧠',
+  },
+  {
+    date: 'Summer 2025',
+    title: 'First Hardware Prototype',
+    description:
+      'Built the first sensor prototype capable of reading moisture, humidity, temperature, and light levels. Started testing with real plant collections to validate the concept.',
+    icon: '🔧',
+  },
+  {
+    date: 'Fall 2025',
+    title: 'AI Plant Identifier',
+    description:
+      'Launched the AI-powered plant identification feature — snap a photo and get instant species ID, care instructions, grower info, and growing conditions.',
+    icon: '📸',
+  },
+  {
+    date: 'Winter 2025',
+    title: 'Early Access Opens',
+    description:
+      'Opened early access signups and started building the community. Collectors, hobbyists, and serious growers began joining the waitlist.',
+    icon: '🚀',
+  },
+  {
+    date: '2026 & Beyond',
+    title: 'What\'s Next',
+    description:
+      'Shipping the first hardware units to early access members, expanding AI capabilities with visual health monitoring, and building toward a future where no plant is lost to preventable stress.',
+    icon: '🔮',
+  },
+];
+
+const values = [
+  {
+    title: 'Prevention over reaction',
+    description: 'Catch problems early, before damage is visible.',
+    icon: '🛡️',
+  },
+  {
+    title: 'Intelligence over data',
+    description: 'Plain-language recommendations, not raw numbers.',
+    icon: '✨',
+  },
+  {
+    title: 'Built for collectors',
+    description: 'Designed for people who truly care about their plants.',
+    icon: '🌿',
+  },
+  {
+    title: 'Transparent progress',
+    description: 'We share what we\'re building as we build it.',
+    icon: '🔓',
+  },
+];
+
+export default function JourneyClient() {
+  return (
+    <div className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
+      {/* ── Top bar ── */}
+      <div className="border-b border-[#E7DECF] bg-[#F7F3EC]/90 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-10">
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-sm font-medium text-[#5C584F] transition hover:text-[#B78A2A]"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+            Back to Verdant Labs
+          </Link>
+        </div>
+      </div>
+
+      {/* ── Hero ── */}
+      <section className="px-6 pb-16 pt-16 md:px-10">
+        <div className="mx-auto max-w-3xl text-center">
+          <Reveal>
+            <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#B78A2A]">
+              Our Journey
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h1 className="mt-4 text-3xl font-bold tracking-tight md:text-5xl">
+              From a wilting plant to
+              <br />
+              <span className="text-[#B78A2A]">botanical intelligence.</span>
+            </h1>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mt-6 text-lg leading-8 text-[#5C584F]">
+              Verdant Labs started with a simple frustration: plants dying before
+              you ever know something is wrong. Here&apos;s how we&apos;re building the
+              solution.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── Timeline ── */}
+      <section className="px-6 pb-20 md:px-10">
+        <div className="mx-auto max-w-3xl">
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-6 top-0 h-full w-px bg-gradient-to-b from-[#B78A2A]/40 via-[#B78A2A]/20 to-transparent md:left-1/2 md:-translate-x-px" />
+
+            {milestones.map((m, i) => {
+              const isLeft = i % 2 === 0;
+
+              return (
+                <Reveal
+                  key={m.title}
+                  delay={i * 0.08}
+                  direction={isLeft ? 'left' : 'right'}
+                >
+                  <div className={`relative mb-12 pl-16 md:w-1/2 md:pl-0 ${
+                    isLeft ? 'md:pr-12 md:text-right' : 'md:ml-auto md:pl-12'
+                  }`}>
+                    {/* Dot on line */}
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true, margin: '-40px' }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 20, delay: i * 0.08 }}
+                      className="absolute left-4 top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#B78A2A] bg-[#F7F3EC] md:left-auto md:right-auto md:top-1"
+                      style={isLeft ? { right: '-10px', left: 'auto' } : { left: '-10px' }}
+                    >
+                      <div className="h-2 w-2 rounded-full bg-[#B78A2A]" />
+                    </motion.div>
+
+                    {/* Mobile icon */}
+                    <div className="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B78A2A]/10 text-xl md:hidden">
+                      {m.icon}
+                    </div>
+
+                    {/* Date badge */}
+                    <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#B78A2A]">
+                      {m.date}
+                    </p>
+
+                    {/* Content card */}
+                    <div className="rounded-2xl border border-[#E7DECF] bg-white p-5 shadow-sm transition hover:border-[#B78A2A]/30 hover:shadow-md">
+                      <div className="flex items-center gap-2">
+                        <span className="hidden text-xl md:inline">{m.icon}</span>
+                        <h3 className="text-lg font-semibold">{m.title}</h3>
+                      </div>
+                      <p className="mt-2 text-sm leading-relaxed text-[#5C584F] md:text-left">
+                        {m.description}
+                      </p>
+                    </div>
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Our Values ── */}
+      <section className="border-t border-[#E7DECF] bg-white px-6 py-20 md:px-10">
+        <div className="mx-auto max-w-4xl">
+          <Reveal>
+            <div className="mb-12 text-center">
+              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#B78A2A]">
+                What Drives Us
+              </p>
+              <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
+                <TextReveal text="Our values shape every decision we make." />
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            {values.map((v, i) => (
+              <Reveal key={v.title} delay={i * 0.1}>
+                <div className="rounded-2xl border border-[#E7DECF] bg-[#F7F3EC] p-6 transition hover:border-[#B78A2A]/30 hover:shadow-md">
+                  <span className="text-2xl">{v.icon}</span>
+                  <h3 className="mt-3 text-base font-semibold">{v.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-[#5C584F]">
+                    {v.description}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Founder Quote ── */}
+      <section className="px-6 py-20 md:px-10">
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-[#B78A2A]/10">
+              <svg viewBox="0 0 24 24" className="h-6 w-6 text-[#B78A2A]" fill="currentColor">
+                <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
+              </svg>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <blockquote className="text-xl font-medium leading-9 tracking-tight md:text-2xl">
+              Every plant that dies from preventable stress is a failure of
+              information, not care. We&apos;re building the bridge between the two.
+            </blockquote>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="mt-6 text-sm font-medium text-[#B78A2A]">
+              — Founder, Verdant Labs
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="border-t border-[#E7DECF] px-6 py-16 md:px-10">
+        <div className="mx-auto max-w-2xl text-center">
+          <Reveal>
+            <h2 className="text-2xl font-bold tracking-tight md:text-3xl">
+              Be part of the journey.
+            </h2>
+            <p className="mt-3 text-sm text-[#5C584F]">
+              Join early access and help shape the future of plant care.
+            </p>
+            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <Link
+                href="/#early-access"
+                className="btn-ripple cta-glow rounded-full bg-[#B78A2A] px-7 py-3 text-sm font-medium text-white transition hover:bg-[#9D7620]"
+              >
+                Join Early Access
+              </Link>
+              <Link
+                href="/"
+                className="btn-ripple rounded-full border border-[#CFC3AE] bg-white px-7 py-3 text-sm font-medium text-[#1F1F1B] transition hover:border-[#B78A2A]"
+              >
+                Back to Overview
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <div className="h-8" />
+    </div>
+  );
+}
