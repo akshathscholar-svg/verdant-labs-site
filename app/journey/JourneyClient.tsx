@@ -11,50 +11,36 @@ const milestones = [
     date: 'Winter 2025',
     title: 'The Spark',
     description:
-      'A collection of rare tropical plants started showing stress with no visible warning signs. By the time leaves curled, the damage was done. The question became: what if you could detect stress before it was visible?',
+      'A collection of rare tropical plants started showing stress with no visible warning signs. By the time leaves curled, the damage was done. The question became: what if you could detect stress before it was visible? Verdant Labs was founded.',
     icon: '💡',
   },
   {
-    date: 'Winter 2025',
-    title: 'Verdant Labs Founded',
+    date: 'Spring 2026',
+    title: 'Research & Canopy AI Concept',
     description:
-      'Verdant Labs was born with a clear mission: build a botanical intelligence system that translates environmental data into actionable, plain-language care recommendations. Deep research into plant physiology, environmental sensing, and the gap between raw data and real intelligence.',
-    icon: '🌱',
-  },
-  {
-    date: 'Spring 2025',
-    title: 'Canopy AI Concept',
-    description:
-      'Designed the Canopy AI architecture — a system that pairs ambient sensor data with plant-specific profiles to generate proactive care guidance, not reactive alerts.',
+      'Deep research into plant physiology, environmental sensing, and the gap between raw data and real intelligence. Designed the Canopy AI architecture — a system that pairs ambient sensor data with plant-specific profiles to generate proactive care guidance.',
     icon: '🧠',
   },
   {
-    date: 'Summer 2025',
-    title: 'Hardware Prototype',
+    date: 'Summer 2026',
+    title: 'Hardware Prototype & AI Features',
     description:
-      'Built a working sensor prototype capable of reading moisture, humidity, temperature, and light levels. Started testing with real plant collections to validate the concept.',
+      'Built a working sensor prototype reading moisture, humidity, temperature, and light. Launched the AI-powered plant identifier — snap a photo for instant species ID, care instructions, and grower info.',
     icon: '🔧',
   },
   {
-    date: 'Fall 2025',
-    title: 'AI Plant Identifier',
-    description:
-      'Launched the AI-powered plant identification feature — snap a photo and get instant species ID, care instructions, grower info, and growing conditions.',
-    icon: '📸',
-  },
-  {
     date: 'Winter 2026',
-    title: 'Working Prototype & App Development',
+    title: 'App Development & Testing',
     description:
-      'Hardware prototype is up and running. Now focused on building out the Canopy AI app — the interface that turns sensor data into plain-language care recommendations.',
+      'Building out the full Canopy AI app experience — the interface that turns sensor data into plain-language care recommendations. Refining the hardware and running real-world tests with plant collections.',
     icon: '📱',
   },
   {
-    date: '2026 & Beyond',
-    title: 'What\'s Next',
+    date: 'Spring 2027',
+    title: 'Product Launch',
     description:
-      'Shipping the first hardware units to early access members, launching the full app experience, and building toward a future where no plant is lost to preventable stress.',
-    icon: '🔮',
+      'Shipping finalized hardware units and the full app to early access members. The complete Canopy AI system — sensor, app, and intelligence — ready for plant owners everywhere.',
+    icon: '🚀',
   },
 ];
 
