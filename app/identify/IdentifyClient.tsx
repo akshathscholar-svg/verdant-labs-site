@@ -42,14 +42,14 @@ export default function IdentifyClient() {
   const cameraRef = useRef<HTMLInputElement>(null);
   const dropRef = useRef<HTMLDivElement>(null);
 
-  /* ── prevent browser from opening files dragged outside the drop zone ── */
+  /* ── prevent browser from opening files dropped outside the zone ── */
   useEffect(() => {
-    const prevent = (e: DragEvent) => { e.preventDefault(); e.stopPropagation(); };
-    window.addEventListener('dragover', prevent);
-    window.addEventListener('drop', prevent);
+    const prevent = (e: DragEvent) => { e.preventDefault(); };
+    document.addEventListener('dragover', prevent);
+    document.addEventListener('drop', prevent);
     return () => {
-      window.removeEventListener('dragover', prevent);
-      window.removeEventListener('drop', prevent);
+      document.removeEventListener('dragover', prevent);
+      document.removeEventListener('drop', prevent);
     };
   }, []);
 
@@ -85,39 +85,52 @@ export default function IdentifyClient() {
     reader.readAsDataURL(file);
   }, []);
 
-  /* ── drag & drop ── */
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragOver(true);
-  }, []);
+  /* ── native drag-and-drop listeners on the drop zone ── */
+  useEffect(() => {
+    const zone = dropRef.current;
+    if (!zone) return;
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragOver(true);
-  }, []);
+    const onDragOver = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+      setDragOver(true);
+    };
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    // Only set dragOver to false if we're leaving the drop zone itself,
-    // not when hovering over child elements
-    if (dropRef.current && !dropRef.current.contains(e.relatedTarget as Node)) {
-      setDragOver(false);
-    }
-  }, []);
+    const onDragEnter = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDragOver(true);
+    };
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
+    const onDragLeave = (e: DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!zone.contains(e.relatedTarget as Node)) {
+        setDragOver(false);
+      }
+    };
+
+    const onDrop = (e: DragEvent) => {
       e.preventDefault();
       e.stopPropagation();
       setDragOver(false);
-      const file = e.dataTransfer.files?.[0];
+      const file = e.dataTransfer?.files?.[0];
       if (file) processFile(file);
-    },
-    [processFile],
-  );
+    };
+
+    zone.addEventListener('dragenter', onDragEnter);
+    zone.addEventListener('dragover', onDragOver);
+    zone.addEventListener('dragleave', onDragLeave);
+    zone.addEventListener('drop', onDrop);
+
+    return () => {
+      zone.removeEventListener('dragenter', onDragEnter);
+      zone.removeEventListener('dragover', onDragOver);
+      zone.removeEventListener('dragleave', onDragLeave);
+      zone.removeEventListener('drop', onDrop);
+    };
+  }, [processFile]);
 
   /* ── reset ── */
   const handleReset = () => {
@@ -201,17 +214,13 @@ export default function IdentifyClient() {
           >
             <div
               ref={dropRef}
-              onDragEnter={handleDragEnter}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
               className={`flex flex-col items-center gap-5 rounded-3xl border-2 border-dashed p-10 text-center transition-colors ${
                 dragOver
                   ? 'border-[#B78A2A] bg-[#B78A2A]/5'
                   : 'border-[#DDD5C6] bg-white/40'
               }`}
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#B78A2A]/10">
+              <div className="pointer-events-none flex h-16 w-16 items-center justify-center rounded-full bg-[#B78A2A]/10">
                 <svg viewBox="0 0 24 24" className="h-7 w-7 text-[#B78A2A]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="17 8 12 3 7 8" />
@@ -219,7 +228,7 @@ export default function IdentifyClient() {
                 </svg>
               </div>
 
-              <div>
+              <div className="pointer-events-none">
                 <p className="text-sm font-semibold">Drop a plant photo here</p>
                 <p className="mt-1 text-xs text-[#5C584F]">
                   or use the buttons below
