@@ -1,22 +1,20 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const navLinks = [
-  { href: '#problem', label: 'Problem' },
-  { href: '#solution', label: 'Solution' },
-  { href: '#tiers', label: 'Product' },
-  { href: '#prototype', label: 'Prototype' },
+const featureLinks = [
   { href: '/app-preview', label: 'App Preview' },
-  { href: '/identify', label: 'Identify' },
+  { href: '/identify', label: 'Plant Identifier' },
 ];
 
 export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [featuresOpen, setFeaturesOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleScroll() {
@@ -26,6 +24,17 @@ export default function Header() {
     }
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  /* close dropdown on outside click */
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setFeaturesOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
   return (
@@ -38,7 +47,7 @@ export default function Header() {
       />
 
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10 lg:px-12">
-        <a href="#top" className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3">
           <Image
             src="/logo-icon.png"
             alt="Verdant Labs monogram"
@@ -56,27 +65,53 @@ export default function Header() {
         </a>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-[#3B3933] md:flex">
-          {navLinks.map((link) =>
-            link.href.startsWith('/') ? (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="transition hover:text-[#B78A2A]"
+          <a href="/" className="transition hover:text-[#B78A2A]">Home</a>
+
+          {/* Features dropdown */}
+          <div ref={dropdownRef} className="relative">
+            <button
+              onClick={() => setFeaturesOpen(!featuresOpen)}
+              className="flex items-center gap-1 transition hover:text-[#B78A2A]"
+            >
+              Features
+              <svg
+                viewBox="0 0 24 24"
+                className={`h-3.5 w-3.5 transition-transform ${featuresOpen ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                {link.label}
-              </Link>
-            ) : (
-              <a
-                key={link.href}
-                href={link.href}
-                className="transition hover:text-[#B78A2A]"
-              >
-                {link.label}
-              </a>
-            )
-          )}
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            <AnimatePresence>
+              {featuresOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.15 }}
+                  className="absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2 overflow-hidden rounded-xl border border-[#E7DECF] bg-[#F7F3EC] shadow-lg"
+                >
+                  {featureLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="block whitespace-nowrap px-5 py-2.5 text-sm transition hover:bg-[#E7DECF]/60 hover:text-[#B78A2A]"
+                      onClick={() => setFeaturesOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           <a
-            href="#early-access"
+            href="/#early-access"
             className="cta-glow rounded-full bg-[#B78A2A] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#9D7620]"
           >
             Early Access
@@ -133,41 +168,40 @@ export default function Header() {
             className="overflow-hidden border-t border-[#E7DECF] bg-[#F7F3EC] md:hidden"
           >
             <div className="flex flex-col gap-4 px-6 py-4">
-              {navLinks.map((link, i) =>
-                link.href.startsWith('/') ? (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.06 * i, duration: 0.25 }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                ) : (
-                  <motion.a
+              <motion.a
+                href="/"
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0, duration: 0.25 }}
+                className="text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
+                onClick={() => setMobileOpen(false)}
+              >
+                Home
+              </motion.a>
+
+              <motion.div
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.06, duration: 0.25 }}
+              >
+                <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B78A2A]">Features</p>
+                {featureLinks.map((link) => (
+                  <Link
                     key={link.href}
                     href={link.href}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.06 * i, duration: 0.25 }}
-                    className="text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
+                    className="block py-1.5 text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
                     onClick={() => setMobileOpen(false)}
                   >
                     {link.label}
-                  </motion.a>
-                )
-              )}
+                  </Link>
+                ))}
+              </motion.div>
+
               <motion.a
-                href="#early-access"
+                href="/#early-access"
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.06 * navLinks.length, duration: 0.25 }}
+                transition={{ delay: 0.12, duration: 0.25 }}
                 className="mt-2 rounded-full bg-[#B78A2A] px-5 py-2.5 text-center text-sm font-medium text-white transition hover:bg-[#9D7620]"
                 onClick={() => setMobileOpen(false)}
               >
