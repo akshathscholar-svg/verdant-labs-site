@@ -5,6 +5,7 @@ import EarlyAccessForm from './components/EarlyAccessForm';
 import Reveal from './components/Reveal';
 import CountUp from './components/CountUp';
 import FloatingOrbs from './components/FloatingOrbs';
+import FloatingLeaves from './components/FloatingLeaves';
 
 const photoAssets = {
   hero: {
@@ -33,8 +34,9 @@ export default function Home() {
       {/* Hero */}
       <section
         id="top"
-        className="px-6 pb-20 pt-12 md:px-10 lg:px-12 lg:pt-14 xl:pt-16"
+        className="relative px-6 pb-20 pt-12 md:px-10 lg:px-12 lg:pt-14 xl:pt-16"
       >
+        <FloatingLeaves />
         <div className="mx-auto max-w-7xl">
           <div className="grid items-start gap-12 xl:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)]">
             <div className="max-w-3xl">

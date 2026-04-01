@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { identifyPlant, type PlantResult } from '../actions/identify';
@@ -40,18 +40,6 @@ export default function IdentifyClient() {
 
   const fileRef = useRef<HTMLInputElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
-  const dropRef = useRef<HTMLDivElement>(null);
-
-  /* ── prevent browser from opening files dropped outside the zone ── */
-  useEffect(() => {
-    const prevent = (e: DragEvent) => { e.preventDefault(); };
-    document.addEventListener('dragover', prevent);
-    document.addEventListener('drop', prevent);
-    return () => {
-      document.removeEventListener('dragover', prevent);
-      document.removeEventListener('drop', prevent);
-    };
-  }, []);
 
   /* ── read file → compress → auto-identify ── */
   const processFile = useCallback(async (file: File) => {
@@ -85,52 +73,16 @@ export default function IdentifyClient() {
     reader.readAsDataURL(file);
   }, []);
 
-  /* ── native drag-and-drop listeners on the drop zone ── */
-  useEffect(() => {
-    const zone = dropRef.current;
-    if (!zone) return;
-
-    const onDragOver = (e: DragEvent) => {
+  /* ── drop handler ── */
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
       e.preventDefault();
-      e.stopPropagation();
-      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
-      setDragOver(true);
-    };
-
-    const onDragEnter = (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setDragOver(true);
-    };
-
-    const onDragLeave = (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!zone.contains(e.relatedTarget as Node)) {
-        setDragOver(false);
-      }
-    };
-
-    const onDrop = (e: DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
       setDragOver(false);
-      const file = e.dataTransfer?.files?.[0];
+      const file = e.dataTransfer.files?.[0];
       if (file) processFile(file);
-    };
-
-    zone.addEventListener('dragenter', onDragEnter);
-    zone.addEventListener('dragover', onDragOver);
-    zone.addEventListener('dragleave', onDragLeave);
-    zone.addEventListener('drop', onDrop);
-
-    return () => {
-      zone.removeEventListener('dragenter', onDragEnter);
-      zone.removeEventListener('dragover', onDragOver);
-      zone.removeEventListener('dragleave', onDragLeave);
-      zone.removeEventListener('drop', onDrop);
-    };
-  }, [processFile]);
+    },
+    [processFile],
+  );
 
   /* ── reset ── */
   const handleReset = () => {
@@ -170,7 +122,11 @@ export default function IdentifyClient() {
     : [];
 
   return (
-    <div className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
+    <div
+      className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]"
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => e.preventDefault()}
+    >
       {/* ── Top bar ── */}
       <div className="border-b border-[#E7DECF] bg-[#F7F3EC]/90 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3 md:px-10">
@@ -213,7 +169,10 @@ export default function IdentifyClient() {
             transition={{ duration: 0.4 }}
           >
             <div
-              ref={dropRef}
+              onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setDragOver(true); }}
+              onDragEnter={(e) => { e.preventDefault(); e.stopPropagation(); setDragOver(true); }}
+              onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setDragOver(false); }}
+              onDrop={(e) => { e.stopPropagation(); handleDrop(e); }}
               className={`flex flex-col items-center gap-5 rounded-3xl border-2 border-dashed p-10 text-center transition-colors ${
                 dragOver
                   ? 'border-[#B78A2A] bg-[#B78A2A]/5'

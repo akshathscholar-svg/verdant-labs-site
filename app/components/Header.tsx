@@ -65,7 +65,7 @@ export default function Header() {
         </a>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-[#3B3933] md:flex">
-          <a href="/" className="transition hover:text-[#B78A2A]">Home</a>
+          <a href="/" className="transition hover:text-[#B78A2A]">Overview</a>
 
           {/* Features dropdown */}
           <div ref={dropdownRef} className="relative">
@@ -176,7 +176,7 @@ export default function Header() {
                 className="text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
                 onClick={() => setMobileOpen(false)}
               >
-                Home
+                Overview
               </motion.a>
 
               <motion.div
