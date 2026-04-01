@@ -6,6 +6,13 @@ import Reveal from './components/Reveal';
 import CountUp from './components/CountUp';
 import FloatingOrbs from './components/FloatingOrbs';
 import FloatingLeaves from './components/FloatingLeaves';
+import FloatingParticles from './components/FloatingParticles';
+import TiltCard from './components/TiltCard';
+import TextReveal from './components/TextReveal';
+import VineDivider from './components/VineDivider';
+import ParallaxImage from './components/ParallaxImage';
+import ZoomImage from './components/ZoomImage';
+import SlotCountUp from './components/SlotCountUp';
 
 const photoAssets = {
   hero: {
@@ -64,14 +71,14 @@ export default function Home() {
                 <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                   <a
                     href="#prototype"
-                    className="cta-glow rounded-full bg-[#B78A2A] px-6 py-3 text-center font-medium text-white transition hover:bg-[#9D7620] hover:shadow-[0_8px_30px_rgba(183,138,42,0.3)]"
+                    className="btn-ripple cta-glow rounded-full bg-[#B78A2A] px-6 py-3 text-center font-medium text-white transition hover:bg-[#9D7620] hover:shadow-[0_8px_30px_rgba(183,138,42,0.3)]"
                   >
                     View Prototype
                   </a>
 
                   <a
                     href="#early-access"
-                    className="rounded-full border border-[#CFC3AE] bg-white px-6 py-3 text-center font-medium text-[#1F1F1B] transition hover:border-[#B78A2A] hover:shadow-md"
+                    className="btn-ripple rounded-full border border-[#CFC3AE] bg-white px-6 py-3 text-center font-medium text-[#1F1F1B] transition hover:border-[#B78A2A] hover:shadow-md"
                   >
                     Join Early Access
                   </a>
@@ -131,12 +138,11 @@ export default function Home() {
                 <div className="rounded-[1.6rem] bg-gradient-to-br from-[#FCFBF8] to-[#EFE7D9] p-4 sm:p-5">
                   <div className="grid gap-4">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-[#D8CAB1] bg-[#F8F4EC] shadow-sm">
-                      <Image
+                      <ParallaxImage
                         src={photoAssets.hero.src}
                         alt={photoAssets.hero.alt}
-                        fill
                         sizes="(max-width: 1279px) 100vw, 42vw"
-                        className="object-cover"
+                        className="absolute inset-0"
                         priority
                       />
 
@@ -170,30 +176,24 @@ export default function Home() {
                         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                           Healthy Baseline
                         </p>
-                        <div className="relative mt-3 aspect-[4/5] overflow-hidden rounded-[1.2rem] bg-[#F7F3EC] sm:aspect-[5/6]">
-                          <Image
-                            src={photoAssets.detailPrimary.src}
-                            alt={photoAssets.detailPrimary.alt}
-                            fill
-                            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 42vw, 16vw"
-                            className="object-cover"
-                          />
-                        </div>
+                        <ZoomImage
+                          src={photoAssets.detailPrimary.src}
+                          alt={photoAssets.detailPrimary.alt}
+                          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 42vw, 16vw"
+                          className="relative mt-3 aspect-[4/5] rounded-[1.2rem] bg-[#F7F3EC] sm:aspect-[5/6]"
+                        />
                       </div>
 
                       <div className="rounded-[1.5rem] border border-[#E5DBCC] bg-white p-4 sm:p-5">
                         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                           Collector Profile
                         </p>
-                        <div className="relative mt-3 aspect-[4/5] overflow-hidden rounded-[1.2rem] bg-[#F7F3EC] sm:aspect-[5/6]">
-                          <Image
-                            src={photoAssets.detailSecondary.src}
-                            alt={photoAssets.detailSecondary.alt}
-                            fill
-                            sizes="(max-width: 767px) 100vw, (max-width: 1279px) 42vw, 16vw"
-                            className="object-cover"
-                          />
-                        </div>
+                        <ZoomImage
+                          src={photoAssets.detailSecondary.src}
+                          alt={photoAssets.detailSecondary.alt}
+                          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 42vw, 16vw"
+                          className="relative mt-3 aspect-[4/5] rounded-[1.2rem] bg-[#F7F3EC] sm:aspect-[5/6]"
+                        />
                       </div>
                     </div>
                   </div>
@@ -290,46 +290,47 @@ export default function Home() {
         id="problem"
         className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
+        <VineDivider className="mb-10" />
         <div className="mx-auto max-w-7xl">
-          <Reveal>
+          <Reveal direction="left" distance={60}>
             <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
               The Problem
             </p>
 
             <h2 className="max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">
-              Plant stress starts before the damage is visible.
+              <TextReveal text="Plant stress starts before the damage is visible." />
             </h2>
           </Reveal>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            <Reveal delay={0.1}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
+            <Reveal delay={0.1} direction="left" distance={50}>
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-xl font-semibold">Guesswork</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   Most plant owners rely on schedules, intuition, and generic care
                   advice that is not personalized to the plant.
                 </p>
-              </div>
+              </TiltCard>
             </Reveal>
 
-            <Reveal delay={0.2}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
+            <Reveal delay={0.2} direction="up">
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-xl font-semibold">Late detection</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   By the time leaves curl, yellow, or droop, the plant may already
                   be under significant environmental stress.
                 </p>
-              </div>
+              </TiltCard>
             </Reveal>
 
-            <Reveal delay={0.3}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
+            <Reveal delay={0.3} direction="right" distance={50}>
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-xl font-semibold">High-value risk</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   Rare and specialty plants can be expensive, making poor care
                   decisions much more costly.
                 </p>
-              </div>
+              </TiltCard>
             </Reveal>
           </div>
         </div>
@@ -338,22 +339,24 @@ export default function Home() {
       {/* Solution */}
       <section
         id="solution"
-        className="bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
+        className="relative bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
       >
+        <FloatingParticles />
+        <VineDivider className="mb-10" />
         <div className="mx-auto max-w-7xl">
-          <Reveal>
+          <Reveal direction="right" distance={60}>
             <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
               The Solution
             </p>
 
             <h2 className="max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">
-              Canopy AI turns environmental data into clear plant-care decisions.
+              <TextReveal text="Canopy AI turns environmental data into clear plant-care decisions." />
             </h2>
           </Reveal>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            <Reveal delay={0.1}>
-              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
+            <Reveal delay={0.1} direction="right" distance={50}>
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                   01
                 </p>
@@ -362,11 +365,11 @@ export default function Home() {
                   Sensors monitor soil moisture, temperature, humidity, and light
                   around the plant in real time.
                 </p>
-              </div>
+              </TiltCard>
             </Reveal>
 
-            <Reveal delay={0.2}>
-              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
+            <Reveal delay={0.25} direction="up">
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                   02
                 </p>
@@ -375,11 +378,11 @@ export default function Home() {
                   Verdant Labs translates those signals into plant-specific stress
                   insight instead of overwhelming users with raw numbers.
                 </p>
-              </div>
+              </TiltCard>
             </Reveal>
 
-            <Reveal delay={0.3}>
-              <div className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
+            <Reveal delay={0.4} direction="left" distance={50}>
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#E5DBCC] bg-white p-7 shadow-sm transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                   03
                 </p>
@@ -388,7 +391,7 @@ export default function Home() {
                   Users receive actionable next steps that make plant care more
                   precise, proactive, and confident.
                 </p>
-              </div>
+              </TiltCard>
             </Reveal>
           </div>
         </div>
@@ -399,20 +402,21 @@ export default function Home() {
         id="tiers"
         className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-20 md:px-10 lg:px-12"
       >
+        <VineDivider className="mb-10" />
         <div className="mx-auto max-w-7xl">
-          <Reveal>
+          <Reveal direction="left" distance={60}>
             <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
               Product Tiers
             </p>
 
             <h2 className="max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">
-              Start with environmental intelligence, then expand into visual monitoring.
+              <TextReveal text="Start with environmental intelligence, then expand into visual monitoring." />
             </h2>
           </Reveal>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-3">
-            <Reveal delay={0.1}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
+            <Reveal delay={0.1} direction="left" distance={60}>
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-2xl font-semibold">Foundation</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   Core environmental monitoring for serious plant owners.
@@ -423,11 +427,11 @@ export default function Home() {
                   <li>&#8226; Light sensing</li>
                   <li>&#8226; App access and recommendations</li>
                 </ul>
-              </div>
+              </TiltCard>
             </Reveal>
 
-            <Reveal delay={0.2}>
-              <div className="h-full rounded-[1.75rem] border border-[#CFA74F] bg-white p-7 shadow-[0_18px_50px_rgba(120,92,28,0.08)] transition hover:-translate-y-1 hover:scale-[1.02] hover:shadow-[0_24px_60px_rgba(120,92,28,0.14)]">
+            <Reveal delay={0.25} direction="up">
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#CFA74F] bg-white p-7 shadow-[0_18px_50px_rgba(120,92,28,0.08)] transition hover:shadow-[0_24px_60px_rgba(120,92,28,0.14)]">
                 <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
                   Featured
                 </p>
@@ -441,11 +445,11 @@ export default function Home() {
                   <li>&#8226; Visual monitoring</li>
                   <li>&#8226; Richer plant insight over time</li>
                 </ul>
-              </div>
+              </TiltCard>
             </Reveal>
 
-            <Reveal delay={0.3}>
-              <div className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:-translate-y-1 hover:scale-[1.02] hover:border-[#B78A2A]/30 hover:shadow-lg">
+            <Reveal delay={0.4} direction="right" distance={60}>
+              <TiltCard className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-2xl font-semibold">Elite</h3>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
                   Premium intelligence for advanced collectors.
@@ -456,7 +460,7 @@ export default function Home() {
                   <li>&#8226; Advanced alerts and insights</li>
                   <li>&#8226; Early access to new features</li>
                 </ul>
-              </div>
+              </TiltCard>
             </Reveal>
           </div>
         </div>
@@ -467,14 +471,15 @@ export default function Home() {
         id="prototype"
         className="bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12"
       >
+        <VineDivider className="mb-10" />
         <div className="mx-auto max-w-7xl">
-          <Reveal>
+          <Reveal direction="right" distance={60}>
             <p className="mb-3 text-sm font-medium uppercase tracking-[0.22em] text-[#B78A2A]">
               Prototype
             </p>
 
             <h2 className="max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">
-              A working hardware prototype is already in development.
+              <TextReveal text="A working hardware prototype is already in development." />
             </h2>
           </Reveal>
 
@@ -552,7 +557,7 @@ export default function Home() {
                             Moisture
                           </p>
                           <p className="mt-1 text-lg font-semibold">
-                            <CountUp end={41} suffix="%" />
+                            <SlotCountUp end={41} suffix="%" />
                           </p>
                         </div>
 
@@ -561,7 +566,7 @@ export default function Home() {
                             Humidity
                           </p>
                           <p className="mt-1 text-lg font-semibold">
-                            <CountUp end={58} suffix="%" />
+                            <SlotCountUp end={58} suffix="%" />
                           </p>
                         </div>
 
@@ -570,7 +575,7 @@ export default function Home() {
                             Light
                           </p>
                           <p className="mt-1 text-lg font-semibold whitespace-nowrap">
-                            <CountUp end={8.2} suffix="k" decimals={1} />
+                            <SlotCountUp end={8.2} suffix="k" decimals={1} />
                           </p>
                         </div>
                       </div>

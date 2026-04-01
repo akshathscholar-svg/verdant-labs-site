@@ -9,6 +9,7 @@ type RevealProps = {
   delay?: number;
   direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   duration?: number;
+  distance?: number;
 };
 
 export default function Reveal({
@@ -17,15 +18,16 @@ export default function Reveal({
   delay = 0,
   direction = 'up',
   duration = 0.6,
+  distance = 32,
 }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   const directionOffset = {
-    up: { y: 32 },
-    down: { y: -32 },
-    left: { x: 32 },
-    right: { x: -32 },
+    up: { y: distance },
+    down: { y: -distance },
+    left: { x: distance },
+    right: { x: -distance },
     none: {},
   };
 
