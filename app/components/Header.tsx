@@ -4,10 +4,16 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from './ThemeProvider';
 
 const featureLinks = [
+  { href: '/how-it-works', label: 'How It Works' },
   { href: '/app-preview', label: 'App Preview' },
   { href: '/identify', label: 'Plant Identifier' },
+  { href: '/plants', label: 'Plant Care Library' },
+  { href: '/sensor-demo', label: 'Sensor Demo' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/press', label: 'Press Kit' },
 ];
 
 export default function Header() {
@@ -15,6 +21,7 @@ export default function Header() {
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { theme, toggle: toggleTheme } = useTheme();
 
   useEffect(() => {
     function handleScroll() {
@@ -110,6 +117,30 @@ export default function Header() {
               )}
             </AnimatePresence>
           </div>
+
+          <button
+            onClick={toggleTheme}
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-[#5C584F] transition hover:bg-[#E7DECF] hover:text-[#B78A2A] dark:text-[#AAA598] dark:hover:bg-[#2A2A24]"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? (
+              <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" className="h-4.5 w-4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            )}
+          </button>
 
           <a
             href="/#early-access"

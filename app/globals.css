@@ -6,6 +6,38 @@
   --header-offset: 5rem;
 }
 
+html.dark {
+  --background: #141410;
+  --foreground: #E8E4DC;
+}
+
+html.dark body {
+  background: #141410;
+  color: #E8E4DC;
+}
+
+/* Dark mode overrides */
+html.dark .bg-\[\#F7F3EC\] { background-color: #141410; }
+html.dark .bg-\[\#F3EDE2\] { background-color: #1A1A15; }
+html.dark .bg-white { background-color: #1E1E18; }
+html.dark .bg-white\/80 { background-color: rgb(30 30 24 / 0.8); }
+html.dark .bg-white\/70 { background-color: rgb(30 30 24 / 0.7); }
+html.dark .bg-\[\#F7F3EC\]\/90 { background-color: rgb(20 20 16 / 0.9); }
+
+html.dark .text-\[\#1F1F1B\] { color: #E8E4DC; }
+html.dark .text-\[\#5A564E\] { color: #9A958C; }
+html.dark .text-\[\#5C584F\] { color: #9A958C; }
+html.dark .text-\[\#4F4B44\] { color: #AAA598; }
+html.dark .text-\[\#3B3933\] { color: #C8C3BA; }
+html.dark .text-\[\#7A756C\] { color: #8A857C; }
+html.dark .text-\[\#8A857C\] { color: #7A756C; }
+
+html.dark .border-\[\#E7DECF\] { border-color: #2A2A22; }
+html.dark .border-\[\#E5DBCC\] { border-color: #2A2A22; }
+html.dark .border-\[\#E2D6C2\] { border-color: #2A2A22; }
+html.dark .border-\[\#CFC3AE\] { border-color: #3A3A30; }
+html.dark .border-\[\#D8CAB1\] { border-color: #2F2F26; }
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

@@ -13,6 +13,7 @@ import VineDivider from './components/VineDivider';
 import ParallaxImage from './components/ParallaxImage';
 import ZoomImage from './components/ZoomImage';
 import SlotCountUp from './components/SlotCountUp';
+import NewsletterForm from './components/NewsletterForm';
 
 const photoAssets = {
   hero: {
@@ -138,13 +139,19 @@ export default function Home() {
                 <div className="rounded-[1.6rem] bg-gradient-to-br from-[#FCFBF8] to-[#EFE7D9] p-4 sm:p-5">
                   <div className="grid gap-4">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-[#D8CAB1] bg-[#F8F4EC] shadow-sm">
-                      <ParallaxImage
-                        src={photoAssets.hero.src}
-                        alt={photoAssets.hero.alt}
-                        sizes="(max-width: 1279px) 100vw, 42vw"
-                        className="absolute inset-0"
-                        priority
-                      />
+                      <video
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        poster={photoAssets.hero.src}
+                        className="absolute inset-0 h-full w-full object-cover"
+                      >
+                        <source
+                          src="https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_30fps.mp4"
+                          type="video/mp4"
+                        />
+                      </video>
 
                       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1C2118]/80 via-[#1C2118]/25 to-transparent p-5 sm:p-6">
                         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#F0E5C7]">
@@ -622,6 +629,103 @@ export default function Home() {
                 <p className="text-sm text-[#7A756C]">
                   Founder, Verdant Labs
                 </p>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Verdant Journal / Newsletter */}
+      <section className="border-t border-[#E7DECF] bg-[#F7F3EC] px-6 py-20 md:px-10 lg:px-12">
+        <div className="mx-auto max-w-4xl">
+          <Reveal>
+            <div className="rounded-[1.9rem] border border-[#E5DBCC] bg-white p-8 shadow-sm md:p-12">
+              <div className="grid items-center gap-8 md:grid-cols-[1fr_1.1fr]">
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-[0.2em] text-[#B78A2A]">
+                    The Verdant Journal
+                  </p>
+                  <h2 className="mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
+                    Plant intelligence, delivered.
+                  </h2>
+                  <p className="mt-3 text-base leading-7 text-[#5A564E]">
+                    Get behind-the-scenes updates on Canopy AI development, plant care
+                    tips from our research, and early access news — straight to your
+                    inbox.
+                  </p>
+                  <ul className="mt-4 space-y-2 text-sm text-[#5C584F]">
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#B78A2A]">✦</span> Monthly updates, no spam
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#B78A2A]">✦</span> Plant care insights from our AI research
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="text-[#B78A2A]">✦</span> Early peeks at new features
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="rounded-2xl bg-[#F7F3EC] p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#B78A2A]/10">
+                      <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#B78A2A]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="4" width="20" height="16" rx="2" />
+                        <path d="M22 7l-10 6L2 7" />
+                      </svg>
+                    </div>
+                    <p className="text-sm font-medium text-[#1F1F1B]">Subscribe to the Journal</p>
+                  </div>
+                  <NewsletterForm />
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Social Proof */}
+      <section className="border-t border-[#E7DECF] bg-[#F3EDE2] px-6 py-12 md:px-10 lg:px-12">
+        <div className="mx-auto max-w-5xl">
+          <Reveal>
+            <div className="grid gap-6 md:grid-cols-[auto_1fr]">
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {['🌿', '🌱', '🍃', '🌳', '☘️'].map((e, i) => (
+                    <div
+                      key={i}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#F3EDE2] bg-white text-lg shadow-sm"
+                    >
+                      {e}
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <p className="text-lg font-semibold text-[#1F1F1B]">
+                    Plant owners are paying attention.
+                  </p>
+                  <p className="text-sm text-[#7A756C]">
+                    Join collectors already on the early access list.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 md:justify-end">
+                {[
+                  { quote: 'Finally, proactive plant care.', author: 'Indoor collector' },
+                  { quote: 'Been waiting for something like this.', author: 'Rare plant grower' },
+                  { quote: 'My monsteras need this.', author: 'Tropical enthusiast' },
+                ].map((t, i) => (
+                  <div
+                    key={i}
+                    className="rounded-xl border border-[#E5DBCC] bg-white px-4 py-3 shadow-sm"
+                  >
+                    <p className="text-sm font-medium text-[#1F1F1B]">
+                      &ldquo;{t.quote}&rdquo;
+                    </p>
+                    <p className="mt-1 text-xs text-[#8A857C]">— {t.author}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </Reveal>

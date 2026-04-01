@@ -199,26 +199,62 @@ export default function JourneyClient() {
         </div>
       </section>
 
-      {/* ── Founder Quote ── */}
+      {/* ── Meet the Founder ── */}
       <section className="px-6 py-20 md:px-10">
-        <div className="mx-auto max-w-2xl text-center">
+        <div className="mx-auto max-w-3xl">
           <Reveal>
-            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-[#B78A2A]/10">
-              <svg viewBox="0 0 24 24" className="h-6 w-6 text-[#B78A2A]" fill="currentColor">
-                <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
-              </svg>
+            <div className="mb-10 text-center">
+              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-[#B78A2A]">
+                Meet the Founder
+              </p>
+              <h2 className="mt-3 text-2xl font-bold tracking-tight md:text-3xl">
+                The person behind the mission.
+              </h2>
             </div>
           </Reveal>
+
           <Reveal delay={0.1}>
-            <blockquote className="text-xl font-medium leading-9 tracking-tight md:text-2xl">
-              Every plant that dies from preventable stress is a failure of
-              information, not care. We&apos;re building the bridge between the two.
-            </blockquote>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="mt-6 text-sm font-medium text-[#B78A2A]">
-              — Founder, Verdant Labs
-            </p>
+            <div className="rounded-[1.9rem] border border-[#E7DECF] bg-white p-8 shadow-sm md:p-10">
+              <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
+                {/* Photo placeholder */}
+                <div className="flex h-32 w-32 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#B78A2A]/20 to-[#D4B96A]/20 text-5xl">
+                  🌱
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold">Akshath Saravanan</h3>
+                  <p className="mt-1 text-sm font-medium text-[#B78A2A]">
+                    Founder & CEO, Verdant Labs
+                  </p>
+                  <p className="mt-4 text-base leading-7 text-[#5A564E]">
+                    Akshath started Verdant Labs after losing several rare tropical
+                    plants to problems that weren&apos;t visible until it was too late. With
+                    a background in engineering and a growing passion for botany, he set
+                    out to bridge the gap between raw sensor data and real plant
+                    intelligence.
+                  </p>
+                  <p className="mt-3 text-base leading-7 text-[#5A564E]">
+                    His vision is simple: plant care should be proactive, not reactive.
+                    Canopy AI represents the intersection of hardware sensing, machine
+                    learning, and genuine love for plants — built by someone who
+                    understands firsthand how frustrating preventable plant loss can be.
+                  </p>
+
+                  {/* Founder quote */}
+                  <div className="mt-6 rounded-xl bg-[#F7F3EC] p-5">
+                    <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#B78A2A]/10">
+                      <svg viewBox="0 0 24 24" className="h-4 w-4 text-[#B78A2A]" fill="currentColor">
+                        <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 0 1-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" />
+                      </svg>
+                    </div>
+                    <blockquote className="text-base font-medium italic leading-7 text-[#3B3933]">
+                      Every plant that dies from preventable stress is a failure of
+                      information, not care. We&apos;re building the bridge between the two.
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>

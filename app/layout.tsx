@@ -48,6 +48,8 @@ export const metadata: Metadata = {
   },
 };
 
+import ThemeProvider from './components/ThemeProvider';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -78,7 +80,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
