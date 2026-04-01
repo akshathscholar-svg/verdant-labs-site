@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 const featureLinks = [
   { href: '/app-preview', label: 'App Preview' },
   { href: '/identify', label: 'Plant Identifier' },
-  { href: '/journey', label: 'Our Journey' },
 ];
 
 export default function Header() {
@@ -67,6 +66,7 @@ export default function Header() {
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-[#3B3933] md:flex">
           <a href="/" className="transition hover:text-[#B78A2A]">Overview</a>
+          <Link href="/journey" className="transition hover:text-[#B78A2A]">Our Journey</Link>
 
           {/* Features dropdown */}
           <div ref={dropdownRef} className="relative">
@@ -179,6 +179,20 @@ export default function Header() {
               >
                 Overview
               </motion.a>
+
+              <motion.div
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.03, duration: 0.25 }}
+              >
+                <Link
+                  href="/journey"
+                  className="text-sm font-medium text-[#3B3933] transition hover:text-[#B78A2A]"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Our Journey
+                </Link>
+              </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, x: -12 }}

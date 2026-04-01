@@ -8,24 +8,17 @@ import TextReveal from '../components/TextReveal';
 /* ── Timeline data ── */
 const milestones = [
   {
-    date: 'Fall 2024',
+    date: 'Winter 2025',
     title: 'The Spark',
     description:
       'A collection of rare tropical plants started showing stress with no visible warning signs. By the time leaves curled, the damage was done. The question became: what if you could detect stress before it was visible?',
     icon: '💡',
   },
   {
-    date: 'Winter 2024',
-    title: 'Research Phase',
-    description:
-      'Deep-dived into plant physiology, environmental sensing, and how moisture, light, humidity, and heat interact to affect plant health. Studied existing solutions and found a gap: raw data everywhere, intelligence nowhere.',
-    icon: '🔬',
-  },
-  {
-    date: 'Early 2025',
+    date: 'Winter 2025',
     title: 'Verdant Labs Founded',
     description:
-      'Verdant Labs was born with a clear mission: build a botanical intelligence system that translates environmental data into actionable, plain-language care recommendations.',
+      'Verdant Labs was born with a clear mission: build a botanical intelligence system that translates environmental data into actionable, plain-language care recommendations. Deep research into plant physiology, environmental sensing, and the gap between raw data and real intelligence.',
     icon: '🌱',
   },
   {
@@ -37,9 +30,9 @@ const milestones = [
   },
   {
     date: 'Summer 2025',
-    title: 'First Hardware Prototype',
+    title: 'Hardware Prototype',
     description:
-      'Built the first sensor prototype capable of reading moisture, humidity, temperature, and light levels. Started testing with real plant collections to validate the concept.',
+      'Built a working sensor prototype capable of reading moisture, humidity, temperature, and light levels. Started testing with real plant collections to validate the concept.',
     icon: '🔧',
   },
   {
@@ -50,17 +43,17 @@ const milestones = [
     icon: '📸',
   },
   {
-    date: 'Winter 2025',
-    title: 'Early Access Opens',
+    date: 'Winter 2026',
+    title: 'Working Prototype & App Development',
     description:
-      'Opened early access signups and started building the community. Collectors, hobbyists, and serious growers began joining the waitlist.',
-    icon: '🚀',
+      'Hardware prototype is up and running. Now focused on building out the Canopy AI app — the interface that turns sensor data into plain-language care recommendations.',
+    icon: '📱',
   },
   {
     date: '2026 & Beyond',
     title: 'What\'s Next',
     description:
-      'Shipping the first hardware units to early access members, expanding AI capabilities with visual health monitoring, and building toward a future where no plant is lost to preventable stress.',
+      'Shipping the first hardware units to early access members, launching the full app experience, and building toward a future where no plant is lost to preventable stress.',
     icon: '🔮',
   },
 ];
