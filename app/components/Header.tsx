@@ -16,6 +16,7 @@ const navGroups = [
       { href: '/identify', label: 'Plant Identifier' },
       { href: '/plants', label: 'Plant Care Library' },
       { href: '/sensor-demo', label: 'Sensor Demo' },
+      { href: '/prototype-dashboard', label: 'Live Dashboard' },
     ],
   },
   {
