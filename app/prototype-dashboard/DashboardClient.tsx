@@ -38,7 +38,7 @@ interface CareProfile {
   care?: {
     temperature?: { min?: number; max?: number; unit?: string; note?: string };
     humidity?: { min?: number; max?: number; unit?: string; note?: string };
-    light?: { level?: string; note?: string };
+    light?: { level?: string; hours?: string; note?: string };
     water?: { frequency?: string; note?: string };
     soil?: string;
     fertilizer?: string;
@@ -281,52 +281,111 @@ export default function DashboardClient() {
                 {/* Personalized plant profile card */}
                 {data.personalized && data.careProfile && (
                   <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05, duration: 0.4 }}
-                    className="mb-7 rounded-2xl border border-[#6B8F5E]/20 bg-gradient-to-br from-[#6B8F5E]/5 to-[#F7F3EC] p-5 shadow-sm sm:p-6">
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
+                    className="mb-7 overflow-hidden rounded-2xl border border-[#E5DBCC] bg-white/80 shadow-sm">
+
+                    {/* Top: image + name + badge */}
+                    <div className="flex items-stretch">
                       {data.plantImageUrl && (
-                        <img src={data.plantImageUrl} alt={data.plantSpecies || 'Plant'} className="h-24 w-24 rounded-xl border border-[#E5DBCC] object-cover shadow-sm" />
+                        <div className="hidden w-40 shrink-0 sm:block">
+                          <img src={data.plantImageUrl} alt={data.plantSpecies || 'Plant'} className="h-full w-full object-cover" />
+                        </div>
                       )}
-                      <div className="flex-1">
-                        <div className="mb-2 flex items-center gap-2">
-                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#6B8F5E]">Plant Profile</p>
+                      <div className="flex flex-1 flex-col justify-center gap-2 p-5 sm:p-6">
+                        <div className="flex items-center gap-2.5">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#6B8F5E]">Plant Profile</p>
                           {data.careProfile.difficulty && (
-                            <span className="rounded-full bg-[#6B8F5E]/10 px-2 py-0.5 text-[9px] font-bold text-[#6B8F5E]">
+                            <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold ${
+                              data.careProfile.difficulty === 'Easy' ? 'bg-[#6B8F5E]/10 text-[#6B8F5E]'
+                              : data.careProfile.difficulty === 'Advanced' ? 'bg-[#C4684A]/10 text-[#C4684A]'
+                              : 'bg-[#B78A2A]/10 text-[#B78A2A]'
+                            }`}>
                               {data.careProfile.difficulty}
                             </span>
                           )}
                         </div>
+                        {data.plantImageUrl && (
+                          <img src={data.plantImageUrl} alt={data.plantSpecies || 'Plant'} className="h-28 w-28 rounded-xl border border-[#E5DBCC] object-cover sm:hidden" />
+                        )}
+                        <div>
+                          <h3 className="text-lg font-bold tracking-tight text-[#1F1F1B]">
+                            {data.careProfile.commonName || data.plantSpecies || data.plantNickname}
+                          </h3>
+                          {data.careProfile.species && data.careProfile.species !== data.careProfile.commonName && (
+                            <p className="text-[11px] italic text-[#8A857C]">{data.careProfile.species}</p>
+                          )}
+                          {data.careProfile.family && (
+                            <p className="text-[10px] text-[#8A857C]">Family: {data.careProfile.family}</p>
+                          )}
+                        </div>
                         {data.careProfile.description && (
-                          <p className="mb-3 text-[13px] leading-relaxed text-[#4F4B44]">{data.careProfile.description}</p>
-                        )}
-                        {data.careProfile.care && (
-                          <div className="grid gap-2 text-[11px] sm:grid-cols-2 lg:grid-cols-3">
-                            {data.careProfile.care.light?.level && (
-                              <div className="rounded-lg bg-white/60 px-3 py-2">
-                                <span className="font-bold text-[#B78A2A]">☀️ Light:</span>{' '}
-                                <span className="text-[#4F4B44]">{data.careProfile.care.light.level}</span>
-                              </div>
-                            )}
-                            {data.careProfile.care.water?.frequency && (
-                              <div className="rounded-lg bg-white/60 px-3 py-2">
-                                <span className="font-bold text-[#7B9DAE]">💧 Water:</span>{' '}
-                                <span className="text-[#4F4B44]">{data.careProfile.care.water.frequency}</span>
-                              </div>
-                            )}
-                            {data.careProfile.care.temperature && (
-                              <div className="rounded-lg bg-white/60 px-3 py-2">
-                                <span className="font-bold text-[#C4684A]">🌡️ Temp:</span>{' '}
-                                <span className="text-[#4F4B44]">{data.careProfile.care.temperature.min}–{data.careProfile.care.temperature.max}{data.careProfile.care.temperature.unit}</span>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                        {data.careProfile.warnings && data.careProfile.warnings.length > 0 && (
-                          <div className="mt-3 rounded-lg bg-[#C4684A]/5 px-3 py-2 text-[11px] text-[#C4684A]">
-                            ⚠️ {data.careProfile.warnings[0]}
-                          </div>
+                          <p className="max-w-lg text-[12px] leading-relaxed text-[#5C584F]">{data.careProfile.description}</p>
                         )}
                       </div>
                     </div>
+
+                    {/* Divider */}
+                    <div className="h-px bg-[#E5DBCC]" />
+
+                    {/* Care grid */}
+                    {data.careProfile.care && (
+                      <div className="grid grid-cols-2 divide-x divide-[#E5DBCC] sm:grid-cols-4">
+                        {data.careProfile.care.light?.level && (
+                          <div className="p-4 text-center">
+                            <p className="text-lg">☀️</p>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-[#B78A2A]">Light</p>
+                            <p className="mt-0.5 text-[12px] font-semibold text-[#3B3933]">{data.careProfile.care.light.level}</p>
+                            {data.careProfile.care.light.hours && (
+                              <p className="text-[10px] text-[#8A857C]">{data.careProfile.care.light.hours} hrs/day</p>
+                            )}
+                          </div>
+                        )}
+                        {data.careProfile.care.water?.frequency && (
+                          <div className="p-4 text-center">
+                            <p className="text-lg">💧</p>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-[#7B9DAE]">Water</p>
+                            <p className="mt-0.5 text-[12px] font-semibold text-[#3B3933]">{data.careProfile.care.water.frequency}</p>
+                          </div>
+                        )}
+                        {data.careProfile.care.temperature && (
+                          <div className="p-4 text-center">
+                            <p className="text-lg">🌡️</p>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-[#C4684A]">Temp</p>
+                            <p className="mt-0.5 text-[12px] font-semibold text-[#3B3933]">{data.careProfile.care.temperature.min}–{data.careProfile.care.temperature.max}{data.careProfile.care.temperature.unit}</p>
+                          </div>
+                        )}
+                        {data.careProfile.care.humidity && (
+                          <div className="p-4 text-center">
+                            <p className="text-lg">💨</p>
+                            <p className="text-[10px] font-bold uppercase tracking-wider text-[#7B9DAE]">Humidity</p>
+                            <p className="mt-0.5 text-[12px] font-semibold text-[#3B3933]">{data.careProfile.care.humidity.min}–{data.careProfile.care.humidity.max}{data.careProfile.care.humidity.unit}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Warnings + soil + fertilizer */}
+                    {(data.careProfile.warnings?.length > 0 || data.careProfile.care?.soil || data.careProfile.care?.fertilizer) && (
+                      <>
+                        <div className="h-px bg-[#E5DBCC]" />
+                        <div className="flex flex-wrap items-center gap-2 px-5 py-3">
+                          {data.careProfile.warnings?.map((w: string, i: number) => (
+                            <span key={i} className="rounded-full bg-[#C4684A]/8 px-3 py-1 text-[10px] font-semibold text-[#C4684A]">
+                              ⚠️ {w}
+                            </span>
+                          ))}
+                          {data.careProfile.care?.soil && (
+                            <span className="rounded-full bg-[#6B8F5E]/8 px-3 py-1 text-[10px] font-medium text-[#5C584F]">
+                              🪴 {data.careProfile.care.soil}
+                            </span>
+                          )}
+                          {data.careProfile.care?.fertilizer && (
+                            <span className="rounded-full bg-[#B78A2A]/8 px-3 py-1 text-[10px] font-medium text-[#5C584F]">
+                              🧪 {data.careProfile.care.fertilizer}
+                            </span>
+                          )}
+                        </div>
+                      </>
+                    )}
                   </motion.div>
                 )}
 

@@ -90,12 +90,44 @@ Please identify this plant and generate the full care profile JSON.`;
 
     const profile = JSON.parse(jsonMatch[0]);
 
-    // Generate an Unsplash image URL from the species
-    const query = encodeURIComponent(profile.imageQuery || profile.commonName || profile.species);
-    profile.imageUrl = `https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&w=600&q=80`;
-    // We'll use a nice default plant image; a real implementation would search Unsplash API
-    // For now, we set the query so a future Unsplash search can use it
-    profile.imageSearchQuery = query;
+    // Fetch a real plant image from Wikipedia/Wikimedia
+    const searchName = profile.commonName || profile.species || 'houseplant';
+    try {
+      const wikiRes = await fetch(
+        `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(searchName.replace(/ /g, '_'))}`,
+        { headers: { 'User-Agent': 'CanopyAI/1.0 (verdantlabs.app)' } },
+      );
+      if (wikiRes.ok) {
+        const wikiData = await wikiRes.json();
+        if (wikiData.thumbnail?.source) {
+          // Get a higher-res version by modifying the thumb URL
+          profile.imageUrl = wikiData.thumbnail.source.replace(/\/\d+px-/, '/600px-');
+        } else if (wikiData.originalimage?.source) {
+          profile.imageUrl = wikiData.originalimage.source;
+        }
+      }
+    } catch {
+      // Wikipedia fetch failed, try species name as fallback
+      try {
+        const fallbackRes = await fetch(
+          `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent((profile.species || '').replace(/ /g, '_'))}`,
+          { headers: { 'User-Agent': 'CanopyAI/1.0 (verdantlabs.app)' } },
+        );
+        if (fallbackRes.ok) {
+          const fallbackData = await fallbackRes.json();
+          if (fallbackData.thumbnail?.source) {
+            profile.imageUrl = fallbackData.thumbnail.source.replace(/\/\d+px-/, '/600px-');
+          }
+        }
+      } catch {
+        // Give up on image
+      }
+    }
+
+    // Final fallback if no image found
+    if (!profile.imageUrl) {
+      profile.imageUrl = null;
+    }
 
     return NextResponse.json(profile);
   } catch (err) {
