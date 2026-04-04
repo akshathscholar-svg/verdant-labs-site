@@ -72,6 +72,7 @@ export async function GET(request: NextRequest) {
     let plantImageUrl: string | null = null;
     let personalized = false;
     let deviceId: string | null = null;
+    let setupComplete = false;
 
     // Check if user is authenticated and has a device
     const personalize = request.nextUrl.searchParams.get('personalized');
@@ -89,6 +90,7 @@ export async function GET(request: NextRequest) {
             thingId = device.thing_id;
             deviceId = device.id;
             personalized = true;
+            setupComplete = !!device.setup_complete;
             if (device.setup_complete && device.care_profile) {
               careProfile = device.care_profile;
               plantNickname = device.plant_nickname;
@@ -105,7 +107,7 @@ export async function GET(request: NextRequest) {
     const data = await getArduinoData(thingId);
 
     /* ── Persist reading to sensor_readings (fire-and-forget) ── */
-    if (personalized && deviceId) {
+    if (personalized && deviceId && setupComplete) {
       supabase.from('sensor_readings').insert({
         device_id: deviceId,
         temperature: data.temperature,
