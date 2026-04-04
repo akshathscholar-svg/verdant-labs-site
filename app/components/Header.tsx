@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from './ThemeProvider';
+import { createClient } from '@/app/lib/supabase-browser';
+import type { User } from '@supabase/supabase-js';
 
 /* ── Navigation architecture ── */
 const navGroups = [
@@ -55,8 +57,18 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [user, setUser] = useState<User | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const { theme, toggle: toggleTheme } = useTheme();
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     function handleScroll() {
@@ -175,12 +187,24 @@ export default function Header() {
             )}
           </button>
 
-          <a
-            href="/#early-access"
-            className="cta-glow rounded-full bg-[#B78A2A] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#9D7620]"
-          >
-            Early Access
-          </a>
+          {user ? (
+            <Link
+              href="/account"
+              className="flex items-center gap-2 rounded-full border border-[#E5DBCC] bg-white/80 px-4 py-2 text-sm font-medium text-[#3B3933] transition hover:border-[#B78A2A] hover:text-[#B78A2A]"
+            >
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#B78A2A] text-[10px] font-bold text-white">
+                {(user.user_metadata?.full_name?.[0] ?? user.email?.[0] ?? '?').toUpperCase()}
+              </span>
+              Account
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="cta-glow rounded-full bg-[#B78A2A] px-5 py-2 text-sm font-medium text-white transition hover:bg-[#9D7620]"
+            >
+              Sign In
+            </Link>
+          )}
         </nav>
 
         {/* ── Mobile hamburger ── */}
@@ -238,16 +262,38 @@ export default function Header() {
                 </motion.div>
               ))}
 
-              <motion.a
-                href="/#early-access"
-                initial={{ opacity: 0, x: -12 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.12, duration: 0.25 }}
-                className="mt-2 rounded-full bg-[#B78A2A] px-5 py-2.5 text-center text-sm font-medium text-white transition hover:bg-[#9D7620]"
-                onClick={() => setMobileOpen(false)}
-              >
-                Early Access
-              </motion.a>
+              {user ? (
+                <motion.div
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.12, duration: 0.25 }}
+                >
+                  <Link
+                    href="/account"
+                    className="mt-2 flex items-center justify-center gap-2 rounded-full border border-[#E5DBCC] bg-white/80 px-5 py-2.5 text-sm font-medium text-[#3B3933] transition hover:border-[#B78A2A]"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#B78A2A] text-[10px] font-bold text-white">
+                      {(user.user_metadata?.full_name?.[0] ?? user.email?.[0] ?? '?').toUpperCase()}
+                    </span>
+                    Account
+                  </Link>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.12, duration: 0.25 }}
+                >
+                  <Link
+                    href="/login"
+                    className="mt-2 block rounded-full bg-[#B78A2A] px-5 py-2.5 text-center text-sm font-medium text-white transition hover:bg-[#9D7620]"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                </motion.div>
+              )}
             </div>
           </motion.nav>
         )}
