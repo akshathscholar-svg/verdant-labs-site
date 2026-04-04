@@ -36,6 +36,7 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showExportOptions, setShowExportOptions] = useState(false);
   const [removing, setRemoving] = useState(false);
+  const [showAddDevice, setShowAddDevice] = useState(false);
 
   async function handleRemoveDevice() {
     if (!device) return;
@@ -161,6 +162,51 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
               >
                 Complete Setup
               </Link>
+            )}
+
+            {/* Add another device */}
+            {!showAddDevice ? (
+              <button
+                onClick={() => setShowAddDevice(true)}
+                className="inline-flex items-center gap-1.5 rounded-xl border border-dashed border-[#E5DBCC] px-4 py-3 text-sm font-medium text-[#7A756C] transition hover:border-[#B78A2A] hover:text-[#B78A2A]"
+              >
+                <PlusIcon size={14} />
+                Add Another Device
+              </button>
+            ) : (
+              <div className="rounded-xl border border-[#E5DBCC] bg-[#F7F3EC] p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#7A756C]">Pair New Device</p>
+                  <button
+                    onClick={() => setShowAddDevice(false)}
+                    className="text-[11px] font-medium text-[#8A857C] transition hover:text-[#1F1F1B]"
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <p className="mb-3 text-[12px] leading-relaxed text-[#5C584F]">
+                  Enter the pairing code on your new Canopy sensor. This will replace your current device connection.
+                </p>
+                <form action={pairAction} className="flex gap-2">
+                  <input
+                    name="pairingCode"
+                    type="text"
+                    placeholder="e.g. CANOPY-002"
+                    className="flex-1 rounded-xl border border-[#E5DBCC] bg-white px-4 py-2.5 text-sm font-medium uppercase tracking-wider text-[#1F1F1B] outline-none placeholder:normal-case placeholder:tracking-normal placeholder:text-[#8A857C] focus:border-[#B78A2A] focus:ring-1 focus:ring-[#B78A2A]/30"
+                  />
+                  <button
+                    type="submit"
+                    disabled={pairPending}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-[#B78A2A] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#9D7620] disabled:opacity-50"
+                  >
+                    <PlusIcon size={14} />
+                    {pairPending ? 'Pairing...' : 'Pair'}
+                  </button>
+                </form>
+                {pairState.error && (
+                  <p className="mt-2 text-xs text-[#C4684A]">{pairState.error}</p>
+                )}
+              </div>
             )}
           </div>
         ) : (
