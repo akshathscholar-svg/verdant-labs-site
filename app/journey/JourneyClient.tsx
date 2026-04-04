@@ -4,43 +4,41 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Reveal from '../components/Reveal';
 import TextReveal from '../components/TextReveal';
+import { LightbulbIcon, BrainIcon, WrenchIcon, SmartphoneIcon, RocketIcon, ShieldIcon, SparklesIcon, LeafIcon, KeyIcon, SeedlingIcon } from '../components/Icons';
+import type { ComponentType } from 'react';
 
 /* ── Timeline data ── */
+const milestoneIcons: ComponentType<{ size?: number; className?: string }>[] = [LightbulbIcon, BrainIcon, WrenchIcon, SmartphoneIcon, RocketIcon];
 const milestones = [
   {
     date: 'Winter 2025',
     title: 'The Spark',
     description:
       'A collection of rare tropical plants started showing stress with no visible warning signs. By the time leaves curled, the damage was done. The question became: what if you could detect stress before it was visible? Verdant Labs was founded.',
-    icon: '💡',
   },
   {
     date: 'Spring 2026',
     title: 'Research & Canopy AI Concept',
     description:
       'Deep research into plant physiology, environmental sensing, and the gap between raw data and real intelligence. Designed the Canopy AI architecture — a system that pairs ambient sensor data with plant-specific profiles to generate proactive care guidance.',
-    icon: '🧠',
   },
   {
     date: 'Summer 2026',
     title: 'Hardware Prototype & AI Features',
     description:
       'Built a working sensor prototype reading moisture, humidity, temperature, and light. Launched the AI-powered plant identifier — snap a photo for instant species ID, care instructions, and grower info.',
-    icon: '🔧',
   },
   {
     date: 'Winter 2026',
     title: 'App Development & Testing',
     description:
       'Building out the full Canopy AI app experience — the interface that turns sensor data into plain-language care recommendations. Refining the hardware and running real-world tests with plant collections.',
-    icon: '📱',
   },
   {
     date: 'Spring 2027',
     title: 'Product Launch',
     description:
       'Shipping finalized hardware units and the full app to early access members. The complete Canopy AI system — sensor, app, and intelligence — ready for plant owners everywhere.',
-    icon: '🚀',
   },
 ];
 
@@ -48,24 +46,22 @@ const values = [
   {
     title: 'Prevention over reaction',
     description: 'Catch problems early, before damage is visible.',
-    icon: '🛡️',
   },
   {
     title: 'Intelligence over data',
     description: 'Plain-language recommendations, not raw numbers.',
-    icon: '✨',
   },
   {
     title: 'Built for collectors',
     description: 'Designed for people who truly care about their plants.',
-    icon: '🌿',
   },
   {
     title: 'Transparent progress',
     description: 'We share what we\'re building as we build it.',
-    icon: '🔓',
   },
 ];
+
+const valueIcons: ComponentType<{ size?: number; className?: string }>[] = [ShieldIcon, SparklesIcon, LeafIcon, KeyIcon];
 
 export default function JourneyClient() {
   return (
@@ -142,8 +138,8 @@ export default function JourneyClient() {
                     </motion.div>
 
                     {/* Mobile icon */}
-                    <div className="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B78A2A]/10 text-xl md:hidden">
-                      {m.icon}
+                    <div className="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full bg-[#B78A2A]/10 md:hidden">
+                      {(() => { const Icon = milestoneIcons[i]; return Icon ? <Icon size={20} className="text-[#B78A2A]" /> : null; })()}
                     </div>
 
                     {/* Date badge */}
@@ -154,7 +150,7 @@ export default function JourneyClient() {
                     {/* Content card */}
                     <div className="rounded-2xl border border-[#E7DECF] bg-white p-5 shadow-sm transition hover:border-[#B78A2A]/30 hover:shadow-md">
                       <div className="flex items-center gap-2">
-                        <span className="hidden text-xl md:inline">{m.icon}</span>
+                        <span className="hidden md:inline">{(() => { const Icon = milestoneIcons[i]; return Icon ? <Icon size={20} className="text-[#B78A2A]" /> : null; })()}</span>
                         <h3 className="text-lg font-semibold">{m.title}</h3>
                       </div>
                       <p className="mt-2 text-sm leading-relaxed text-[#5C584F] md:text-left">
@@ -187,7 +183,7 @@ export default function JourneyClient() {
             {values.map((v, i) => (
               <Reveal key={v.title} delay={i * 0.1}>
                 <div className="rounded-2xl border border-[#E7DECF] bg-[#F7F3EC] p-6 transition hover:border-[#B78A2A]/30 hover:shadow-md">
-                  <span className="text-2xl">{v.icon}</span>
+                  {(() => { const Icon = valueIcons[i]; return Icon ? <Icon size={28} className="text-[#B78A2A]" /> : null; })()}
                   <h3 className="mt-3 text-base font-semibold">{v.title}</h3>
                   <p className="mt-1.5 text-sm leading-relaxed text-[#5C584F]">
                     {v.description}
@@ -217,8 +213,8 @@ export default function JourneyClient() {
             <div className="rounded-[1.9rem] border border-[#E7DECF] bg-white p-8 shadow-sm md:p-10">
               <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
                 {/* Photo placeholder */}
-                <div className="flex h-32 w-32 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#B78A2A]/20 to-[#D4B96A]/20 text-5xl">
-                  🌱
+                <div className="flex h-32 w-32 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#B78A2A]/20 to-[#D4B96A]/20">
+                  <SeedlingIcon size={48} className="text-[#B78A2A]" />
                 </div>
 
                 <div>

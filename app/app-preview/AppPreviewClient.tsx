@@ -10,6 +10,9 @@ import Reveal from '../components/Reveal';
 import TiltCard from '../components/TiltCard';
 import TextReveal from '../components/TextReveal';
 import VineDivider from '../components/VineDivider';
+import BackButton from '../components/BackButton';
+import { LeafIcon, ChartIcon, BellIcon, CameraIcon, DropletIcon } from '../components/Icons';
+import type { ComponentType } from 'react';
 
 /* ══════════════════════════════════════════════════════════════
    MOCK DATA — per-plant profiles
@@ -22,7 +25,6 @@ const plants: Record<
   {
     status: string;
     statusOk: boolean;
-    emoji: string;
     sensors: {
       label: string;
       value: number;
@@ -41,7 +43,6 @@ const plants: Record<
   'Monstera Albo': {
     status: 'Stable',
     statusOk: true,
-    emoji: '🌿',
     sensors: [
       { label: 'Soil Moisture', value: 41, suffix: '%', decimals: 0, trend: 'Decreasing', down: true, history: [72, 65, 58, 53, 48, 44, 41] },
       { label: 'Light', value: 8.2, suffix: 'k lux', decimals: 1, trend: 'Stable', down: false, history: [78, 82, 80, 79, 81, 82, 82] },
@@ -57,7 +58,6 @@ const plants: Record<
   'Fiddle Leaf Fig': {
     status: 'Monitor',
     statusOk: false,
-    emoji: '🌳',
     sensors: [
       { label: 'Soil Moisture', value: 55, suffix: '%', decimals: 0, trend: 'Stable', down: false, history: [52, 54, 53, 55, 56, 55, 55] },
       { label: 'Light', value: 6.1, suffix: 'k lux', decimals: 1, trend: 'Low', down: true, history: [92, 85, 78, 71, 68, 63, 61] },
@@ -73,7 +73,6 @@ const plants: Record<
   'Golden Pothos': {
     status: 'Healthy',
     statusOk: true,
-    emoji: '🍃',
     sensors: [
       { label: 'Soil Moisture', value: 48, suffix: '%', decimals: 0, trend: 'Stable', down: false, history: [46, 47, 48, 47, 48, 48, 48] },
       { label: 'Light', value: 3.8, suffix: 'k lux', decimals: 1, trend: 'Stable', down: false, history: [35, 37, 38, 39, 38, 37, 38] },
@@ -124,11 +123,12 @@ const tiers = [
 ];
 
 /* ── upcoming features ── */
+const featureIcons: ComponentType<{ size?: number; className?: string }>[] = [LeafIcon, ChartIcon, BellIcon, CameraIcon];
 const futureFeatures = [
-  { label: 'Species-Specific Insights', desc: 'Tailored care profiles for 500+ houseplant species.', icon: '🌿' },
-  { label: 'Health History', desc: 'Month-over-month health timeline for every plant.', icon: '📊' },
-  { label: 'Predictive Alerts', desc: 'Get warned before stress becomes visible.', icon: '🔔' },
-  { label: 'Visual Stress Detection', desc: 'Camera-based leaf analysis for early damage signs.', icon: '📷' },
+  { label: 'Species-Specific Insights', desc: 'Tailored care profiles for 500+ houseplant species.' },
+  { label: 'Health History', desc: 'Month-over-month health timeline for every plant.' },
+  { label: 'Predictive Alerts', desc: 'Get warned before stress becomes visible.' },
+  { label: 'Visual Stress Detection', desc: 'Camera-based leaf analysis for early damage signs.' },
 ];
 
 /* ══════════════════════════════════════════════════════════════
@@ -230,6 +230,7 @@ export default function AppPreviewClient() {
   return (
     <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
       <Header />
+      <div className="mx-auto max-w-5xl px-6 pt-6 lg:px-12"><BackButton /></div>
 
       {/* ── Hero ── */}
       <section className="px-6 pb-6 pt-16 md:px-10 lg:px-12">
@@ -304,7 +305,7 @@ export default function AppPreviewClient() {
                             color: c.text,
                           }}
                         >
-                          <span className="text-base">💧</span>
+                          <span className="text-base"><DropletIcon size={16} className="text-[#3B82F6]" /></span>
                           <span>Moisture dropping — water soon</span>
                         </motion.div>
                       )}
@@ -655,7 +656,7 @@ export default function AppPreviewClient() {
             {futureFeatures.map((f, i) => (
               <Reveal key={f.label} delay={i * 0.08}>
                 <TiltCard className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
-                  <span className="text-2xl">{f.icon}</span>
+                  {(() => { const Icon = featureIcons[i]; return Icon ? <Icon size={28} className="text-[#B78A2A]" /> : null; })()}
                   <h3 className="mt-3 text-lg font-semibold">{f.label}</h3>
                   <p className="mt-2 text-base leading-7 text-[#5A564E]">{f.desc}</p>
                 </TiltCard>

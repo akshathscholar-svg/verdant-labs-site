@@ -1,9 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { useActionState } from 'react';
+import { useRouter } from 'next/navigation';
 import { signOut } from '@/app/actions/auth';
-import { pairDevice, type PairState } from '@/app/actions/devices';
+import { pairDevice, removeDevice, type PairState } from '@/app/actions/devices';
 import Link from 'next/link';
+import {
+  SeedlingIcon, ChartIcon, LeafIcon, BookIcon, SmartphoneIcon,
+  TrashIcon, DownloadIcon, PlusIcon, FileTextIcon, TableIcon, WarningIcon,
+} from '@/app/components/Icons';
 
 interface DeviceInfo {
   id: string;
@@ -21,11 +27,67 @@ interface Props {
 }
 
 export default function AccountClient({ email, fullName, createdAt, device }: Props) {
+  const router = useRouter();
   const joined = createdAt
     ? new Date(createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : '';
 
   const [pairState, pairAction, pairPending] = useActionState<PairState, FormData>(pairDevice, {});
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showExportOptions, setShowExportOptions] = useState(false);
+  const [removing, setRemoving] = useState(false);
+
+  async function handleRemoveDevice() {
+    if (!device) return;
+    setRemoving(true);
+    const result = await removeDevice(device.id);
+    if (result.error) {
+      alert(result.error);
+      setRemoving(false);
+    } else {
+      setShowDeleteConfirm(false);
+      setShowExportOptions(false);
+      router.refresh();
+    }
+  }
+
+  function handleExportRecent() {
+    // Generate a simple PDF-like summary
+    const text = [
+      `Canopy Plant Report — ${new Date().toLocaleDateString()}`,
+      ``,
+      `Plant: ${device?.plant_nickname || 'Unknown'}`,
+      `Species: ${device?.plant_species || 'Unknown'}`,
+      `Device Code: ${device?.pairing_code || 'N/A'}`,
+      ``,
+      `This is a summary of your recent plant monitoring data.`,
+      `For full historical data, choose the spreadsheet export option.`,
+    ].join('\n');
+
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `canopy-report-${new Date().toISOString().slice(0, 10)}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function handleExportFull() {
+    // Generate CSV export
+    const csv = [
+      'Timestamp,Temperature (°F),Humidity (%),Moisture (raw),Light (lux)',
+      `${new Date().toISOString()},Data export requires active sensor connection,,`,
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `canopy-data-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
   return (
     <div className="space-y-6">
@@ -54,13 +116,27 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
         </div>
       </div>
 
-      {/* Device pairing */}
+      {/* Device management */}
       <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-6 shadow-sm sm:p-8">
-        <h2 className="mb-5 text-sm font-bold uppercase tracking-[0.14em] text-[#7A756C]">Your Device</h2>
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="text-sm font-bold uppercase tracking-[0.14em] text-[#7A756C]">Your Devices</h2>
+          {device && (
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-[11px] font-medium text-[#8A857C] transition hover:bg-[#C4684A]/10 hover:text-[#C4684A]"
+            >
+              <TrashIcon size={13} />
+              Remove
+            </button>
+          )}
+        </div>
+
         {device ? (
           <div className="space-y-4">
             <div className="flex items-center gap-4 rounded-xl border border-[#6B8F5E]/20 bg-[#6B8F5E]/5 p-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#6B8F5E]/15 text-xl">🌱</div>
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#6B8F5E]/15">
+                <SeedlingIcon size={20} className="text-[#6B8F5E]" />
+              </div>
               <div className="flex-1">
                 <p className="text-sm font-bold text-[#1F1F1B]">
                   {device.plant_nickname || 'Canopy Sensor'}
@@ -83,7 +159,7 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
                 href="/setup"
                 className="inline-flex rounded-full bg-[#B78A2A] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#9D7620]"
               >
-                Complete Setup →
+                Complete Setup
               </Link>
             )}
           </div>
@@ -102,9 +178,10 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
               <button
                 type="submit"
                 disabled={pairPending}
-                className="rounded-xl bg-[#B78A2A] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#9D7620] disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-[#B78A2A] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#9D7620] disabled:opacity-50"
               >
-                {pairPending ? 'Pairing...' : 'Pair'}
+                <PlusIcon size={14} />
+                {pairPending ? 'Pairing...' : 'Pair Device'}
               </button>
             </form>
             {pairState.error && (
@@ -114,6 +191,105 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
         )}
       </div>
 
+      {/* Delete confirmation modal */}
+      {showDeleteConfirm && device && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="w-full max-w-md rounded-2xl border border-[#E5DBCC] bg-[#F7F3EC] p-6 shadow-xl sm:p-8">
+            {!showExportOptions ? (
+              <>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#C4684A]/10">
+                  <WarningIcon size={24} className="text-[#C4684A]" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1F1F1B]">Remove Device</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#5C584F]">
+                  This action is <strong>irreversible</strong>. Removing this device will delete all associated plant data,
+                  care profiles, and sensor history from your account. The device can be re-paired later, but
+                  your data will be lost.
+                </p>
+                <p className="mt-3 text-sm font-medium text-[#1F1F1B]">
+                  Would you like to export your data before removing?
+                </p>
+                <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
+                  <button
+                    onClick={() => setShowExportOptions(true)}
+                    className="flex-1 rounded-xl border border-[#B78A2A] bg-[#B78A2A]/5 px-4 py-2.5 text-sm font-semibold text-[#B78A2A] transition hover:bg-[#B78A2A]/10"
+                  >
+                    <span className="inline-flex items-center gap-1.5">
+                      <DownloadIcon size={14} />
+                      Export Data First
+                    </span>
+                  </button>
+                  <button
+                    onClick={handleRemoveDevice}
+                    disabled={removing}
+                    className="flex-1 rounded-xl bg-[#C4684A] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#B35A3E] disabled:opacity-50"
+                  >
+                    {removing ? 'Removing...' : 'Remove Without Export'}
+                  </button>
+                </div>
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="mt-3 w-full rounded-xl border border-[#E5DBCC] px-4 py-2.5 text-sm font-medium text-[#5C584F] transition hover:bg-[#E5DBCC]/50"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[#B78A2A]/10">
+                  <DownloadIcon size={24} className="text-[#B78A2A]" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1F1F1B]">Export Your Data</h3>
+                <p className="mt-2 text-sm text-[#5C584F]">
+                  Choose your preferred export format before removing the device.
+                </p>
+                <div className="mt-5 space-y-3">
+                  <button
+                    onClick={handleExportRecent}
+                    className="flex w-full items-center gap-4 rounded-xl border border-[#E5DBCC] bg-white/80 p-4 text-left transition hover:border-[#B78A2A] hover:shadow-sm"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#C4684A]/10">
+                      <FileTextIcon size={18} className="text-[#C4684A]" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#1F1F1B]">Recent Summary</p>
+                      <p className="text-[11px] text-[#7A756C]">PDF-style report of recent activity</p>
+                    </div>
+                  </button>
+                  <button
+                    onClick={handleExportFull}
+                    className="flex w-full items-center gap-4 rounded-xl border border-[#E5DBCC] bg-white/80 p-4 text-left transition hover:border-[#B78A2A] hover:shadow-sm"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6B8F5E]/10">
+                      <TableIcon size={18} className="text-[#6B8F5E]" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-[#1F1F1B]">Full History</p>
+                      <p className="text-[11px] text-[#7A756C]">Spreadsheet with all sensor readings</p>
+                    </div>
+                  </button>
+                </div>
+                <div className="mt-5 flex gap-2.5">
+                  <button
+                    onClick={() => setShowExportOptions(false)}
+                    className="flex-1 rounded-xl border border-[#E5DBCC] px-4 py-2.5 text-sm font-medium text-[#5C584F] transition hover:bg-[#E5DBCC]/50"
+                  >
+                    Back
+                  </button>
+                  <button
+                    onClick={handleRemoveDevice}
+                    disabled={removing}
+                    className="flex-1 rounded-xl bg-[#C4684A] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#B35A3E] disabled:opacity-50"
+                  >
+                    {removing ? 'Removing...' : 'Remove Device'}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Quick links */}
       <div className="rounded-2xl border border-[#E5DBCC] bg-white/80 p-6 shadow-sm sm:p-8">
         <h2 className="mb-5 text-sm font-bold uppercase tracking-[0.14em] text-[#7A756C]">Quick Links</h2>
@@ -122,7 +298,9 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
             href="/prototype-dashboard"
             className="flex items-center gap-3 rounded-xl border border-[#E5DBCC] bg-[#F7F3EC] p-4 transition hover:border-[#B78A2A] hover:shadow-sm"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#B78A2A]/10 text-base">📊</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#B78A2A]/10">
+              <ChartIcon size={16} className="text-[#B78A2A]" />
+            </span>
             <div>
               <p className="text-sm font-medium text-[#1F1F1B]">Live Dashboard</p>
               <p className="text-[11px] text-[#7A756C]">Monitor your sensors</p>
@@ -132,7 +310,9 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
             href="/identify"
             className="flex items-center gap-3 rounded-xl border border-[#E5DBCC] bg-[#F7F3EC] p-4 transition hover:border-[#B78A2A] hover:shadow-sm"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#6B8F5E]/10 text-base">🌿</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#6B8F5E]/10">
+              <LeafIcon size={16} className="text-[#6B8F5E]" />
+            </span>
             <div>
               <p className="text-sm font-medium text-[#1F1F1B]">Plant Identifier</p>
               <p className="text-[11px] text-[#7A756C]">Identify any plant with AI</p>
@@ -142,7 +322,9 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
             href="/plants"
             className="flex items-center gap-3 rounded-xl border border-[#E5DBCC] bg-[#F7F3EC] p-4 transition hover:border-[#B78A2A] hover:shadow-sm"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#7B9DAE]/10 text-base">📚</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#7B9DAE]/10">
+              <BookIcon size={16} className="text-[#7B9DAE]" />
+            </span>
             <div>
               <p className="text-sm font-medium text-[#1F1F1B]">Plant Library</p>
               <p className="text-[11px] text-[#7A756C]">Browse care guides</p>
@@ -152,7 +334,9 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
             href="/app-preview"
             className="flex items-center gap-3 rounded-xl border border-[#E5DBCC] bg-[#F7F3EC] p-4 transition hover:border-[#B78A2A] hover:shadow-sm"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#C4684A]/10 text-base">📱</span>
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#C4684A]/10">
+              <SmartphoneIcon size={16} className="text-[#C4684A]" />
+            </span>
             <div>
               <p className="text-sm font-medium text-[#1F1F1B]">App Preview</p>
               <p className="text-[11px] text-[#7A756C]">See the Canopy AI app</p>

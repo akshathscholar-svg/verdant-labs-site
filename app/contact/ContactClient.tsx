@@ -4,24 +4,26 @@ import { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
+import BackButton from '../components/BackButton';
+import { MailIcon, NewspaperIcon, WrenchIcon, LeafIcon } from '../components/Icons';
 
 const contactChannels = [
   {
-    icon: '✉️',
+    icon: MailIcon,
     title: 'General Inquiries',
     description: 'Questions about Verdant Labs, partnership opportunities, or anything else.',
     action: 'hello@verdantlabs.app',
     href: 'mailto:hello@verdantlabs.app',
   },
   {
-    icon: '📰',
+    icon: NewspaperIcon,
     title: 'Press & Media',
     description: 'Interview requests, media assets, and press inquiries.',
     action: 'press@verdantlabs.app',
     href: 'mailto:press@verdantlabs.app',
   },
   {
-    icon: '🛠️',
+    icon: WrenchIcon,
     title: 'Technical Support',
     description: 'Help with sensor setup, Canopy AI, or account issues.',
     action: 'support@verdantlabs.app',
@@ -43,6 +45,7 @@ export default function ContactClient() {
     <>
       <Header />
       <main className="min-h-screen bg-[#F7F3EC]">
+        <div className="mx-auto max-w-5xl px-6 pt-6"><BackButton /></div>
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-[#E7DECF] bg-gradient-to-b from-[#F7F3EC] to-[#EDE8DE] px-6 py-24 text-center md:py-32">
           <Reveal>
@@ -72,7 +75,7 @@ export default function ContactClient() {
                   href={ch.href}
                   className="group block rounded-2xl border border-[#E7DECF] bg-white p-7 text-center transition hover:border-[#B78A2A]/40 hover:shadow-lg"
                 >
-                  <span className="text-3xl">{ch.icon}</span>
+                  {(() => { const Icon = ch.icon; return <Icon size={28} className="mx-auto text-[#B78A2A]" />; })()}
                   <h3 className="mt-4 text-lg font-semibold text-[#2E2C28]">
                     {ch.title}
                   </h3>
@@ -105,7 +108,7 @@ export default function ContactClient() {
             {submitted ? (
               <Reveal>
                 <div className="mt-10 rounded-2xl border border-[#B78A2A]/30 bg-white p-10 text-center">
-                  <span className="text-4xl">🌿</span>
+                  <LeafIcon size={36} className="mx-auto text-[#6B8F5E]" />
                   <h3 className="mt-4 text-lg font-semibold text-[#2E2C28]">
                     Message Sent
                   </h3>

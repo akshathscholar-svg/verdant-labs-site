@@ -6,6 +6,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
+import BackButton from '../components/BackButton';
+import { LeafIcon, TreeIcon, SnakeIcon, HeartIcon, FlowerIcon, SparklesIcon, BirdIcon, BeadsIcon, PeaceIcon, SeedlingIcon, TargetIcon } from '../components/Icons';
+import type { ComponentType } from 'react';
 
 /* ── Plant data ── */
 interface Plant {
@@ -20,8 +23,13 @@ interface Plant {
   soil: string;
   toxicity: string;
   tip: string;
-  emoji: string;
 }
+
+/* Icon array parallel to plants array */
+const plantIcons: ComponentType<{ size?: number; className?: string }>[] = [
+  LeafIcon, TreeIcon, LeafIcon, SnakeIcon, HeartIcon, FlowerIcon,
+  SparklesIcon, BirdIcon, BeadsIcon, PeaceIcon, SeedlingIcon, TargetIcon,
+];
 
 const plants: Plant[] = [
   {
@@ -36,7 +44,6 @@ const plants: Plant[] = [
     soil: 'Well-draining, peat-based',
     toxicity: 'Toxic to pets',
     tip: 'Provide a moss pole for larger leaves with more fenestrations.',
-    emoji: '🌿',
   },
   {
     name: 'Fiddle Leaf Fig',
@@ -50,7 +57,6 @@ const plants: Plant[] = [
     soil: 'Well-draining, loamy',
     toxicity: 'Toxic to pets',
     tip: 'Rotate quarterly for even growth. Avoid moving once settled.',
-    emoji: '🌳',
   },
   {
     name: 'Pothos',
@@ -64,7 +70,6 @@ const plants: Plant[] = [
     soil: 'Standard potting mix',
     toxicity: 'Toxic to pets',
     tip: 'Trim regularly to encourage bushier growth.',
-    emoji: '🍃',
   },
   {
     name: 'Snake Plant',
@@ -78,7 +83,6 @@ const plants: Plant[] = [
     soil: 'Cactus / succulent mix',
     toxicity: 'Mildly toxic to pets',
     tip: 'One of the best air-purifying plants. Nearly indestructible.',
-    emoji: '🐍',
   },
   {
     name: 'Philodendron',
@@ -92,7 +96,6 @@ const plants: Plant[] = [
     soil: 'Well-draining, peat-based',
     toxicity: 'Toxic to pets',
     tip: 'Yellowing leaves usually mean overwatering.',
-    emoji: '💚',
   },
   {
     name: 'Calathea',
@@ -106,7 +109,6 @@ const plants: Plant[] = [
     soil: 'Peat-based, moisture retaining',
     toxicity: 'Non-toxic',
     tip: 'Use filtered water — sensitive to minerals and chlorine.',
-    emoji: '🪭',
   },
   {
     name: 'ZZ Plant',
@@ -120,7 +122,6 @@ const plants: Plant[] = [
     soil: 'Well-draining, sandy',
     toxicity: 'Toxic if ingested',
     tip: 'Stores water in rhizomes. Overwatering is the main killer.',
-    emoji: '✨',
   },
   {
     name: 'Bird of Paradise',
@@ -134,7 +135,6 @@ const plants: Plant[] = [
     soil: 'Rich, well-draining',
     toxicity: 'Mildly toxic',
     tip: 'Needs 4–6 hours of light for indoor blooms (rare indoors).',
-    emoji: '🦜',
   },
   {
     name: 'String of Pearls',
@@ -148,7 +148,6 @@ const plants: Plant[] = [
     soil: 'Cactus / succulent mix',
     toxicity: 'Toxic to pets',
     tip: 'Bottom watering prevents rot and keeps pearls healthy.',
-    emoji: '📿',
   },
   {
     name: 'Peace Lily',
@@ -162,7 +161,6 @@ const plants: Plant[] = [
     soil: 'Peat-based, well-draining',
     toxicity: 'Toxic to pets',
     tip: 'Droopy leaves = needs water. Recovers quickly after watering.',
-    emoji: '☮️',
   },
   {
     name: 'Rubber Plant',
@@ -176,7 +174,6 @@ const plants: Plant[] = [
     soil: 'Well-draining, peat-based',
     toxicity: 'Toxic to pets',
     tip: 'Wipe leaves monthly to keep them shiny and photosynthesizing.',
-    emoji: '🌱',
   },
   {
     name: 'Alocasia Polly',
@@ -190,7 +187,6 @@ const plants: Plant[] = [
     soil: 'Airy, chunky peat-perlite mix',
     toxicity: 'Toxic to pets',
     tip: 'Goes dormant in winter — reduce watering and don\'t panic if leaves drop.',
-    emoji: '🏹',
   },
 ];
 
@@ -224,6 +220,7 @@ export default function PlantsClient() {
   return (
     <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
       <Header />
+      <div className="mx-auto max-w-5xl px-6 pt-6 lg:px-12"><BackButton /></div>
 
       {/* Hero */}
       <section className="px-6 pb-10 pt-16 md:px-10 lg:px-12">
@@ -318,7 +315,7 @@ export default function PlantsClient() {
                 >
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-2xl">{plant.emoji}</p>
+                      {(() => { const idx = plants.indexOf(plant); const Icon = plantIcons[idx]; return Icon ? <Icon size={28} className="text-[#B78A2A]" /> : null; })()}
                       <h3 className="mt-2 text-lg font-semibold">{plant.name}</h3>
                       <p className="text-sm italic text-[#8A857C]">
                         {plant.scientific}

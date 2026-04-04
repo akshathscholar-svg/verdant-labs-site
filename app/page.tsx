@@ -691,12 +691,18 @@ export default function Home() {
             <div className="grid gap-6 md:grid-cols-[auto_1fr]">
               <div className="flex items-center gap-4">
                 <div className="flex -space-x-3">
-                  {['🌿', '🌱', '🍃', '🌳', '☘️'].map((e, i) => (
+                  {[
+                    <svg key="0" viewBox="0 0 24 24" className="h-5 w-5 text-[#6B8F5E]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20c4 0 8.68-3.3 12-11"/><path d="M6 15a5 5 0 0 0 6.5-4.4"/></svg>,
+                    <svg key="1" viewBox="0 0 24 24" className="h-5 w-5 text-[#7A9F6B]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5 8-8 8-14"/><path d="M10 20c0-5 .5-9 3-13"/><path d="M18 6c-1.8 0-6 2-6.5 6"/></svg>,
+                    <svg key="2" viewBox="0 0 24 24" className="h-5 w-5 text-[#6B8F5E]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20c4 0 8.68-3.3 12-11"/><path d="M6 15a5 5 0 0 0 6.5-4.4"/></svg>,
+                    <svg key="3" viewBox="0 0 24 24" className="h-5 w-5 text-[#5A7E4E]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M5.2 10a7 7 0 0 1 13.6 0"/></svg>,
+                    <svg key="4" viewBox="0 0 24 24" className="h-5 w-5 text-[#7A9F6B]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10"/><path d="M12 2c3 3 4.5 7 4.5 10s-1.5 7-4.5 10"/><path d="M2 12h10"/></svg>,
+                  ].map((icon, i) => (
                     <div
                       key={i}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#F3EDE2] bg-white text-lg shadow-sm"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#F3EDE2] bg-white shadow-sm"
                     >
-                      {e}
+                      {icon}
                     </div>
                   ))}
                 </div>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import SignUpForm from './SignUpForm';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
+import BackButton from '@/app/components/BackButton';
 
 export const metadata: Metadata = {
   title: 'Sign Up - Verdant Labs',
@@ -12,6 +13,7 @@ export default function SignUpPage() {
   return (
     <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
       <Header />
+      <div className="mx-auto max-w-md px-6 pt-6"><BackButton /></div>
       <section className="flex min-h-[calc(100vh-12rem)] items-center justify-center px-6 py-16">
         <div className="w-full max-w-md">
           <div className="mb-8 text-center">

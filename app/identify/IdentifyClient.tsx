@@ -4,6 +4,8 @@ import { useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { identifyPlant, type PlantResult } from '../actions/identify';
+import { SunIcon, DropletIcon, CalendarIcon, FogIcon, ThermometerIcon, PlantPotIcon, FlaskIcon, DollarIcon, HomeIcon, MapIcon, RulerIcon, TrendingUpIcon, SeedlingIcon, WheatIcon, ScissorsIcon, HandshakeIcon, WarningIcon } from '../components/Icons';
+import type { ComponentType } from 'react';
 
 /* ── compress image client-side to fit server action limits ── */
 function compressImage(dataUrl: string, maxDim = 1024, quality = 0.7): Promise<string> {
@@ -95,29 +97,29 @@ export default function IdentifyClient() {
   };
 
   /* ── grid helpers ── */
-  const careGrid = result
+  const careGrid: { label: string; value: string; icon: ComponentType<{ size?: number; className?: string }> }[] = result
     ? [
-        { label: 'Light', value: result.light, icon: '☀️' },
-        { label: 'Water', value: result.water, icon: '💧' },
-        { label: 'How Often', value: result.waterFrequency, icon: '📅' },
-        { label: 'Humidity', value: result.humidity, icon: '🌫️' },
-        { label: 'Temperature', value: result.temperature, icon: '🌡️' },
-        { label: 'Soil', value: result.soil, icon: '🪴' },
-        { label: 'Fertilizer', value: result.fertilizerNeeds, icon: '🧪' },
-        { label: 'Est. Cost', value: result.estimatedCost, icon: '💰' },
+        { label: 'Light', value: result.light, icon: SunIcon },
+        { label: 'Water', value: result.water, icon: DropletIcon },
+        { label: 'How Often', value: result.waterFrequency, icon: CalendarIcon },
+        { label: 'Humidity', value: result.humidity, icon: FogIcon },
+        { label: 'Temperature', value: result.temperature, icon: ThermometerIcon },
+        { label: 'Soil', value: result.soil, icon: PlantPotIcon },
+        { label: 'Fertilizer', value: result.fertilizerNeeds, icon: FlaskIcon },
+        { label: 'Est. Cost', value: result.estimatedCost, icon: DollarIcon },
       ]
     : [];
 
-  const growerGrid = result
+  const growerGrid: { label: string; value: string; icon: ComponentType<{ size?: number; className?: string }> }[] = result
     ? [
-        { label: 'Indoor / Outdoor', value: result.indoorOutdoor, icon: '🏡' },
-        { label: 'Growing Zones', value: result.growingZones, icon: '🗺️' },
-        { label: 'Mature Size', value: result.matureSize, icon: '📏' },
-        { label: 'Growth Rate', value: result.growthRate, icon: '📈' },
-        { label: 'Planting Season', value: result.plantingSeason, icon: '🌱' },
-        { label: 'Harvest Season', value: result.harvestSeason, icon: '🌾' },
-        { label: 'Propagation', value: result.propagation, icon: '✂️' },
-        { label: 'Companion Plants', value: result.companionPlants, icon: '🤝' },
+        { label: 'Indoor / Outdoor', value: result.indoorOutdoor, icon: HomeIcon },
+        { label: 'Growing Zones', value: result.growingZones, icon: MapIcon },
+        { label: 'Mature Size', value: result.matureSize, icon: RulerIcon },
+        { label: 'Growth Rate', value: result.growthRate, icon: TrendingUpIcon },
+        { label: 'Planting Season', value: result.plantingSeason, icon: SeedlingIcon },
+        { label: 'Harvest Season', value: result.harvestSeason, icon: WheatIcon },
+        { label: 'Propagation', value: result.propagation, icon: ScissorsIcon },
+        { label: 'Companion Plants', value: result.companionPlants, icon: HandshakeIcon },
       ]
     : [];
 
@@ -353,7 +355,7 @@ export default function IdentifyClient() {
                     {careGrid.map((item) => (
                       <div key={item.label} className="rounded-xl bg-[#F7F3EC] p-3">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{item.icon}</span>
+                          {(() => { const Icon = item.icon; return <Icon size={14} className="text-[#B78A2A]" />; })()}
                           <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#B78A2A]">
                             {item.label}
                           </p>
@@ -375,7 +377,7 @@ export default function IdentifyClient() {
                     {growerGrid.map((item) => (
                       <div key={item.label} className="rounded-xl bg-[#F7F3EC] p-3">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-sm">{item.icon}</span>
+                          {(() => { const Icon = item.icon; return <Icon size={14} className="text-[#B78A2A]" />; })()}
                           <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#B78A2A]">
                             {item.label}
                           </p>
@@ -391,7 +393,7 @@ export default function IdentifyClient() {
                 {/* ── Common Problems ── */}
                 <div className="mt-5 rounded-xl border border-amber-200/60 bg-amber-50/50 p-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm">⚠️</span>
+                    <WarningIcon size={14} className="text-amber-700" />
                     <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-700">
                       Common Problems
                     </p>

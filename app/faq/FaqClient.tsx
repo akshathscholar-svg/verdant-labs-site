@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
+import BackButton from '../components/BackButton';
+import { WrenchIcon, BrainIcon, DollarIcon, LeafIcon } from '../components/Icons';
 
 interface FaqItem {
   question: string;
@@ -14,14 +16,13 @@ interface FaqItem {
 
 interface FaqSection {
   title: string;
-  icon: string;
   items: FaqItem[];
 }
 
+const sectionIcons = [WrenchIcon, BrainIcon, DollarIcon, LeafIcon];
 const sections: FaqSection[] = [
   {
     title: 'Product & Hardware',
-    icon: '🔧',
     items: [
       {
         question: 'What does the Verdant sensor measure?',
@@ -52,7 +53,6 @@ const sections: FaqSection[] = [
   },
   {
     title: 'Canopy AI & Software',
-    icon: '🧠',
     items: [
       {
         question: 'How does Canopy AI generate recommendations?',
@@ -78,7 +78,6 @@ const sections: FaqSection[] = [
   },
   {
     title: 'Pricing & Availability',
-    icon: '💰',
     items: [
       {
         question: 'How much will it cost?',
@@ -104,7 +103,6 @@ const sections: FaqSection[] = [
   },
   {
     title: 'Setup & Care',
-    icon: '🌿',
     items: [
       {
         question: 'How long does setup take?',
@@ -177,6 +175,7 @@ export default function FaqClient() {
   return (
     <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
       <Header />
+      <div className="mx-auto max-w-3xl px-6 pt-6"><BackButton /></div>
 
       {/* Hero */}
       <section className="px-6 pb-10 pt-16 md:px-10 lg:px-12">
@@ -206,7 +205,7 @@ export default function FaqClient() {
             <Reveal key={section.title} delay={si * 0.05}>
               <div>
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">{section.icon}</span>
+                  {(() => { const Icon = sectionIcons[si]; return Icon ? <Icon size={22} className="text-[#B78A2A]" /> : null; })()}
                   <h2 className="text-xl font-semibold">{section.title}</h2>
                 </div>
                 <div className="mt-4 rounded-2xl border border-[#E5DBCC] bg-white px-6">

@@ -4,25 +4,24 @@ import Link from 'next/link';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
+import BackButton from '../components/BackButton';
+import { SeedlingIcon, MicroscopeIcon, RecycleIcon, HandshakeIcon } from '../components/Icons';
 
+const valueIcons = [SeedlingIcon, MicroscopeIcon, RecycleIcon, HandshakeIcon];
 const values = [
   {
-    icon: '🌱',
     title: 'Plant-First Design',
     description: 'Every feature starts with what the plant needs, then works backwards to the interface.',
   },
   {
-    icon: '🔬',
     title: 'Science-Driven',
     description: 'Our care profiles are built on peer-reviewed botanical research and validated sensor data.',
   },
   {
-    icon: '♻️',
     title: 'Sustainability',
     description: 'From recyclable packaging to energy-efficient sensors, we build with the planet in mind.',
   },
   {
-    icon: '🤝',
     title: 'Community',
     description: 'We believe the best plant care comes from shared knowledge and collective learning.',
   },
@@ -41,6 +40,7 @@ export default function AboutClient() {
     <>
       <Header />
       <main className="min-h-screen bg-[#F7F3EC]">
+        <div className="mx-auto max-w-5xl px-6 pt-6"><BackButton /></div>
         {/* Hero */}
         <section className="relative overflow-hidden border-b border-[#E7DECF] bg-gradient-to-b from-[#F7F3EC] to-[#EDE8DE] px-6 py-24 text-center md:py-32">
           <Reveal>
@@ -104,7 +104,7 @@ export default function AboutClient() {
               {values.map((v, i) => (
                 <Reveal key={v.title} delay={i * 0.08}>
                   <div className="rounded-2xl border border-[#E7DECF] bg-white p-6 text-center">
-                    <span className="text-3xl">{v.icon}</span>
+                    {(() => { const Icon = valueIcons[i]; return <Icon size={28} className="mx-auto text-[#B78A2A]" />; })()}
                     <h3 className="mt-4 text-sm font-semibold text-[#2E2C28]">
                       {v.title}
                     </h3>

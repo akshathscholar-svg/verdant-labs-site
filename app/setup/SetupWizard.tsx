@@ -4,6 +4,8 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { saveSetupResults } from '@/app/actions/devices';
+import { LeafIcon, CactusIcon, FlowerIcon, SeedlingIcon, PalmIcon, CloverIcon, SparklesIcon, CameraIcon } from '@/app/components/Icons';
+import type { ComponentType } from 'react';
 
 interface Props {
   deviceId: string;
@@ -16,14 +18,14 @@ const STEPS = [
   { title: 'Final Details', subtitle: 'Almost there!' },
 ];
 
-const PLANT_TYPES = [
-  { value: 'leafy', label: 'Leafy Green', icon: '🌿' },
-  { value: 'succulent', label: 'Succulent / Cactus', icon: '🌵' },
-  { value: 'flowering', label: 'Flowering', icon: '🌸' },
-  { value: 'vine', label: 'Vine / Trailing', icon: '🌱' },
-  { value: 'tree', label: 'Tree / Palm', icon: '🌴' },
-  { value: 'fern', label: 'Fern', icon: '🍀' },
-  { value: 'other', label: 'Other / Not sure', icon: '❓' },
+const PLANT_TYPES: { value: string; label: string; icon: ComponentType<{ size?: number; className?: string }> }[] = [
+  { value: 'leafy', label: 'Leafy Green', icon: LeafIcon },
+  { value: 'succulent', label: 'Succulent / Cactus', icon: CactusIcon },
+  { value: 'flowering', label: 'Flowering', icon: FlowerIcon },
+  { value: 'vine', label: 'Vine / Trailing', icon: SeedlingIcon },
+  { value: 'tree', label: 'Tree / Palm', icon: PalmIcon },
+  { value: 'fern', label: 'Fern', icon: CloverIcon },
+  { value: 'other', label: 'Other / Not sure', icon: SparklesIcon },
 ];
 
 const LOCATIONS = [
@@ -184,7 +186,7 @@ export default function SetupWizard({ deviceId }: Props) {
           transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
           className="text-5xl"
         >
-          🌿
+          <LeafIcon size={48} className="text-[#B78A2A]" />
         </motion.div>
         <div>
           <h2 className="text-xl font-semibold text-[#1F1F1B]">Sprite is analyzing your plant...</h2>
@@ -282,9 +284,9 @@ export default function SetupWizard({ deviceId }: Props) {
                     <button
                       type="button"
                       onClick={() => fileRef.current?.click()}
-                      className="flex h-32 w-full items-center justify-center rounded-xl border-2 border-dashed border-[#E5DBCC] text-sm text-[#7A756C] transition hover:border-[#B78A2A]/40 hover:text-[#B78A2A]"
+                      className="flex h-32 w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-[#E5DBCC] text-sm text-[#7A756C] transition hover:border-[#B78A2A]/40 hover:text-[#B78A2A]"
                     >
-                      📷 Tap to upload a photo
+                      <CameraIcon size={16} /> Tap to upload a photo
                     </button>
                   )}
                 </div>
@@ -296,7 +298,7 @@ export default function SetupWizard({ deviceId }: Props) {
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {PLANT_TYPES.map(t => (
                       <OptionButton key={t.value} selected={answers.plantType === t.value} onClick={() => set('plantType', t.value)}>
-                        <span className="mr-2">{t.icon}</span>{t.label}
+                        <span className="mr-2 inline-flex">{(() => { const Icon = t.icon; return <Icon size={16} />; })()}</span>{t.label}
                       </OptionButton>
                     ))}
                   </div>
@@ -488,7 +490,8 @@ export default function SetupWizard({ deviceId }: Props) {
             disabled={!canAdvance() || loading}
             className="rounded-full bg-[#B78A2A] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#9D7620] disabled:opacity-40"
           >
-            {loading ? 'Saving...' : 'Analyze My Plant ✨'}
+            {loading ? 'Saving...' : 'Analyze My Plant'}
+            {!loading && <SparklesIcon size={14} className="ml-1 inline" />}
           </button>
         )}
       </div>

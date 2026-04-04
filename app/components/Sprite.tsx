@@ -245,7 +245,7 @@ export default function Sprite({ plantContext }: { plantContext?: PlantContext }
       const data = await res.json();
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Whoops... I dozed off for a sec. Try again? 🦥💤' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: 'Whoops... I dozed off for a sec. Try again?' }]);
     } finally {
       setThinking(false);
     }
@@ -271,7 +271,7 @@ export default function Sprite({ plantContext }: { plantContext?: PlantContext }
               </div>
               <div className="flex-1">
                 <p className="text-sm font-bold text-[#1F1F1B]">Sprite</p>
-                <p className="text-[10px] text-[#7A756C]">Your sleepy plant care expert 🦥</p>
+                <p className="text-[10px] text-[#7A756C]">Your sleepy plant care expert</p>
               </div>
               <button onClick={() => setOpen(false)} className="flex h-7 w-7 items-center justify-center rounded-full text-[#8A857C] transition hover:bg-[#E5DBCC] hover:text-[#4F4B44]">
                 ✕
@@ -283,7 +283,7 @@ export default function Sprite({ plantContext }: { plantContext?: PlantContext }
               {messages.length === 0 && !thinking && (
                 <div className="flex flex-col items-center gap-2 py-4 text-center">
                   <SlothAvatar size={72} animate={true} />
-                  <p className="text-xs font-semibold text-[#5C584F]">Hey... I&apos;m Sprite 🦥</p>
+                  <p className="text-xs font-semibold text-[#5C584F]">Hey... I&apos;m Sprite</p>
                   <p className="max-w-[260px] text-[11px] leading-relaxed text-[#7A756C]">
                     I may be slow, but I know everything about plants. Ask me anything — I promise I won&apos;t fall asleep... probably.
                   </p>
@@ -372,7 +372,7 @@ export default function Sprite({ plantContext }: { plantContext?: PlantContext }
             transition={{ delay: 2.5 }}
             className="absolute bottom-full right-0 mb-1 whitespace-nowrap rounded-xl border border-[#E5DBCC] bg-white px-3 py-1.5 text-[11px] font-medium text-[#5C584F] shadow-md"
           >
-            Need help with your plant? 🌿
+            Need help with your plant?
             <span className="absolute -bottom-1 right-8 h-2 w-2 rotate-45 border-b border-r border-[#E5DBCC] bg-white" />
           </motion.div>
         )}

@@ -6,6 +6,9 @@ import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Reveal from '../components/Reveal';
+import BackButton from '../components/BackButton';
+import { DropletIcon, SunIcon, ThermometerIcon, WindIcon, CheckCircleIcon, WarningIcon, AlertOctagonIcon } from '../components/Icons';
+import type { ComponentType } from 'react';
 
 interface Reading {
   label: string;
@@ -15,7 +18,7 @@ interface Reading {
   optimal: [number, number];
   value: number;
   color: string;
-  icon: string;
+  icon: ComponentType<{ size?: number; className?: string }>;
 }
 
 function getStatus(value: number, optimal: [number, number]): 'low' | 'optimal' | 'high' {
@@ -101,7 +104,7 @@ function Slider({
     <div className="rounded-2xl border border-[#E5DBCC] bg-white p-5 shadow-sm">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl">{reading.icon}</span>
+          <span className="text-xl">{(() => { const Icon = reading.icon; return <Icon size={20} />; })()}</span>
           <span className="text-sm font-semibold text-[#1F1F1B]">
             {reading.label}
           </span>
@@ -137,7 +140,7 @@ function Slider({
       <div className="mt-2 flex items-center justify-between text-xs text-[#8A857C]">
         <span>{reading.min}{reading.unit}</span>
         <span className={`font-medium ${statusColor}`}>
-          {status === 'optimal' ? '✓ Optimal' : status === 'low' ? '↓ Low' : '↑ High'}
+          {status === 'optimal' ? <><CheckCircleIcon size={12} className="inline mr-0.5" /> Optimal</> : status === 'low' ? '↓ Low' : '↑ High'}
         </span>
         <span>{reading.max}{reading.unit}</span>
       </div>
@@ -161,7 +164,7 @@ export default function SensorDemoClient() {
         optimal: [30, 60],
         value: moisture,
         color: '#3B82F6',
-        icon: '💧',
+        icon: DropletIcon,
       },
       {
         label: 'Light',
@@ -171,7 +174,7 @@ export default function SensorDemoClient() {
         optimal: [5000, 15000],
         value: light,
         color: '#EAB308',
-        icon: '☀️',
+        icon: SunIcon,
       },
       {
         label: 'Temperature',
@@ -181,7 +184,7 @@ export default function SensorDemoClient() {
         optimal: [65, 80],
         value: temperature,
         color: '#EF4444',
-        icon: '🌡️',
+        icon: ThermometerIcon,
       },
       {
         label: 'Humidity',
@@ -191,7 +194,7 @@ export default function SensorDemoClient() {
         optimal: [40, 70],
         value: humidity,
         color: '#06B6D4',
-        icon: '💨',
+        icon: WindIcon,
       },
     ],
     [moisture, light, temperature, humidity]
@@ -203,6 +206,7 @@ export default function SensorDemoClient() {
   return (
     <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
       <Header />
+      <div className="mx-auto max-w-4xl px-6 pt-6 lg:px-12"><BackButton /></div>
 
       {/* Hero */}
       <section className="px-6 pb-10 pt-16 md:px-10 lg:px-12">
@@ -265,7 +269,7 @@ export default function SensorDemoClient() {
                     }`}
                   >
                     <span className="text-xl">
-                      {level === 'Low Risk' ? '✅' : level === 'Moderate Risk' ? '⚠️' : '🚨'}
+                      {level === 'Low Risk' ? <CheckCircleIcon size={20} className="text-green-600" /> : level === 'Moderate Risk' ? <WarningIcon size={20} className="text-amber-600" /> : <AlertOctagonIcon size={20} className="text-red-600" />}
                     </span>
                   </div>
                   <div>
@@ -307,7 +311,7 @@ export default function SensorDemoClient() {
                               : 'bg-red-100 text-red-700'
                         }`}
                       >
-                        {r.icon} {r.label}: {r.value}{r.unit}
+                        {(() => { const Icon = r.icon; return <Icon size={12} className="inline mr-0.5" />; })()} {r.label}: {r.value}{r.unit}
                       </span>
                     );
                   })}

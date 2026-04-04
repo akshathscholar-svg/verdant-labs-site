@@ -96,3 +96,43 @@ export async function saveSetupResults(deviceId: string, answers: Record<string,
     console.error('Failed to push care profile to device:', e);
   }
 }
+
+export async function removeDevice(deviceId: string): Promise<{ error?: string }> {
+  const auth = await createClient();
+  const { data: { user } } = await auth.auth.getUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  // Unlink device from user — don't delete the row so it can be re-paired
+  const { error } = await supabase
+    .from('devices')
+    .update({
+      user_id: null,
+      questionnaire_answers: null,
+      care_profile: null,
+      plant_species: null,
+      plant_nickname: null,
+      plant_image_url: null,
+      setup_complete: false,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', deviceId)
+    .eq('user_id', user.id);
+
+  if (error) return { error: 'Failed to remove device.' };
+  return {};
+}
+
+export async function getDeviceData(deviceId: string) {
+  const auth = await createClient();
+  const { data: { user } } = await auth.auth.getUser();
+  if (!user) return null;
+
+  const { data } = await supabase
+    .from('devices')
+    .select('*')
+    .eq('id', deviceId)
+    .eq('user_id', user.id)
+    .single();
+
+  return data;
+}

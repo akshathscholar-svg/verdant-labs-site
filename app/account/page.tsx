@@ -4,6 +4,7 @@ import { getUserDevice } from '@/app/actions/devices';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import AccountClient from './AccountClient';
+import BackButton from '@/app/components/BackButton';
 
 export const metadata: Metadata = {
   title: 'Account - Verdant Labs',
@@ -18,6 +19,7 @@ export default async function AccountPage() {
   return (
     <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
       <Header />
+      <div className="mx-auto max-w-3xl px-6 pt-6 md:px-10"><BackButton /></div>
       <section className="px-6 py-16 md:px-10">
         <div className="mx-auto max-w-3xl">
           <div className="mb-8">

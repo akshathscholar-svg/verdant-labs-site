@@ -5,6 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Sprite from '../components/Sprite';
+import BackButton from '../components/BackButton';
+import {
+  SunIcon, DropletIcon, ThermometerIcon, WindIcon, WarningIcon,
+  PlantPotIcon, FlaskIcon, SeedlingIcon,
+} from '../components/Icons';
 
 interface PrototypeData {
   plantName: string;
@@ -199,6 +204,7 @@ export default function DashboardClient() {
         {/* Hero */}
         <section className="border-b border-[#E7DECF] bg-[#F7F3EC] px-6 pb-8 pt-14 md:pb-10 md:pt-18">
           <div className="mx-auto max-w-6xl">
+            <BackButton />
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
               className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
@@ -242,7 +248,7 @@ export default function DashboardClient() {
           ) : error && !data ? (
             <motion.div key="err" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="mx-auto max-w-sm px-6 py-28 text-center">
-              <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-[#C4684A]/10 text-lg">&#9888;&#65039;</div>
+              <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-[#C4684A]/10"><WarningIcon size={20} className="text-[#C4684A]" /></div>
               <p className="text-sm text-[#4F4B44]">Unable to reach sensor</p>
               <p className="mt-1 text-[11px] text-[#7A756C]">{error}</p>
               <button onClick={fetchData} className="mt-5 rounded-full bg-[#B78A2A] px-5 py-2 text-xs font-semibold text-white transition hover:bg-[#9D7620]">Retry</button>
@@ -255,7 +261,7 @@ export default function DashboardClient() {
                 <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
                   className="mb-7 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#E5DBCC] bg-white/80 p-4 shadow-sm sm:p-5">
                   <div className="flex items-center gap-3.5">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F3EDE2] text-xl">&#127794;</div>
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F3EDE2]"><SeedlingIcon size={20} className="text-[#6B8F5E]" /></div>
                     <div>
                       <h2 className="text-base font-bold text-[#1F1F1B]">
                         {data.plantNickname || data.plantName}
@@ -331,7 +337,7 @@ export default function DashboardClient() {
                       <div className="grid grid-cols-2 divide-x divide-[#E5DBCC] sm:grid-cols-4">
                         {data.careProfile.care.light?.level && (
                           <div className="p-4 text-center">
-                            <p className="text-lg">☀️</p>
+                            <div className="mx-auto mb-1 flex h-7 w-7 items-center justify-center"><SunIcon size={18} className="text-[#B78A2A]" /></div>
                             <p className="text-[10px] font-bold uppercase tracking-wider text-[#B78A2A]">Light</p>
                             <p className="mt-0.5 text-[12px] font-semibold text-[#3B3933]">{data.careProfile.care.light.level}</p>
                             {data.careProfile.care.light.hours && (
@@ -341,21 +347,21 @@ export default function DashboardClient() {
                         )}
                         {data.careProfile.care.water?.frequency && (
                           <div className="p-4 text-center">
-                            <p className="text-lg">💧</p>
+                            <div className="mx-auto mb-1 flex h-7 w-7 items-center justify-center"><DropletIcon size={18} className="text-[#7B9DAE]" /></div>
                             <p className="text-[10px] font-bold uppercase tracking-wider text-[#7B9DAE]">Water</p>
                             <p className="mt-0.5 text-[12px] font-semibold text-[#3B3933]">{data.careProfile.care.water.frequency}</p>
                           </div>
                         )}
                         {data.careProfile.care.temperature && (
                           <div className="p-4 text-center">
-                            <p className="text-lg">🌡️</p>
+                            <div className="mx-auto mb-1 flex h-7 w-7 items-center justify-center"><ThermometerIcon size={18} className="text-[#C4684A]" /></div>
                             <p className="text-[10px] font-bold uppercase tracking-wider text-[#C4684A]">Temp</p>
                             <p className="mt-0.5 text-[12px] font-semibold text-[#3B3933]">{data.careProfile.care.temperature.min}–{data.careProfile.care.temperature.max}{data.careProfile.care.temperature.unit}</p>
                           </div>
                         )}
                         {data.careProfile.care.humidity && (
                           <div className="p-4 text-center">
-                            <p className="text-lg">💨</p>
+                            <div className="mx-auto mb-1 flex h-7 w-7 items-center justify-center"><WindIcon size={18} className="text-[#7B9DAE]" /></div>
                             <p className="text-[10px] font-bold uppercase tracking-wider text-[#7B9DAE]">Humidity</p>
                             <p className="mt-0.5 text-[12px] font-semibold text-[#3B3933]">{data.careProfile.care.humidity.min}–{data.careProfile.care.humidity.max}{data.careProfile.care.humidity.unit}</p>
                           </div>
@@ -370,17 +376,17 @@ export default function DashboardClient() {
                         <div className="flex flex-wrap items-center gap-2 px-5 py-3">
                           {data.careProfile.warnings?.map((w: string, i: number) => (
                             <span key={i} className="rounded-full bg-[#C4684A]/8 px-3 py-1 text-[10px] font-semibold text-[#C4684A]">
-                              ⚠️ {w}
+                              <WarningIcon size={12} className="mr-0.5 inline-block" /> {w}
                             </span>
                           ))}
                           {data.careProfile.care?.soil && (
                             <span className="rounded-full bg-[#6B8F5E]/8 px-3 py-1 text-[10px] font-medium text-[#5C584F]">
-                              🪴 {data.careProfile.care.soil}
+                              <PlantPotIcon size={12} className="mr-0.5 inline-block" /> {data.careProfile.care.soil}
                             </span>
                           )}
                           {data.careProfile.care?.fertilizer && (
                             <span className="rounded-full bg-[#B78A2A]/8 px-3 py-1 text-[10px] font-medium text-[#5C584F]">
-                              🧪 {data.careProfile.care.fertilizer}
+                              <FlaskIcon size={12} className="mr-0.5 inline-block" /> {data.careProfile.care.fertilizer}
                             </span>
                           )}
                         </div>
