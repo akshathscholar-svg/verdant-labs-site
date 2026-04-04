@@ -2,6 +2,7 @@
 
 import { createClient } from '@/app/lib/supabase-server';
 import { supabase } from '@/app/lib/supabase';
+import { pushCareProfileToDevice } from '@/app/lib/arduino';
 import { redirect } from 'next/navigation';
 
 export type PairState = { error?: string; success?: boolean };
@@ -70,4 +71,28 @@ export async function saveSetupResults(deviceId: string, answers: Record<string,
     .eq('user_id', user.id);
 
   if (error) throw new Error('Failed to save setup data');
+
+  // Push care profile values to Arduino Cloud so the device uses dynamic ranges
+  try {
+    const { data: device } = await supabase
+      .from('devices')
+      .select('thing_id')
+      .eq('id', deviceId)
+      .single();
+
+    if (device?.thing_id) {
+      await pushCareProfileToDevice(device.thing_id, profile as {
+        species?: string;
+        commonName?: string;
+        care?: {
+          temperature?: { min?: number; max?: number };
+          humidity?: { min?: number; max?: number };
+          light?: { level?: string };
+        };
+      });
+    }
+  } catch (e) {
+    // Don't fail the whole setup if Arduino push fails
+    console.error('Failed to push care profile to device:', e);
+  }
 }
