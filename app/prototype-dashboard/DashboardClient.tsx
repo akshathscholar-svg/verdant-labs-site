@@ -67,19 +67,22 @@ const C = {
 const POLL = 60_000;
 
 function statusBadge(s: string) {
-  if (s === 'Healthy') return { bg: 'bg-[#6B8F5E]/10', text: 'text-[#6B8F5E]', dot: 'bg-[#6B8F5E]' };
+  if (s === 'Healthy' || s === 'Stable') return { bg: 'bg-[#6B8F5E]/10', text: 'text-[#6B8F5E]', dot: 'bg-[#6B8F5E]' };
   if (s === 'Monitor Closely') return { bg: 'bg-[#B78A2A]/10', text: 'text-[#B78A2A]', dot: 'bg-[#B78A2A]' };
-  if (s === 'Needs Attention') return { bg: 'bg-[#C4684A]/10', text: 'text-[#C4684A]', dot: 'bg-[#C4684A]' };
+  if (s === 'Needs Attention' || s === 'At Risk') return { bg: 'bg-[#C4684A]/10', text: 'text-[#C4684A]', dot: 'bg-[#C4684A]' };
+  if (s === 'Sensor Issue') return { bg: 'bg-[#C4684A]/10', text: 'text-[#C4684A]', dot: 'bg-[#C4684A]' };
   return { bg: 'bg-[#F3EDE2]', text: 'text-[#5C584F]', dot: 'bg-[#8A857C]' };
 }
 
 function condBadge(c: string) {
-  if (c === 'In Range' || c === 'Moderate' || c === 'Bright')
+  if (c === 'In Range' || c === 'Moderate' || c === 'Bright' || c === 'Good' || c === 'Medium')
     return { cls: 'bg-[#6B8F5E]/10 text-[#6B8F5E]', icon: '\u25CF' };
-  if (c === 'Too Low' || c === 'Very Low' || c === 'Dry')
+  if (c === 'Too Low' || c === 'Very Low' || c === 'Dry' || c === 'Very Dry' || c === 'Low')
     return { cls: 'bg-[#B78A2A]/10 text-[#B78A2A]', icon: '\u25BC' };
-  if (c === 'Too High' || c === 'Wet')
+  if (c === 'Too High' || c === 'Wet' || c === 'Very Wet')
     return { cls: 'bg-[#C4684A]/10 text-[#C4684A]', icon: '\u25B2' };
+  if (c === 'Read Error')
+    return { cls: 'bg-[#C4684A]/10 text-[#C4684A]', icon: '\u26A0' };
   return { cls: 'bg-[#F3EDE2] text-[#5C584F]', icon: '\u2014' };
 }
 
