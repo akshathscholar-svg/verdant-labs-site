@@ -1,4 +1,6 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/app/lib/supabase-server';
+import { supabase } from '@/app/lib/supabase';
 
 let cachedToken: { token: string; expiresAt: number } | null = null;
 
@@ -22,9 +24,8 @@ async function getToken(): Promise<string> {
   return cachedToken.token;
 }
 
-async function getArduinoData() {
+async function getArduinoData(thingId: string) {
   const token = await getToken();
-  const thingId = process.env.ARDUINO_THING_ID!;
   const res = await fetch(
     'https://api2.arduino.cc/iot/v2/things/' + thingId + '/properties',
     { headers: { Authorization: 'Bearer ' + token }, cache: 'no-store' },
@@ -56,10 +57,52 @@ async function getArduinoData() {
   };
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const data = await getArduinoData();
-    return NextResponse.json(data, {
+    let thingId = process.env.ARDUINO_THING_ID!;
+    let careProfile = null;
+    let plantNickname: string | null = null;
+    let plantSpecies: string | null = null;
+    let plantImageUrl: string | null = null;
+    let personalized = false;
+
+    // Check if user is authenticated and has a device
+    const personalize = request.nextUrl.searchParams.get('personalized');
+    if (personalize === 'true') {
+      try {
+        const auth = await createClient();
+        const { data: { user } } = await auth.auth.getUser();
+        if (user) {
+          const { data: device } = await supabase
+            .from('devices')
+            .select('thing_id, care_profile, plant_nickname, plant_species, plant_image_url, setup_complete')
+            .eq('user_id', user.id)
+            .single();
+          if (device?.thing_id) {
+            thingId = device.thing_id;
+            personalized = true;
+            if (device.setup_complete && device.care_profile) {
+              careProfile = device.care_profile;
+              plantNickname = device.plant_nickname;
+              plantSpecies = device.plant_species;
+              plantImageUrl = device.plant_image_url;
+            }
+          }
+        }
+      } catch {
+        // Fall through to generic mode
+      }
+    }
+
+    const data = await getArduinoData(thingId);
+    return NextResponse.json({
+      ...data,
+      personalized,
+      careProfile,
+      plantNickname,
+      plantSpecies,
+      plantImageUrl,
+    }, {
       headers: { 'Cache-Control': 'no-store, max-age=0' },
     });
   } catch (err) {

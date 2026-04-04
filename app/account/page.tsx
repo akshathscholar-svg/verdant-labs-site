@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { createClient } from '@/app/lib/supabase-server';
+import { getUserDevice } from '@/app/actions/devices';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 import AccountClient from './AccountClient';
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
 export default async function AccountPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  const device = await getUserDevice();
 
   return (
     <main className="min-h-screen bg-[#F7F3EC] text-[#1F1F1B]">
@@ -31,6 +33,13 @@ export default async function AccountPage() {
             email={user?.email ?? ''}
             fullName={user?.user_metadata?.full_name ?? ''}
             createdAt={user?.created_at ?? ''}
+            device={device ? {
+              id: device.id,
+              pairing_code: device.pairing_code,
+              plant_species: device.plant_species,
+              plant_nickname: device.plant_nickname,
+              setup_complete: device.setup_complete,
+            } : null}
           />
         </div>
       </section>

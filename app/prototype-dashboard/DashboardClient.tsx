@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Sprite from '../components/Sprite';
 
 interface PrototypeData {
   plantName: string;
@@ -21,6 +22,30 @@ interface PrototypeData {
   trendInsight: string;
   nextAction: string;
   updatedAt: string;
+  personalized?: boolean;
+  careProfile?: CareProfile | null;
+  plantNickname?: string | null;
+  plantSpecies?: string | null;
+  plantImageUrl?: string | null;
+}
+
+interface CareProfile {
+  species?: string;
+  commonName?: string;
+  family?: string;
+  description?: string;
+  difficulty?: string;
+  care?: {
+    temperature?: { min?: number; max?: number; unit?: string; note?: string };
+    humidity?: { min?: number; max?: number; unit?: string; note?: string };
+    light?: { level?: string; note?: string };
+    water?: { frequency?: string; note?: string };
+    soil?: string;
+    fertilizer?: string;
+  };
+  facts?: string[];
+  warnings?: string[];
+  seasonalTips?: Record<string, string>;
 }
 
 interface HistoryPoint {
@@ -146,7 +171,7 @@ export default function DashboardClient() {
 
   const fetchData = useCallback(async () => {
     try {
-      const r = await fetch('/api/prototype-data', { cache: 'no-store' });
+      const r = await fetch('/api/prototype-data?personalized=true', { cache: 'no-store' });
       if (!r.ok) throw new Error(`${r.status}`);
       const j: PrototypeData = await r.json();
       setData(j);
@@ -229,12 +254,19 @@ export default function DashboardClient() {
                   <div className="flex items-center gap-3.5">
                     <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#F3EDE2] text-xl">&#127794;</div>
                     <div>
-                      <h2 className="text-base font-bold text-[#1F1F1B]">{data.plantName}</h2>
-                      {badge && (
-                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold ${badge.bg} ${badge.text}`}>
-                          <span className={`h-1.5 w-1.5 rounded-full ${badge.dot}`} />{data.plantStatus}
-                        </span>
-                      )}
+                      <h2 className="text-base font-bold text-[#1F1F1B]">
+                        {data.plantNickname || data.plantName}
+                      </h2>
+                      <div className="flex items-center gap-2">
+                        {badge && (
+                          <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold ${badge.bg} ${badge.text}`}>
+                            <span className={`h-1.5 w-1.5 rounded-full ${badge.dot}`} />{data.plantStatus}
+                          </span>
+                        )}
+                        {data.plantSpecies && (
+                          <span className="text-[11px] text-[#7A756C]">{data.plantSpecies}</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="text-right">
@@ -242,6 +274,58 @@ export default function DashboardClient() {
                     <p className="text-[11px] font-semibold text-[#5C584F]">{fmtDate(data.updatedAt)}</p>
                   </div>
                 </motion.div>
+
+                {/* Personalized plant profile card */}
+                {data.personalized && data.careProfile && (
+                  <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05, duration: 0.4 }}
+                    className="mb-7 rounded-2xl border border-[#6B8F5E]/20 bg-gradient-to-br from-[#6B8F5E]/5 to-[#F7F3EC] p-5 shadow-sm sm:p-6">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
+                      {data.plantImageUrl && (
+                        <img src={data.plantImageUrl} alt={data.plantSpecies || 'Plant'} className="h-24 w-24 rounded-xl border border-[#E5DBCC] object-cover shadow-sm" />
+                      )}
+                      <div className="flex-1">
+                        <div className="mb-2 flex items-center gap-2">
+                          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#6B8F5E]">Plant Profile</p>
+                          {data.careProfile.difficulty && (
+                            <span className="rounded-full bg-[#6B8F5E]/10 px-2 py-0.5 text-[9px] font-bold text-[#6B8F5E]">
+                              {data.careProfile.difficulty}
+                            </span>
+                          )}
+                        </div>
+                        {data.careProfile.description && (
+                          <p className="mb-3 text-[13px] leading-relaxed text-[#4F4B44]">{data.careProfile.description}</p>
+                        )}
+                        {data.careProfile.care && (
+                          <div className="grid gap-2 text-[11px] sm:grid-cols-2 lg:grid-cols-3">
+                            {data.careProfile.care.light?.level && (
+                              <div className="rounded-lg bg-white/60 px-3 py-2">
+                                <span className="font-bold text-[#B78A2A]">☀️ Light:</span>{' '}
+                                <span className="text-[#4F4B44]">{data.careProfile.care.light.level}</span>
+                              </div>
+                            )}
+                            {data.careProfile.care.water?.frequency && (
+                              <div className="rounded-lg bg-white/60 px-3 py-2">
+                                <span className="font-bold text-[#7B9DAE]">💧 Water:</span>{' '}
+                                <span className="text-[#4F4B44]">{data.careProfile.care.water.frequency}</span>
+                              </div>
+                            )}
+                            {data.careProfile.care.temperature && (
+                              <div className="rounded-lg bg-white/60 px-3 py-2">
+                                <span className="font-bold text-[#C4684A]">🌡️ Temp:</span>{' '}
+                                <span className="text-[#4F4B44]">{data.careProfile.care.temperature.min}–{data.careProfile.care.temperature.max}{data.careProfile.care.temperature.unit}</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {data.careProfile.warnings && data.careProfile.warnings.length > 0 && (
+                          <div className="mt-3 rounded-lg bg-[#C4684A]/5 px-3 py-2 text-[11px] text-[#C4684A]">
+                            ⚠️ {data.careProfile.warnings[0]}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
 
                 {/* Quick bars */}
                 <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05, duration: 0.4 }}
@@ -347,6 +431,20 @@ export default function DashboardClient() {
           ) : null}
         </AnimatePresence>
       </main>
+      {/* Sprite AI assistant */}
+      {data && (
+        <Sprite plantContext={{
+          species: data.plantSpecies || data.plantName,
+          nickname: data.plantNickname || undefined,
+          sensorData: {
+            temperature: data.temperature,
+            humidity: data.humidity,
+            moisture: data.moisture,
+            light: data.light,
+          },
+          careProfile: data.careProfile as Record<string, unknown> || undefined,
+        }} />
+      )}
       <Footer />
     </>
   );
