@@ -4,7 +4,8 @@ import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { saveSetupResults } from '@/app/actions/devices';
-import { LeafIcon, CactusIcon, FlowerIcon, SeedlingIcon, PalmIcon, CloverIcon, SparklesIcon, CameraIcon } from '@/app/components/Icons';
+import { identifyPlant, type PlantResult } from '@/app/actions/identify';
+import { LeafIcon, CactusIcon, FlowerIcon, SeedlingIcon, PalmIcon, CloverIcon, SparklesIcon, CameraIcon, CheckCircleIcon } from '@/app/components/Icons';
 import type { ComponentType } from 'react';
 
 interface Props {
@@ -109,6 +110,10 @@ export default function SetupWizard({ deviceId }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [photoBase64, setPhotoBase64] = useState<string | null>(null);
+  const [identifying, setIdentifying] = useState(false);
+  const [identifyError, setIdentifyError] = useState<string | null>(null);
+  const [identifyResult, setIdentifyResult] = useState<PlantResult | null>(null);
+  const [autoFilled, setAutoFilled] = useState<Set<string>>(new Set());
 
   const [answers, setAnswers] = useState({
     knownSpecies: '',
@@ -139,6 +144,72 @@ export default function SetupWizard({ deviceId }: Props) {
       setPhotoBase64(result);
     };
     reader.readAsDataURL(file);
+  }
+
+  function inferPlantType(r: PlantResult): string {
+    const t = `${r.family} ${r.commonName} ${r.scientificName} ${r.summary}`.toLowerCase();
+    if (/cact|succul|agave|aloe|jade|echeveria|haworthia|sedum|crassula/.test(t)) return 'succulent';
+    if (/fern|pterid|frond|maiden|boston|staghorn/.test(t)) return 'fern';
+    if (/vine|trail|climb|pothos|ivy|hoya|string of|philoden/.test(t)) return 'vine';
+    if (/palm|dracaena|areca|parlor|rubber|fig|ficus/.test(t)) return 'tree';
+    if (/flower|bloom|orchid|lily|rose|begonia|petunia|violet|hibiscus/.test(t)) return 'flowering';
+    return 'leafy';
+  }
+
+  function inferSunlight(light: string): string | null {
+    const l = light.toLowerCase();
+    if (/low|shade|dim/.test(l)) return 'low';
+    if (/bright direct|full sun/.test(l)) return 'bright';
+    if (/moderate|indirect|medium|partial|filtered|bright/.test(l)) return 'moderate';
+    return null;
+  }
+
+  function inferWaterFreq(freq: string): string | null {
+    const f = freq.toLowerCase();
+    if (/daily|every\s*(1|2|3|few)\s*day/.test(f)) return 'few-days';
+    if (/week|7|5.?7|7.?10/.test(f)) return 'weekly';
+    if (/2\s*week|bi.?week|10.?14|14|fortnight/.test(f)) return 'biweekly';
+    if (/month|3.?4\s*week|once\s*a\s*month|infrequent|rare/.test(f)) return 'monthly';
+    return null;
+  }
+
+  function inferFertilizer(fert: string): string | null {
+    const f = fert.toLowerCase();
+    if (/regular|monthly|every|during grow|spring.*summer|bi.?week/.test(f)) return 'regularly';
+    if (/occasional|light|minimal|sparingly|dilut/.test(f)) return 'sometimes';
+    if (/none|not required|rarely|seldom|little/.test(f)) return 'never';
+    return 'sometimes';
+  }
+
+  async function handleIdentify() {
+    if (!photoBase64) return;
+    setIdentifying(true);
+    setIdentifyError(null);
+    try {
+      const resp = await identifyPlant(photoBase64);
+      if (!resp.ok) { setIdentifyError(resp.error); return; }
+      const r = resp.result;
+      setIdentifyResult(r);
+      const filled = new Set<string>();
+
+      set('knownSpecies', r.commonName);
+      filled.add('knownSpecies');
+
+      const pt = inferPlantType(r);
+      set('plantType', pt);
+      filled.add('plantType');
+
+      const sun = inferSunlight(r.light);
+      if (sun) { set('sunlight', sun); filled.add('sunlight'); }
+
+      const wf = inferWaterFreq(r.waterFrequency);
+      if (wf) { set('waterFrequency', wf); filled.add('waterFrequency'); }
+
+      const ft = inferFertilizer(r.fertilizerNeeds);
+      if (ft) { set('fertilizer', ft); filled.add('fertilizer'); }
+
+      setAutoFilled(filled);
+    } finally { setIdentifying(false); }
   }
 
   function canAdvance(): boolean {
@@ -244,23 +315,10 @@ export default function SetupWizard({ deviceId }: Props) {
             {/* Step 0: Plant identity */}
             {step === 0 && (
               <>
+                {/* Photo upload — always shown */}
                 <div>
                   <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
-                    Do you know your plant&apos;s name?
-                  </label>
-                  <input
-                    type="text"
-                    value={answers.knownSpecies}
-                    onChange={e => set('knownSpecies', e.target.value)}
-                    placeholder="e.g. Monstera, Pothos, Fiddle Leaf Fig..."
-                    className="w-full rounded-xl border border-[#E5DBCC] bg-[#F7F3EC] px-4 py-3 text-sm text-[#1F1F1B] outline-none transition placeholder:text-[#8A857C] focus:border-[#B78A2A] focus:ring-1 focus:ring-[#B78A2A]/30"
-                  />
-                  <p className="mt-1 text-[11px] text-[#8A857C]">Leave blank if you&apos;re not sure — we&apos;ll help identify it.</p>
-                </div>
-
-                <div>
-                  <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
-                    Upload a photo <span className="normal-case text-[#8A857C]">(optional, helps with ID)</span>
+                    Upload a photo of your plant
                   </label>
                   <input
                     ref={fileRef}
@@ -270,11 +328,11 @@ export default function SetupWizard({ deviceId }: Props) {
                     className="hidden"
                   />
                   {photoPreview ? (
-                    <div className="relative">
+                    <div className="relative inline-block">
                       <img src={photoPreview} alt="Plant" className="h-40 w-40 rounded-xl border border-[#E5DBCC] object-cover" />
                       <button
                         type="button"
-                        onClick={() => { setPhotoPreview(null); setPhotoBase64(null); }}
+                        onClick={() => { setPhotoPreview(null); setPhotoBase64(null); setIdentifyResult(null); setAutoFilled(new Set()); }}
                         className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#C4684A] text-xs text-white"
                       >
                         ✕
@@ -291,19 +349,93 @@ export default function SetupWizard({ deviceId }: Props) {
                   )}
                 </div>
 
-                <div>
-                  <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
-                    What type of plant is it?
-                  </label>
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                    {PLANT_TYPES.map(t => (
-                      <OptionButton key={t.value} selected={answers.plantType === t.value} onClick={() => set('plantType', t.value)}>
-                        <span className="mr-2 inline-flex">{(() => { const Icon = t.icon; return <Icon size={16} />; })()}</span>{t.label}
-                      </OptionButton>
-                    ))}
-                  </div>
-                </div>
+                {/* Identify button — shown after photo, before identification */}
+                {photoBase64 && !identifyResult && !identifying && (
+                  <button
+                    type="button"
+                    onClick={handleIdentify}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#B78A2A] bg-[#B78A2A]/5 px-4 py-3 text-sm font-semibold text-[#B78A2A] transition hover:bg-[#B78A2A]/10"
+                  >
+                    <SparklesIcon size={16} /> Identify My Plant
+                  </button>
+                )}
 
+                {/* Identifying spinner */}
+                {identifying && (
+                  <div className="flex items-center gap-3 rounded-xl border border-[#E5DBCC] bg-white/80 p-4">
+                    <motion.div animate={{ rotate: 360 }} transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}>
+                      <LeafIcon size={20} className="text-[#B78A2A]" />
+                    </motion.div>
+                    <p className="text-sm text-[#5C584F]">Identifying your plant...</p>
+                  </div>
+                )}
+
+                {/* Identify error */}
+                {identifyError && (
+                  <p className="rounded-xl border border-[#C4684A]/20 bg-[#C4684A]/5 px-4 py-3 text-sm text-[#C4684A]">
+                    {identifyError}
+                  </p>
+                )}
+
+                {/* Identification result card */}
+                {identifyResult && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-xl border border-[#6B8F5E]/30 bg-[#6B8F5E]/5 p-4"
+                  >
+                    <div className="mb-2 flex items-center gap-2">
+                      <CheckCircleIcon size={16} className="text-[#6B8F5E]" />
+                      <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#6B8F5E]">Plant Identified</p>
+                    </div>
+                    <p className="text-base font-semibold text-[#1F1F1B]">{identifyResult.commonName}</p>
+                    <p className="text-xs italic text-[#7A756C]">{identifyResult.scientificName} &mdash; {identifyResult.family}</p>
+                    <p className="mt-2 text-[11px] leading-relaxed text-[#5C584F]">{identifyResult.summary}</p>
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {Array.from(autoFilled).map(key => (
+                        <span key={key} className="rounded-full bg-[#6B8F5E]/10 px-2.5 py-0.5 text-[10px] font-semibold text-[#6B8F5E]">
+                          {key === 'knownSpecies' ? 'Species' : key === 'plantType' ? 'Type' : key === 'sunlight' ? 'Light' : key === 'waterFrequency' ? 'Watering' : key === 'fertilizer' ? 'Fertilizer' : key}
+                        </span>
+                      ))}
+                      <span className="rounded-full bg-[#6B8F5E]/10 px-2.5 py-0.5 text-[10px] text-[#6B8F5E]">auto-filled</span>
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Species name — only if not auto-filled */}
+                {!autoFilled.has('knownSpecies') && (
+                  <div>
+                    <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
+                      Do you know your plant&apos;s name?
+                    </label>
+                    <input
+                      type="text"
+                      value={answers.knownSpecies}
+                      onChange={e => set('knownSpecies', e.target.value)}
+                      placeholder="e.g. Monstera, Pothos, Fiddle Leaf Fig..."
+                      className="w-full rounded-xl border border-[#E5DBCC] bg-[#F7F3EC] px-4 py-3 text-sm text-[#1F1F1B] outline-none transition placeholder:text-[#8A857C] focus:border-[#B78A2A] focus:ring-1 focus:ring-[#B78A2A]/30"
+                    />
+                    <p className="mt-1 text-[11px] text-[#8A857C]">Leave blank if you&apos;re not sure — we&apos;ll help identify it.</p>
+                  </div>
+                )}
+
+                {/* Plant type — only if not auto-filled */}
+                {!autoFilled.has('plantType') && (
+                  <div>
+                    <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
+                      What type of plant is it?
+                    </label>
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                      {PLANT_TYPES.map(t => (
+                        <OptionButton key={t.value} selected={answers.plantType === t.value} onClick={() => set('plantType', t.value)}>
+                          <span className="mr-2 inline-flex">{(() => { const Icon = t.icon; return <Icon size={16} />; })()}</span>{t.label}
+                        </OptionButton>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Plant size — always shown (can't be auto-detected) */}
                 <div>
                   <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
                     How big is your plant?
@@ -311,7 +443,7 @@ export default function SetupWizard({ deviceId }: Props) {
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { v: 'small', l: 'Small', d: 'Under 1 ft' },
-                      { v: 'medium', l: 'Medium', d: '1–3 ft' },
+                      { v: 'medium', l: 'Medium', d: '1\u20133 ft' },
                       { v: 'large', l: 'Large', d: '3+ ft' },
                     ].map(s => (
                       <OptionButton key={s.v} selected={answers.plantSize === s.v} onClick={() => set('plantSize', s.v)}>
@@ -327,6 +459,13 @@ export default function SetupWizard({ deviceId }: Props) {
             {/* Step 1: Environment */}
             {step === 1 && (
               <>
+                {autoFilled.has('sunlight') && (
+                  <div className="rounded-xl border border-[#6B8F5E]/20 bg-[#6B8F5E]/5 px-4 py-3">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B8F5E]">Auto-detected from scan</p>
+                    <p className="mt-1 text-sm text-[#4F4B44]"><span className="font-medium">Sunlight:</span> {SUNLIGHT.find(s => s.value === answers.sunlight)?.label}</p>
+                  </div>
+                )}
+
                 <div>
                   <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
                     Where is your plant located?
@@ -353,36 +492,52 @@ export default function SetupWizard({ deviceId }: Props) {
                   </div>
                 </div>
 
-                <div>
-                  <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
-                    How much sunlight does it get daily?
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {SUNLIGHT.map(s => (
-                      <OptionButton key={s.value} selected={answers.sunlight === s.value} onClick={() => set('sunlight', s.value)}>
-                        {s.label}
-                      </OptionButton>
-                    ))}
+                {!autoFilled.has('sunlight') && (
+                  <div>
+                    <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
+                      How much sunlight does it get daily?
+                    </label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {SUNLIGHT.map(s => (
+                        <OptionButton key={s.value} selected={answers.sunlight === s.value} onClick={() => set('sunlight', s.value)}>
+                          {s.label}
+                        </OptionButton>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </>
             )}
 
             {/* Step 2: Care routine */}
             {step === 2 && (
               <>
-                <div>
-                  <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
-                    How often do you water?
-                  </label>
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    {WATER_FREQ.map(w => (
-                      <OptionButton key={w.value} selected={answers.waterFrequency === w.value} onClick={() => set('waterFrequency', w.value)}>
-                        {w.label}
-                      </OptionButton>
-                    ))}
+                {(autoFilled.has('waterFrequency') || autoFilled.has('fertilizer')) && (
+                  <div className="rounded-xl border border-[#6B8F5E]/20 bg-[#6B8F5E]/5 px-4 py-3">
+                    <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#6B8F5E]">Auto-detected from scan</p>
+                    {autoFilled.has('waterFrequency') && (
+                      <p className="mt-1 text-sm text-[#4F4B44]"><span className="font-medium">Watering:</span> {WATER_FREQ.find(w => w.value === answers.waterFrequency)?.label}</p>
+                    )}
+                    {autoFilled.has('fertilizer') && (
+                      <p className="mt-1 text-sm text-[#4F4B44]"><span className="font-medium">Fertilizer:</span> {[{ v: 'regularly', l: 'Yes, regularly' }, { v: 'sometimes', l: 'Sometimes' }, { v: 'never', l: 'Never' }].find(f => f.v === answers.fertilizer)?.l}</p>
+                    )}
                   </div>
-                </div>
+                )}
+
+                {!autoFilled.has('waterFrequency') && (
+                  <div>
+                    <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
+                      How often do you water?
+                    </label>
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                      {WATER_FREQ.map(w => (
+                        <OptionButton key={w.value} selected={answers.waterFrequency === w.value} onClick={() => set('waterFrequency', w.value)}>
+                          {w.label}
+                        </OptionButton>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div>
                   <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
@@ -397,22 +552,24 @@ export default function SetupWizard({ deviceId }: Props) {
                   </div>
                 </div>
 
-                <div>
-                  <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
-                    Do you use fertilizer?
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {[
-                      { v: 'regularly', l: 'Yes, regularly' },
-                      { v: 'sometimes', l: 'Sometimes' },
-                      { v: 'never', l: 'Never' },
-                    ].map(f => (
-                      <OptionButton key={f.v} selected={answers.fertilizer === f.v} onClick={() => set('fertilizer', f.v)}>
-                        {f.l}
-                      </OptionButton>
-                    ))}
+                {!autoFilled.has('fertilizer') && (
+                  <div>
+                    <label className="mb-2 block text-xs font-medium uppercase tracking-[0.14em] text-[#7A756C]">
+                      Do you use fertilizer?
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { v: 'regularly', l: 'Yes, regularly' },
+                        { v: 'sometimes', l: 'Sometimes' },
+                        { v: 'never', l: 'Never' },
+                      ].map(f => (
+                        <OptionButton key={f.v} selected={answers.fertilizer === f.v} onClick={() => set('fertilizer', f.v)}>
+                          {f.l}
+                        </OptionButton>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </>
             )}
 
