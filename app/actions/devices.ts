@@ -102,6 +102,12 @@ export async function removeDevice(deviceId: string): Promise<{ error?: string }
   const { data: { user } } = await auth.auth.getUser();
   if (!user) return { error: 'Not authenticated' };
 
+  // Delete all sensor readings for this device first
+  await supabase
+    .from('sensor_readings')
+    .delete()
+    .eq('device_id', deviceId);
+
   // Unlink device from user — don't delete the row so it can be re-paired
   const { error } = await supabase
     .from('devices')
