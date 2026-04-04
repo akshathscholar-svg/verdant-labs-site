@@ -59,12 +59,19 @@ async function getArduinoData(thingId: string) {
 
 export async function GET(request: NextRequest) {
   try {
+    /* ── Check for history-only request ── */
+    const historyParam = request.nextUrl.searchParams.get('history');
+    if (historyParam) {
+      return await handleHistoryRequest(request, parseInt(historyParam, 10) || 30);
+    }
+
     let thingId = process.env.ARDUINO_THING_ID!;
     let careProfile = null;
     let plantNickname: string | null = null;
     let plantSpecies: string | null = null;
     let plantImageUrl: string | null = null;
     let personalized = false;
+    let deviceId: string | null = null;
 
     // Check if user is authenticated and has a device
     const personalize = request.nextUrl.searchParams.get('personalized');
@@ -75,11 +82,12 @@ export async function GET(request: NextRequest) {
         if (user) {
           const { data: device } = await supabase
             .from('devices')
-            .select('thing_id, care_profile, plant_nickname, plant_species, plant_image_url, setup_complete')
+            .select('id, thing_id, care_profile, plant_nickname, plant_species, plant_image_url, setup_complete')
             .eq('user_id', user.id)
             .single();
           if (device?.thing_id) {
             thingId = device.thing_id;
+            deviceId = device.id;
             personalized = true;
             if (device.setup_complete && device.care_profile) {
               careProfile = device.care_profile;
@@ -95,6 +103,20 @@ export async function GET(request: NextRequest) {
     }
 
     const data = await getArduinoData(thingId);
+
+    /* ── Persist reading to sensor_readings (fire-and-forget) ── */
+    if (personalized && deviceId) {
+      supabase.from('sensor_readings').insert({
+        device_id: deviceId,
+        temperature: data.temperature,
+        humidity: data.humidity,
+        moisture: data.moisture,
+        light: data.light,
+        plant_status: data.plantStatus,
+        recorded_at: data.updatedAt,
+      }).then(() => {}, () => {}); // ignore errors — don't block response
+    }
+
     return NextResponse.json({
       ...data,
       personalized,
@@ -111,5 +133,52 @@ export async function GET(request: NextRequest) {
       { error: err instanceof Error ? err.message : 'Failed to fetch sensor data' },
       { status: 502, headers: { 'Cache-Control': 'no-store' } },
     );
+  }
+}
+
+/* ── History endpoint: /api/prototype-data?history=30 ── */
+async function handleHistoryRequest(request: NextRequest, limit: number) {
+  const cap = Math.min(Math.max(limit, 1), 200);
+
+  try {
+    const auth = await createClient();
+    const { data: { user } } = await auth.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ readings: [] }, { headers: { 'Cache-Control': 'no-store' } });
+    }
+
+    // Get user's device id
+    const { data: device } = await supabase
+      .from('devices')
+      .select('id')
+      .eq('user_id', user.id)
+      .single();
+
+    if (!device) {
+      return NextResponse.json({ readings: [] }, { headers: { 'Cache-Control': 'no-store' } });
+    }
+
+    // Fetch the most recent `cap` readings, then reverse so they're chronological
+    const { data: readings } = await supabase
+      .from('sensor_readings')
+      .select('temperature, humidity, moisture, light, recorded_at')
+      .eq('device_id', device.id)
+      .order('recorded_at', { ascending: false })
+      .limit(cap);
+
+    return NextResponse.json({
+      readings: (readings ?? []).reverse().map(r => ({
+        time: r.recorded_at,
+        temperature: r.temperature,
+        humidity: r.humidity,
+        moisture: r.moisture,
+        light: r.light,
+      })),
+    }, {
+      headers: { 'Cache-Control': 'no-store, max-age=0' },
+    });
+  } catch (err) {
+    console.error('History fetch error:', err);
+    return NextResponse.json({ readings: [] }, { status: 500, headers: { 'Cache-Control': 'no-store' } });
   }
 }

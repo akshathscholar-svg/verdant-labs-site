@@ -192,7 +192,22 @@ export default function DashboardClient() {
     finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { fetchData(); const id = setInterval(() => { fetchData(); setCountdown(POLL / 1000); }, POLL); return () => clearInterval(id); }, [fetchData]);
+  /* Load saved history on mount, then fetch live + start polling */
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const r = await fetch('/api/prototype-data?history=30', { cache: 'no-store' });
+        if (r.ok) {
+          const { readings } = await r.json() as { readings: HistoryPoint[] };
+          if (!cancelled && readings?.length) setHistory(readings);
+        }
+      } catch { /* ignore – will fall back to fresh start */ }
+      if (!cancelled) fetchData();
+    })();
+    const id = setInterval(() => { fetchData(); setCountdown(POLL / 1000); }, POLL);
+    return () => { cancelled = true; clearInterval(id); };
+  }, [fetchData]);
   useEffect(() => { const id = setInterval(() => setCountdown(c => c > 0 ? c - 1 : POLL / 1000), 1000); return () => clearInterval(id); }, []);
 
   const badge = data ? statusBadge(data.plantStatus) : null;
