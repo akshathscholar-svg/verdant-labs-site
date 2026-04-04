@@ -364,7 +364,7 @@ export default function DashboardClient() {
                     )}
 
                     {/* Warnings + soil + fertilizer */}
-                    {(data.careProfile.warnings?.length > 0 || data.careProfile.care?.soil || data.careProfile.care?.fertilizer) && (
+                    {((data.careProfile.warnings?.length ?? 0) > 0 || data.careProfile.care?.soil || data.careProfile.care?.fertilizer) && (
                       <>
                         <div className="h-px bg-[#E5DBCC]" />
                         <div className="flex flex-wrap items-center gap-2 px-5 py-3">
