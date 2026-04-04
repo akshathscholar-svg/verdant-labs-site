@@ -37,6 +37,7 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
   const [showExportOptions, setShowExportOptions] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [showAddDevice, setShowAddDevice] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   async function handleRemoveDevice() {
     if (!device) return;
@@ -52,42 +53,114 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
     }
   }
 
-  function handleExportRecent() {
-    // Generate a simple PDF-like summary
-    const text = [
-      `Canopy Plant Report — ${new Date().toLocaleDateString()}`,
-      ``,
-      `Plant: ${device?.plant_nickname || 'Unknown'}`,
-      `Species: ${device?.plant_species || 'Unknown'}`,
-      `Device Code: ${device?.pairing_code || 'N/A'}`,
-      ``,
-      `This is a summary of your recent plant monitoring data.`,
-      `For full historical data, choose the spreadsheet export option.`,
-    ].join('\n');
-
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `canopy-report-${new Date().toISOString().slice(0, 10)}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+  async function fetchReadings(): Promise<{ time: string; temperature: number; humidity: number; moisture: number; light: number }[]> {
+    try {
+      const r = await fetch('/api/prototype-data?history=200', { cache: 'no-store' });
+      if (!r.ok) return [];
+      const { readings } = await r.json();
+      return readings ?? [];
+    } catch { return []; }
   }
 
-  function handleExportFull() {
-    // Generate CSV export
-    const csv = [
-      'Timestamp,Temperature (°F),Humidity (%),Moisture (raw),Light (lux)',
-      `${new Date().toISOString()},Data export requires active sensor connection,,`,
-    ].join('\n');
+  async function handleExportRecent() {
+    setExporting(true);
+    try {
+      const readings = await fetchReadings();
+      const lines: string[] = [
+        `Canopy Plant Report`,
+        `Generated: ${new Date().toLocaleString()}`,
+        `${'─'.repeat(48)}`,
+        ``,
+        `Plant: ${device?.plant_nickname || 'Unknown'}`,
+        `Species: ${device?.plant_species || 'Unknown'}`,
+        `Device Code: ${device?.pairing_code || 'N/A'}`,
+        ``,
+      ];
 
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `canopy-data-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+      if (readings.length === 0) {
+        lines.push(`No sensor readings recorded yet.`);
+        lines.push(`Visit the Live Dashboard to start collecting data.`);
+      } else {
+        const temps = readings.map((r: { temperature: number }) => r.temperature);
+        const humids = readings.map((r: { humidity: number }) => r.humidity);
+        const moists = readings.map((r: { moisture: number }) => r.moisture);
+        const lights = readings.map((r: { light: number }) => r.light);
+        const avg = (arr: number[]) => (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1);
+        const first = new Date(readings[0].time).toLocaleString();
+        const last = new Date(readings[readings.length - 1].time).toLocaleString();
+
+        lines.push(`Data Range: ${first} — ${last}`);
+        lines.push(`Total Readings: ${readings.length}`);
+        lines.push(``);
+        lines.push(`${'─'.repeat(48)}`);
+        lines.push(`SENSOR SUMMARY`);
+        lines.push(`${'─'.repeat(48)}`);
+        lines.push(``);
+        lines.push(`Temperature (°F)`);
+        lines.push(`  Latest: ${temps[temps.length - 1]}°F`);
+        lines.push(`  Average: ${avg(temps)}°F`);
+        lines.push(`  Range: ${Math.min(...temps).toFixed(1)}°F – ${Math.max(...temps).toFixed(1)}°F`);
+        lines.push(``);
+        lines.push(`Humidity (%)`);
+        lines.push(`  Latest: ${humids[humids.length - 1]}%`);
+        lines.push(`  Average: ${avg(humids)}%`);
+        lines.push(`  Range: ${Math.min(...humids).toFixed(1)}% – ${Math.max(...humids).toFixed(1)}%`);
+        lines.push(``);
+        lines.push(`Moisture (raw)`);
+        lines.push(`  Latest: ${moists[moists.length - 1]}`);
+        lines.push(`  Average: ${avg(moists)}`);
+        lines.push(`  Range: ${Math.min(...moists).toFixed(1)} – ${Math.max(...moists).toFixed(1)}`);
+        lines.push(``);
+        lines.push(`Light (lux)`);
+        lines.push(`  Latest: ${lights[lights.length - 1]}`);
+        lines.push(`  Average: ${avg(lights)}`);
+        lines.push(`  Range: ${Math.min(...lights).toFixed(1)} – ${Math.max(...lights).toFixed(1)}`);
+        lines.push(``);
+        lines.push(`${'─'.repeat(48)}`);
+        lines.push(`RECENT READINGS (last 10)`);
+        lines.push(`${'─'.repeat(48)}`);
+        lines.push(``);
+        const recent = readings.slice(-10);
+        for (const r of recent) {
+          const t = new Date(r.time).toLocaleString();
+          lines.push(`${t}  |  ${r.temperature}°F  |  ${r.humidity}%  |  M:${r.moisture}  |  L:${r.light}`);
+        }
+      }
+
+      const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `canopy-report-${new Date().toISOString().slice(0, 10)}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally { setExporting(false); }
+  }
+
+  async function handleExportFull() {
+    setExporting(true);
+    try {
+      const readings = await fetchReadings();
+      const rows: string[] = [
+        'Timestamp,Temperature (°F),Humidity (%),Moisture (raw),Light (lux)',
+      ];
+
+      if (readings.length === 0) {
+        rows.push(`${new Date().toISOString()},No readings recorded yet,,,`);
+      } else {
+        for (const r of readings) {
+          rows.push(`${r.time},${r.temperature},${r.humidity},${r.moisture},${r.light}`);
+        }
+      }
+
+      const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `canopy-data-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally { setExporting(false); }
   }
 
   return (
@@ -292,7 +365,8 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
                 <div className="mt-5 space-y-3">
                   <button
                     onClick={handleExportRecent}
-                    className="flex w-full items-center gap-4 rounded-xl border border-[#E5DBCC] bg-white/80 p-4 text-left transition hover:border-[#B78A2A] hover:shadow-sm"
+                    disabled={exporting}
+                    className="flex w-full items-center gap-4 rounded-xl border border-[#E5DBCC] bg-white/80 p-4 text-left transition hover:border-[#B78A2A] hover:shadow-sm disabled:opacity-50"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#C4684A]/10">
                       <FileTextIcon size={18} className="text-[#C4684A]" />
@@ -304,7 +378,8 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
                   </button>
                   <button
                     onClick={handleExportFull}
-                    className="flex w-full items-center gap-4 rounded-xl border border-[#E5DBCC] bg-white/80 p-4 text-left transition hover:border-[#B78A2A] hover:shadow-sm"
+                    disabled={exporting}
+                    className="flex w-full items-center gap-4 rounded-xl border border-[#E5DBCC] bg-white/80 p-4 text-left transition hover:border-[#B78A2A] hover:shadow-sm disabled:opacity-50"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#6B8F5E]/10">
                       <TableIcon size={18} className="text-[#6B8F5E]" />
