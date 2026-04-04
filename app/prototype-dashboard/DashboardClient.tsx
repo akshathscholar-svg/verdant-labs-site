@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import Reveal from '../components/Reveal';
 
-/* ── Types ── */
 interface PrototypeData {
   plantName: string;
   plantStatus: string;
@@ -32,408 +31,313 @@ interface HistoryPoint {
   light: number;
 }
 
-/* ── Helpers ── */
-const POLL_INTERVAL = 60_000; // 60 seconds
+const POLL = 60_000;
 
-function statusColor(status: string) {
-  switch (status) {
-    case 'Healthy':
-      return 'bg-[#4A7C59]/15 text-[#4A7C59] border-[#4A7C59]/30';
-    case 'Monitor Closely':
-      return 'bg-[#B78A2A]/15 text-[#B78A2A] border-[#B78A2A]/30';
-    case 'Needs Attention':
-      return 'bg-[#C0392B]/15 text-[#C0392B] border-[#C0392B]/30';
-    default:
-      return 'bg-[#5C584F]/15 text-[#5C584F] border-[#5C584F]/30';
-  }
+function statusBadge(s: string) {
+  if (s === 'Healthy') return { bg: 'bg-emerald-50', text: 'text-emerald-700', dot: 'bg-emerald-500' };
+  if (s === 'Monitor Closely') return { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500' };
+  if (s === 'Needs Attention') return { bg: 'bg-rose-50', text: 'text-rose-700', dot: 'bg-rose-500' };
+  return { bg: 'bg-stone-100', text: 'text-stone-600', dot: 'bg-stone-400' };
 }
 
-function conditionColor(condition: string) {
-  if (condition === 'In Range') return 'text-[#4A7C59]';
-  if (condition === 'Too Low' || condition === 'Too High') return 'text-[#C0392B]';
-  return 'text-[#B78A2A]';
+function condBadge(c: string) {
+  if (c === 'In Range' || c === 'Moderate' || c === 'Bright')
+    return { cls: 'bg-emerald-50 text-emerald-700', icon: '●' };
+  if (c === 'Too Low' || c === 'Very Low' || c === 'Dry')
+    return { cls: 'bg-amber-50 text-amber-700', icon: '▼' };
+  if (c === 'Too High' || c === 'Wet')
+    return { cls: 'bg-rose-50 text-rose-700', icon: '▲' };
+  return { cls: 'bg-stone-50 text-stone-600', icon: '—' };
 }
 
-function formatTime(iso: string) {
+function fmtTime(iso: string) {
   return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-function formatTimestamp(iso: string) {
-  const d = new Date(iso);
-  return d.toLocaleString([], {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+function fmtDate(iso: string) {
+  return new Date(iso).toLocaleString([], {
+    month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit',
   });
 }
 
-/* ── Mini sparkline chart ── */
-function Sparkline({
-  data,
-  color,
-  height = 48,
-  width = 200,
-}: {
-  data: number[];
-  color: string;
-  height?: number;
-  width?: number;
-}) {
+/* Smooth area sparkline */
+function Area({ data, color, id, h = 52 }: { data: number[]; color: string; id: string; h?: number }) {
   if (data.length < 2) return null;
-  const min = Math.min(...data);
-  const max = Math.max(...data);
-  const range = max - min || 1;
-  const step = width / (data.length - 1);
-  const points = data
-    .map((v, i) => `${i * step},${height - ((v - min) / range) * (height - 4) - 2}`)
-    .join(' ');
+  const W = 260, P = 3;
+  const mn = Math.min(...data), mx = Math.max(...data), rng = mx - mn || 1;
+  const step = (W - P * 2) / (data.length - 1);
+  const pts = data.map((v, i) => ({ x: P + i * step, y: h - P - ((v - mn) / rng) * (h - P * 2 - 4) }));
+  const line = pts.map((p, i) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`)).join(' ');
+  const area = `${line} L${pts[pts.length - 1].x},${h} L${pts[0].x},${h} Z`;
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full" style={{ height }}>
-      <polyline
-        points={points}
-        fill="none"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg viewBox={`0 0 ${W} ${h}`} className="w-full" preserveAspectRatio="none" style={{ height: h }}>
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.18" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill={`url(#${id})`} />
+      <path d={line} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx={pts[pts.length - 1].x} cy={pts[pts.length - 1].y} r="3.5" fill="white" stroke={color} strokeWidth="2" />
     </svg>
   );
 }
 
-/* ── Gauge ring ── */
-function GaugeRing({
-  value,
-  max,
-  label,
-  unit,
-  color,
-}: {
-  value: number;
-  max: number;
-  label: string;
-  unit: string;
-  color: string;
-}) {
-  const pct = Math.min(value / max, 1);
-  const r = 38;
-  const circumference = 2 * Math.PI * r;
-  const offset = circumference * (1 - pct);
+/* Animated progress bar */
+function Bar({ pct, color }: { pct: number; color: string }) {
   return (
-    <div className="flex flex-col items-center">
-      <svg width="96" height="96" viewBox="0 0 96 96">
-        <circle cx="48" cy="48" r={r} fill="none" stroke="#E7DECF" strokeWidth="6" />
-        <circle
-          cx="48"
-          cy="48"
-          r={r}
-          fill="none"
-          stroke={color}
-          strokeWidth="6"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          transform="rotate(-90 48 48)"
-          className="transition-all duration-700"
-        />
-        <text x="48" y="44" textAnchor="middle" className="fill-[#2E2C28] text-sm font-semibold" fontSize="16">
-          {Math.round(value)}
-        </text>
-        <text x="48" y="60" textAnchor="middle" className="fill-[#5C584F]" fontSize="10">
-          {unit}
-        </text>
-      </svg>
-      <p className="mt-1 text-xs font-medium text-[#5C584F]">{label}</p>
+    <div className="h-1.5 w-full overflow-hidden rounded-full bg-stone-100">
+      <motion.div className="h-full rounded-full" style={{ backgroundColor: color }}
+        initial={{ width: 0 }} animate={{ width: `${Math.min(pct, 100)}%` }}
+        transition={{ duration: 0.8, ease: 'easeOut' }} />
     </div>
   );
 }
 
-/* ── Main Component ── */
+/* ── Sensor metric card ── */
+function MetricCard({ icon, label, value, unit, cond, target, color, chart, chartId, i }: {
+  icon: string; label: string; value: string; unit: string; cond: string;
+  target?: string; color: string; chart: number[]; chartId: string; i: number;
+}) {
+  const badge = condBadge(cond);
+  return (
+    <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 + i * 0.06, duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+      className="group overflow-hidden rounded-2xl border border-stone-200/70 bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all hover:shadow-md">
+      <div className="h-[3px]" style={{ background: `linear-gradient(90deg, ${color}, ${color}88)` }} />
+      <div className="p-5 sm:p-6">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-50/80 text-xl">{icon}</div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-stone-400">{label}</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-[28px] font-semibold leading-none tracking-tight text-stone-800">{value}</span>
+                <span className="text-xs font-medium text-stone-400">{unit}</span>
+              </div>
+            </div>
+          </div>
+          <span className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold ${badge.cls}`}>
+            {badge.icon} {cond}
+          </span>
+        </div>
+        {target && <p className="mt-3 text-[11px] text-stone-400">Target <span className="font-medium text-stone-500">{target}</span></p>}
+        {chart.length > 1 && <div className="mt-4 -mx-2"><Area data={chart} color={color} id={chartId} /></div>}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function DashboardClient() {
   const [data, setData] = useState<PrototypeData | null>(null);
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState(POLL_INTERVAL / 1000);
+  const [countdown, setCountdown] = useState(POLL / 1000);
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await fetch('/api/prototype-data', { cache: 'no-store' });
-      if (!res.ok) throw new Error(`Status ${res.status}`);
-      const json: PrototypeData = await res.json();
-      setData(json);
+      const r = await fetch('/api/prototype-data', { cache: 'no-store' });
+      if (!r.ok) throw new Error(`${r.status}`);
+      const j: PrototypeData = await r.json();
+      setData(j);
       setError(null);
-      setHistory((prev) => {
-        const next = [
-          ...prev,
-          {
-            time: json.updatedAt,
-            temperature: json.temperature,
-            humidity: json.humidity,
-            moisture: json.moisture,
-            light: json.light,
-          },
-        ];
-        return next.slice(-30); // keep last 30 readings
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch data');
-    } finally {
-      setLoading(false);
-    }
+      setHistory(prev => [...prev, {
+        time: j.updatedAt, temperature: j.temperature,
+        humidity: j.humidity, moisture: j.moisture, light: j.light,
+      }].slice(-30));
+    } catch (e) { setError(e instanceof Error ? e.message : 'Connection failed'); }
+    finally { setLoading(false); }
   }, []);
 
-  // Initial fetch + polling
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(() => {
-      fetchData();
-      setCountdown(POLL_INTERVAL / 1000);
-    }, POLL_INTERVAL);
-    return () => clearInterval(interval);
-  }, [fetchData]);
+  useEffect(() => { fetchData(); const id = setInterval(() => { fetchData(); setCountdown(POLL / 1000); }, POLL); return () => clearInterval(id); }, [fetchData]);
+  useEffect(() => { const id = setInterval(() => setCountdown(c => c > 0 ? c - 1 : POLL / 1000), 1000); return () => clearInterval(id); }, []);
 
-  // Countdown timer
-  useEffect(() => {
-    const tick = setInterval(() => {
-      setCountdown((c) => (c > 0 ? c - 1 : POLL_INTERVAL / 1000));
-    }, 1000);
-    return () => clearInterval(tick);
-  }, []);
+  const badge = data ? statusBadge(data.plantStatus) : null;
 
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#F7F3EC]">
+      <main className="min-h-screen bg-[#FAFAF8]">
         {/* Hero */}
-        <section className="relative overflow-hidden border-b border-[#E7DECF] bg-gradient-to-b from-[#F7F3EC] to-[#EDE8DE] px-6 py-16 text-center md:py-20">
-          <Reveal>
-            <div className="mx-auto mb-3 flex items-center justify-center gap-2">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4A7C59] opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#4A7C59]" />
-              </span>
-              <p className="text-xs uppercase tracking-[0.3em] text-[#4A7C59]">
-                Live Monitoring
-              </p>
-            </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h1 className="mx-auto max-w-3xl text-3xl font-light leading-tight text-[#2E2C28] md:text-4xl lg:text-5xl">
-              Prototype Dashboard
-            </h1>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <p className="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-[#5C584F]">
-              Real-time Canopy AI sensor readings — refreshing every 60 seconds.
-            </p>
-          </Reveal>
+        <section className="border-b border-stone-200/50 bg-gradient-to-b from-white to-[#FAFAF8] px-6 pb-8 pt-14 md:pb-10 md:pt-18">
+          <div className="mx-auto max-w-6xl">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+              className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <div className="mb-2.5 flex items-center gap-2">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  </span>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-600">Live Prototype</p>
+                </div>
+                <h1 className="text-2xl font-bold tracking-tight text-stone-800 sm:text-3xl md:text-4xl">Monitoring Dashboard</h1>
+                <p className="mt-1.5 max-w-md text-[13px] leading-relaxed text-stone-400">
+                  Canopy AI hardware prototype &mdash; sensor data refreshes every 60&nbsp;seconds.
+                </p>
+              </div>
+              {data && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+                  className="flex items-center gap-5 rounded-xl border border-stone-200/60 bg-white px-4 py-3 shadow-sm">
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">Next refresh</p>
+                    <p className="text-xl font-bold tabular-nums text-stone-700">{countdown}<span className="text-xs font-medium text-stone-400">s</span></p>
+                  </div>
+                  <div className="h-7 w-px bg-stone-150" />
+                  <div className="text-center">
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-stone-400">Readings</p>
+                    <p className="text-xl font-bold text-stone-700">{history.length}</p>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
         </section>
 
-        {loading && !data ? (
-          <div className="flex items-center justify-center py-32">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#E7DECF] border-t-[#B78A2A]" />
-          </div>
-        ) : error && !data ? (
-          <div className="mx-auto max-w-md px-6 py-32 text-center">
-            <p className="text-sm text-[#C0392B]">Error: {error}</p>
-            <button
-              onClick={fetchData}
-              className="mt-4 rounded-full bg-[#B78A2A] px-6 py-2 text-sm font-medium text-white transition hover:bg-[#9D7620]"
-            >
-              Retry
-            </button>
-          </div>
-        ) : data ? (
-          <section className="mx-auto max-w-6xl px-6 py-12 md:py-16">
-            {/* Status bar */}
-            <Reveal>
-              <div className="mb-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-[#E7DECF] bg-white p-5 md:p-6">
-                <div className="flex items-center gap-4">
-                  <span className="text-3xl">🌿</span>
-                  <div>
-                    <h2 className="text-xl font-semibold text-[#2E2C28]">{data.plantName}</h2>
-                    <span
-                      className={`mt-1 inline-block rounded-full border px-3 py-0.5 text-xs font-semibold ${statusColor(data.plantStatus)}`}
-                    >
-                      {data.plantStatus}
-                    </span>
-                  </div>
-                </div>
-                <div className="text-right text-xs text-[#7A7668]">
-                  <p>Last updated: {formatTimestamp(data.updatedAt)}</p>
-                  <p className="mt-0.5">Next refresh in {countdown}s</p>
-                </div>
-              </div>
-            </Reveal>
+        <AnimatePresence mode="wait">
+          {loading && !data ? (
+            <motion.div key="load" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="flex flex-col items-center gap-3 py-28">
+              <div className="h-9 w-9 animate-spin rounded-full border-[3px] border-stone-200 border-t-emerald-500" />
+              <p className="text-xs text-stone-400">Connecting to sensor&hellip;</p>
+            </motion.div>
+          ) : error && !data ? (
+            <motion.div key="err" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="mx-auto max-w-sm px-6 py-28 text-center">
+              <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-rose-50 text-lg">⚠️</div>
+              <p className="text-sm text-stone-600">Unable to reach sensor</p>
+              <p className="mt-1 text-[11px] text-stone-400">{error}</p>
+              <button onClick={fetchData} className="mt-5 rounded-full bg-stone-800 px-5 py-2 text-xs font-semibold text-white hover:bg-stone-700 transition">Retry</button>
+            </motion.div>
+          ) : data ? (
+            <motion.div key="ok" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
+              <section className="mx-auto max-w-6xl px-6 py-8 md:py-12">
 
-            {/* Gauge rings */}
-            <Reveal delay={0.05}>
-              <div className="mb-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
-                <div className="flex justify-center rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <GaugeRing value={data.temperature} max={120} label="Temperature" unit="°F" color="#C0392B" />
-                </div>
-                <div className="flex justify-center rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <GaugeRing value={data.humidity} max={100} label="Humidity" unit="%" color="#2980B9" />
-                </div>
-                <div className="flex justify-center rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <GaugeRing value={data.moisture} max={1023} label="Soil Moisture" unit="raw" color="#4A7C59" />
-                </div>
-                <div className="flex justify-center rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <GaugeRing value={data.light} max={1023} label="Light" unit="lux" color="#B78A2A" />
-                </div>
-              </div>
-            </Reveal>
-
-            {/* Detail cards grid */}
-            <div className="mb-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {/* Temperature card */}
-              <Reveal delay={0.08}>
-                <div className="rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B78A2A]">Temperature</p>
-                    <span className="text-lg">🌡️</span>
-                  </div>
-                  <p className="mt-3 text-3xl font-light text-[#2E2C28]">{data.temperature.toFixed(1)}°F</p>
-                  <p className={`mt-1 text-xs font-semibold ${conditionColor(data.tempCondition)}`}>{data.tempCondition}</p>
-                  <p className="mt-2 text-xs text-[#7A7668]">Target: {data.tempRange}</p>
-                  {history.length > 1 && (
-                    <div className="mt-4">
-                      <Sparkline data={history.map((h) => h.temperature)} color="#C0392B" />
-                    </div>
-                  )}
-                </div>
-              </Reveal>
-
-              {/* Humidity card */}
-              <Reveal delay={0.12}>
-                <div className="rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B78A2A]">Humidity</p>
-                    <span className="text-lg">💧</span>
-                  </div>
-                  <p className="mt-3 text-3xl font-light text-[#2E2C28]">{data.humidity}%</p>
-                  <p className={`mt-1 text-xs font-semibold ${conditionColor(data.humidityCondition)}`}>{data.humidityCondition}</p>
-                  <p className="mt-2 text-xs text-[#7A7668]">Target: {data.humidityRange}</p>
-                  {history.length > 1 && (
-                    <div className="mt-4">
-                      <Sparkline data={history.map((h) => h.humidity)} color="#2980B9" />
-                    </div>
-                  )}
-                </div>
-              </Reveal>
-
-              {/* Soil Moisture card */}
-              <Reveal delay={0.16}>
-                <div className="rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B78A2A]">Soil Moisture</p>
-                    <span className="text-lg">🌱</span>
-                  </div>
-                  <p className="mt-3 text-3xl font-light text-[#2E2C28]">{Math.round(data.moisture)}</p>
-                  <p className={`mt-1 text-xs font-semibold ${data.moistureLabel === 'Dry' ? 'text-[#C0392B]' : data.moistureLabel === 'Wet' ? 'text-[#2980B9]' : 'text-[#4A7C59]'}`}>
-                    {data.moistureLabel}
-                  </p>
-                  <p className="mt-2 text-xs text-[#7A7668]">0 (wet) → 1023 (dry)</p>
-                  {history.length > 1 && (
-                    <div className="mt-4">
-                      <Sparkline data={history.map((h) => h.moisture)} color="#4A7C59" />
-                    </div>
-                  )}
-                </div>
-              </Reveal>
-
-              {/* Light card */}
-              <Reveal delay={0.2}>
-                <div className="rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B78A2A]">Light Exposure</p>
-                    <span className="text-lg">☀️</span>
-                  </div>
-                  <p className="mt-3 text-3xl font-light text-[#2E2C28]">{Math.round(data.light)}</p>
-                  <p className={`mt-1 text-xs font-semibold ${data.lightLabel === 'Very Low' ? 'text-[#C0392B]' : data.lightLabel === 'Low' ? 'text-[#B78A2A]' : 'text-[#4A7C59]'}`}>
-                    {data.lightLabel}
-                  </p>
-                  <p className="mt-2 text-xs text-[#7A7668]">0 (dark) → 1023 (bright)</p>
-                  {history.length > 1 && (
-                    <div className="mt-4">
-                      <Sparkline data={history.map((h) => h.light)} color="#B78A2A" />
-                    </div>
-                  )}
-                </div>
-              </Reveal>
-
-              {/* Trend Insight card */}
-              <Reveal delay={0.24}>
-                <div className="rounded-2xl border border-[#E7DECF] bg-white p-6">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B78A2A]">Trend Insight</p>
-                    <span className="text-lg">📊</span>
-                  </div>
-                  <p className="mt-4 text-sm leading-relaxed text-[#2E2C28]">{data.trendInsight}</p>
-                </div>
-              </Reveal>
-
-              {/* Recommended Action card */}
-              <Reveal delay={0.28}>
-                <div className="rounded-2xl border border-[#B78A2A]/30 bg-[#B78A2A]/5 p-6">
-                  <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B78A2A]">Recommended Action</p>
-                    <span className="text-lg">🎯</span>
-                  </div>
-                  <p className="mt-4 text-sm font-medium leading-relaxed text-[#2E2C28]">{data.nextAction}</p>
-                </div>
-              </Reveal>
-            </div>
-
-            {/* History chart section */}
-            {history.length > 2 && (
-              <Reveal delay={0.1}>
-                <div className="rounded-2xl border border-[#E7DECF] bg-white p-6 md:p-8">
-                  <h3 className="mb-1 text-sm font-semibold text-[#2E2C28]">Session History</h3>
-                  <p className="mb-6 text-xs text-[#7A7668]">{history.length} readings collected this session</p>
-                  <div className="grid gap-6 sm:grid-cols-2">
+                {/* Status strip */}
+                <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
+                  className="mb-7 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-stone-200/60 bg-white p-4 shadow-sm sm:p-5">
+                  <div className="flex items-center gap-3.5">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-xl">🪴</div>
                     <div>
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#C0392B]">Temperature (°F)</p>
-                      <Sparkline data={history.map((h) => h.temperature)} color="#C0392B" height={64} />
-                      <div className="mt-1 flex justify-between text-[10px] text-[#7A7668]">
-                        <span>{formatTime(history[0].time)}</span>
-                        <span>{formatTime(history[history.length - 1].time)}</span>
+                      <h2 className="text-base font-bold text-stone-800">{data.plantName}</h2>
+                      {badge && (
+                        <span className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold ${badge.bg} ${badge.text}`}>
+                          <span className={`h-1.5 w-1.5 rounded-full ${badge.dot}`} />{data.plantStatus}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] font-medium text-stone-400">Last updated</p>
+                    <p className="text-[11px] font-semibold text-stone-500">{fmtDate(data.updatedAt)}</p>
+                  </div>
+                </motion.div>
+
+                {/* Quick bars */}
+                <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05, duration: 0.4 }}
+                  className="mb-7 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+                  {[
+                    { l: 'Temperature', v: data.temperature, mx: 120, u: '°F', c: '#E87461' },
+                    { l: 'Humidity', v: data.humidity, mx: 100, u: '%', c: '#5BA3D9' },
+                    { l: 'Moisture', v: data.moisture, mx: 1023, u: 'raw', c: '#5DAF6A' },
+                    { l: 'Light', v: data.light, mx: 1023, u: 'lux', c: '#D4A843' },
+                  ].map(m => (
+                    <div key={m.l} className="rounded-xl border border-stone-200/50 bg-white p-3.5 shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400">{m.l}</span>
+                        <span className="text-[11px] font-bold text-stone-600">
+                          {m.l === 'Temperature' ? m.v.toFixed(1) : Math.round(m.v)} {m.u}
+                        </span>
+                      </div>
+                      <Bar pct={(m.v / m.mx) * 100} color={m.c} />
+                    </div>
+                  ))}
+                </motion.div>
+
+                {/* Sensor cards */}
+                <div className="mb-7 grid gap-4 sm:grid-cols-2">
+                  <MetricCard icon="🌡️" label="Temperature" value={data.temperature.toFixed(1)} unit="°F"
+                    cond={data.tempCondition} target={data.tempRange} color="#E87461"
+                    chart={history.map(h => h.temperature)} chartId="tc" i={0} />
+                  <MetricCard icon="💧" label="Humidity" value={`${Math.round(data.humidity)}`} unit="%"
+                    cond={data.humidityCondition} target={data.humidityRange} color="#5BA3D9"
+                    chart={history.map(h => h.humidity)} chartId="hc" i={1} />
+                  <MetricCard icon="🌱" label="Soil Moisture" value={`${Math.round(data.moisture)}`} unit="raw"
+                    cond={data.moistureLabel} target="0 (wet) → 1023 (dry)" color="#5DAF6A"
+                    chart={history.map(h => h.moisture)} chartId="mc" i={2} />
+                  <MetricCard icon="☀️" label="Light Exposure" value={`${Math.round(data.light)}`} unit="lux"
+                    cond={data.lightLabel} color="#D4A843"
+                    chart={history.map(h => h.light)} chartId="lc" i={3} />
+                </div>
+
+                {/* Insight + Action */}
+                <div className="mb-7 grid gap-4 sm:grid-cols-2">
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35, duration: 0.45 }}
+                    className="rounded-2xl border border-stone-200/60 bg-white p-5 shadow-sm sm:p-6">
+                    <div className="mb-3 flex items-center gap-2">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-50 text-sm">📊</div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Trend Insight</p>
+                    </div>
+                    <p className="text-[13px] leading-relaxed text-stone-600">{data.trendInsight}</p>
+                  </motion.div>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.45 }}
+                    className="rounded-2xl border border-amber-200/50 bg-gradient-to-br from-amber-50/60 to-orange-50/30 p-5 shadow-sm sm:p-6">
+                    <div className="mb-3 flex items-center gap-2">
+                      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-sm shadow-sm">🎯</div>
+                      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-amber-600">Action Required</p>
+                    </div>
+                    <p className="text-[13px] font-semibold leading-relaxed text-stone-700">{data.nextAction}</p>
+                  </motion.div>
+                </div>
+
+                {/* Session history */}
+                {history.length > 2 && (
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.45, duration: 0.45 }}
+                    className="rounded-2xl border border-stone-200/60 bg-white p-5 shadow-sm sm:p-7">
+                    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <h3 className="text-sm font-bold text-stone-800">Session History</h3>
+                        <p className="text-[11px] text-stone-400">{history.length} readings this session</p>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-3 text-[9px] font-bold uppercase tracking-wider text-stone-400">
+                        {[
+                          { l: 'Temp', c: '#E87461' }, { l: 'Humid', c: '#5BA3D9' },
+                          { l: 'Moist', c: '#5DAF6A' }, { l: 'Light', c: '#D4A843' },
+                        ].map(x => (
+                          <span key={x.l} className="flex items-center gap-1">
+                            <span className="h-1.5 w-3 rounded-full" style={{ backgroundColor: x.c }} />{x.l}
+                          </span>
+                        ))}
                       </div>
                     </div>
-                    <div>
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#2980B9]">Humidity (%)</p>
-                      <Sparkline data={history.map((h) => h.humidity)} color="#2980B9" height={64} />
-                      <div className="mt-1 flex justify-between text-[10px] text-[#7A7668]">
-                        <span>{formatTime(history[0].time)}</span>
-                        <span>{formatTime(history[history.length - 1].time)}</span>
-                      </div>
+                    <div className="grid gap-5 sm:grid-cols-2">
+                      {[
+                        { l: 'Temperature (°F)', d: history.map(h => h.temperature), c: '#E87461', id: 'ht' },
+                        { l: 'Humidity (%)', d: history.map(h => h.humidity), c: '#5BA3D9', id: 'hh' },
+                        { l: 'Soil Moisture', d: history.map(h => h.moisture), c: '#5DAF6A', id: 'hm' },
+                        { l: 'Light', d: history.map(h => h.light), c: '#D4A843', id: 'hl' },
+                      ].map(ch => (
+                        <div key={ch.id}>
+                          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider" style={{ color: ch.c }}>{ch.l}</p>
+                          <Area data={ch.d} color={ch.c} id={ch.id} h={52} />
+                          <div className="mt-0.5 flex justify-between text-[9px] text-stone-300">
+                            <span>{fmtTime(history[0].time)}</span>
+                            <span>{fmtTime(history[history.length - 1].time)}</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <div>
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#4A7C59]">Soil Moisture</p>
-                      <Sparkline data={history.map((h) => h.moisture)} color="#4A7C59" height={64} />
-                      <div className="mt-1 flex justify-between text-[10px] text-[#7A7668]">
-                        <span>{formatTime(history[0].time)}</span>
-                        <span>{formatTime(history[history.length - 1].time)}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-[#B78A2A]">Light</p>
-                      <Sparkline data={history.map((h) => h.light)} color="#B78A2A" height={64} />
-                      <div className="mt-1 flex justify-between text-[10px] text-[#7A7668]">
-                        <span>{formatTime(history[0].time)}</span>
-                        <span>{formatTime(history[history.length - 1].time)}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            )}
-          </section>
-        ) : null}
+                  </motion.div>
+                )}
+              </section>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </main>
       <Footer />
     </>
