@@ -20,169 +20,259 @@ interface Message {
   content: string;
 }
 
-/* ── Realistic sloth SVG with lots of animation hooks ── */
+/* ── Realistic Amazon three-toed sloth SVG ── */
 function SlothAvatar({ size = 64, animate = true }: { size?: number; animate?: boolean }) {
   return (
     <motion.svg
       width={size}
       height={size}
-      viewBox="0 0 120 120"
+      viewBox="0 0 160 160"
       fill="none"
       animate={animate ? { y: [0, -2, 0, 1, 0] } : undefined}
-      transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut' } : undefined}
+      transition={animate ? { duration: 5, repeat: Infinity, ease: 'easeInOut' } : undefined}
     >
-      {/* Branch it's hanging from */}
+      <defs>
+        {/* Fur gradient — warm brown tones */}
+        <radialGradient id="slFur" cx="0.5" cy="0.4" r="0.55">
+          <stop offset="0%" stopColor="#A89279" />
+          <stop offset="60%" stopColor="#8C7A62" />
+          <stop offset="100%" stopColor="#6E5D45" />
+        </radialGradient>
+        <radialGradient id="slBelly" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0%" stopColor="#C4B7A0" />
+          <stop offset="100%" stopColor="#A89279" />
+        </radialGradient>
+        <radialGradient id="slFace" cx="0.5" cy="0.45" r="0.5">
+          <stop offset="0%" stopColor="#E2D8C6" />
+          <stop offset="70%" stopColor="#C9BBA3" />
+          <stop offset="100%" stopColor="#B5A68D" />
+        </radialGradient>
+      </defs>
+
+      {/* ── Mossy branch ── */}
       <motion.path
-        d="M10 18 Q60 8 110 18"
-        stroke="#6B5B3E"
+        d="M5 22 Q40 10 80 14 Q120 10 155 22"
+        stroke="#5E4D35"
+        strokeWidth="7"
+        strokeLinecap="round"
+        fill="none"
+        animate={animate ? {
+          d: ['M5 22 Q40 10 80 14 Q120 10 155 22', 'M5 22 Q40 13 80 16 Q120 13 155 22', 'M5 22 Q40 10 80 14 Q120 10 155 22'],
+        } : undefined}
+        transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut' } : undefined}
+      />
+      {/* Branch bark texture */}
+      <path d="M30 18 L32 22" stroke="#4E3D27" strokeWidth="1" opacity="0.5" />
+      <path d="M70 14 L72 18" stroke="#4E3D27" strokeWidth="1" opacity="0.4" />
+      <path d="M110 16 L112 20" stroke="#4E3D27" strokeWidth="1" opacity="0.5" />
+      {/* Moss patches on branch */}
+      <ellipse cx="22" cy="18" rx="8" ry="3" fill="#6B8F5E" opacity="0.5" />
+      <ellipse cx="65" cy="13" rx="6" ry="2.5" fill="#7DAA6E" opacity="0.4" />
+      <ellipse cx="105" cy="16" rx="7" ry="2.5" fill="#6B8F5E" opacity="0.45" />
+      {/* Small leaves */}
+      <motion.path d="M18 14 Q22 8 26 13 Q22 11 18 14Z" fill="#6B8F5E"
+        animate={animate ? { rotate: [-2, 4, -2] } : undefined}
+        transition={animate ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : undefined}
+        style={{ transformOrigin: '22px 14px' }}
+      />
+      <motion.path d="M98 12 Q102 6 106 11 Q102 9 98 12Z" fill="#7DAA6E"
+        animate={animate ? { rotate: [2, -4, 2] } : undefined}
+        transition={animate ? { duration: 3.5, repeat: Infinity, ease: 'easeInOut' } : undefined}
+        style={{ transformOrigin: '102px 12px' }}
+      />
+      <motion.path d="M130 17 Q134 11 138 16 Q134 14 130 17Z" fill="#5E8A50"
+        animate={animate ? { rotate: [-1, 3, -1] } : undefined}
+        transition={animate ? { duration: 2.8, repeat: Infinity, ease: 'easeInOut' } : undefined}
+        style={{ transformOrigin: '134px 17px' }}
+      />
+
+      {/* ── Left arm — long, slender, reaching to branch ── */}
+      <motion.path
+        d="M54 42 Q46 30 52 20"
+        stroke="#7A6A52"
+        strokeWidth="8"
+        strokeLinecap="round"
+        fill="none"
+        animate={animate ? {
+          d: ['M54 42 Q46 30 52 20', 'M54 44 Q45 31 52 21', 'M54 42 Q46 30 52 20'],
+        } : undefined}
+        transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut' } : undefined}
+      />
+      {/* Left arm fur highlight */}
+      <path d="M52 30 Q48 28 50 25" stroke="#8C7A62" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.4" />
+      {/* Left three-toed claws */}
+      <motion.g
+        animate={animate ? { rotate: [-3, 3, -3] } : undefined}
+        transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut' } : undefined}
+        style={{ transformOrigin: '52px 18px' }}
+      >
+        <path d="M49 18 Q47 12 46 9" stroke="#4A3D2E" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        <path d="M52 17 Q51 11 51 8" stroke="#4A3D2E" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        <path d="M55 18 Q56 12 57 9" stroke="#4A3D2E" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      </motion.g>
+
+      {/* ── Right arm — long, slender, reaching to branch ── */}
+      <motion.path
+        d="M106 42 Q114 30 108 20"
+        stroke="#7A6A52"
+        strokeWidth="8"
+        strokeLinecap="round"
+        fill="none"
+        animate={animate ? {
+          d: ['M106 42 Q114 30 108 20', 'M106 44 Q115 31 108 21', 'M106 42 Q114 30 108 20'],
+        } : undefined}
+        transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 } : undefined}
+      />
+      {/* Right arm fur highlight */}
+      <path d="M108 30 Q112 28 110 25" stroke="#8C7A62" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.4" />
+      {/* Right three-toed claws */}
+      <motion.g
+        animate={animate ? { rotate: [3, -3, 3] } : undefined}
+        transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 } : undefined}
+        style={{ transformOrigin: '108px 18px' }}
+      >
+        <path d="M105 18 Q103 12 102 9" stroke="#4A3D2E" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        <path d="M108 17 Q108 11 108 8" stroke="#4A3D2E" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+        <path d="M111 18 Q113 12 114 9" stroke="#4A3D2E" strokeWidth="2.5" strokeLinecap="round" fill="none" />
+      </motion.g>
+
+      {/* ── Body — elongated, slender torso (not fat) ── */}
+      <motion.ellipse
+        cx="80" cy="68" rx="26" ry="30"
+        fill="url(#slFur)"
+        animate={animate ? { ry: [30, 31, 30] } : undefined}
+        transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut' } : undefined}
+      />
+      {/* Belly — lighter, elongated */}
+      <ellipse cx="80" cy="72" rx="17" ry="20" fill="url(#slBelly)" />
+      {/* Fur texture on body */}
+      <path d="M68 55 L66 58" stroke="#6E5D45" strokeWidth="0.8" opacity="0.35" />
+      <path d="M92 55 L94 58" stroke="#6E5D45" strokeWidth="0.8" opacity="0.35" />
+      <path d="M72 65 L70 69" stroke="#6E5D45" strokeWidth="0.8" opacity="0.3" />
+      <path d="M88 65 L90 69" stroke="#6E5D45" strokeWidth="0.8" opacity="0.3" />
+      <path d="M75 76 L73 80" stroke="#6E5D45" strokeWidth="0.8" opacity="0.25" />
+      <path d="M85 76 L87 80" stroke="#6E5D45" strokeWidth="0.8" opacity="0.25" />
+      {/* Back streak — algae-green tint (realistic) */}
+      <path d="M68 50 Q80 46 92 50" stroke="#7A8F65" strokeWidth="3" fill="none" opacity="0.15" strokeLinecap="round" />
+      <path d="M70 58 Q80 54 90 58" stroke="#7A8F65" strokeWidth="2" fill="none" opacity="0.12" strokeLinecap="round" />
+
+      {/* ── Head — round, smaller than body ── */}
+      <motion.g
+        animate={animate ? { rotate: [-2, 3, -1, 2, -2], y: [0, 1, 0, -0.5, 0] } : undefined}
+        transition={animate ? { duration: 7, repeat: Infinity, ease: 'easeInOut' } : undefined}
+      >
+        <ellipse cx="80" cy="46" rx="20" ry="17" fill="url(#slFur)" />
+        {/* Face mask — pale, cream-colored */}
+        <ellipse cx="80" cy="48" rx="16" ry="13" fill="url(#slFace)" />
+
+        {/* Eye patches — dark brown teardrops (three-toed sloth marking) */}
+        <path d="M67 42 Q63 48 67 52 Q70 48 67 42Z" fill="#3D3126" />
+        <path d="M93 42 Q97 48 93 52 Q90 48 93 42Z" fill="#3D3126" />
+
+        {/* Eyes — dark, round, expressive */}
+        <motion.g
+          animate={animate ? { scaleY: [1, 1, 1, 0.05, 1, 1, 1, 1, 1, 1, 0.05, 1] } : undefined}
+          transition={animate ? { duration: 6, repeat: Infinity, ease: 'easeInOut' } : undefined}
+          style={{ transformOrigin: '80px 46px' }}
+        >
+          <circle cx="70" cy="46" r="3.5" fill="#1A1410" />
+          <circle cx="90" cy="46" r="3.5" fill="#1A1410" />
+          {/* Eye shine */}
+          <circle cx="71.3" cy="44.8" r="1.2" fill="white" opacity="0.9" />
+          <circle cx="91.3" cy="44.8" r="1.2" fill="white" opacity="0.9" />
+          {/* Warm iris ring */}
+          <circle cx="70" cy="46" r="3.5" stroke="#3D2E1A" strokeWidth="0.5" fill="none" />
+          <circle cx="90" cy="46" r="3.5" stroke="#3D2E1A" strokeWidth="0.5" fill="none" />
+        </motion.g>
+
+        {/* Nose — small, dark, rounded */}
+        <ellipse cx="80" cy="52" rx="3.5" ry="2.5" fill="#3D3126" />
+        <ellipse cx="80" cy="52" rx="2" ry="1.2" fill="#2A211A" />
+        {/* Nostrils */}
+        <circle cx="78.5" cy="52.2" r="0.7" fill="#1A1410" />
+        <circle cx="81.5" cy="52.2" r="0.7" fill="#1A1410" />
+
+        {/* Mouth — gentle contented line */}
+        <motion.path
+          d="M75 55 Q80 58 85 55"
+          stroke="#5C4D3C"
+          strokeWidth="1"
+          fill="none"
+          strokeLinecap="round"
+          animate={animate ? { d: ['M75 55 Q80 58 85 55', 'M75 55 Q80 59 85 55', 'M75 55 Q80 58 85 55'] } : undefined}
+          transition={animate ? { duration: 5, repeat: Infinity, ease: 'easeInOut' } : undefined}
+        />
+
+        {/* Cheek fur tufts */}
+        <path d="M62 48 L59 50" stroke="#8C7A62" strokeWidth="1" opacity="0.4" strokeLinecap="round" />
+        <path d="M98 48 L101 50" stroke="#8C7A62" strokeWidth="1" opacity="0.4" strokeLinecap="round" />
+
+        {/* Ears — small, hidden in fur */}
+        <ellipse cx="62" cy="40" rx="4" ry="5" fill="#7A6A52" />
+        <ellipse cx="62" cy="40" rx="2.5" ry="3" fill="#8C7A62" />
+        <ellipse cx="98" cy="40" rx="4" ry="5" fill="#7A6A52" />
+        <ellipse cx="98" cy="40" rx="2.5" ry="3" fill="#8C7A62" />
+
+        {/* Forehead stripe — dark median line */}
+        <path d="M80 35 L80 42" stroke="#5C4D3C" strokeWidth="1.5" opacity="0.2" strokeLinecap="round" />
+      </motion.g>
+
+      {/* ── Hind legs — long, dangling ── */}
+      <motion.path
+        d="M66 92 Q60 108 64 120"
+        stroke="#7A6A52"
+        strokeWidth="9"
+        strokeLinecap="round"
+        fill="none"
+        animate={animate ? {
+          d: ['M66 92 Q60 108 64 120', 'M66 92 Q58 110 62 123', 'M66 92 Q60 108 64 120'],
+        } : undefined}
+        transition={animate ? { duration: 5, repeat: Infinity, ease: 'easeInOut' } : undefined}
+      />
+      <motion.path
+        d="M94 92 Q100 108 96 120"
+        stroke="#7A6A52"
+        strokeWidth="9"
+        strokeLinecap="round"
+        fill="none"
+        animate={animate ? {
+          d: ['M94 92 Q100 108 96 120', 'M94 92 Q102 110 98 123', 'M94 92 Q100 108 96 120'],
+        } : undefined}
+        transition={animate ? { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 } : undefined}
+      />
+      {/* Hind claws */}
+      <path d="M61 120 Q59 125 58 128" stroke="#4A3D2E" strokeWidth="2" strokeLinecap="round" />
+      <path d="M64 121 Q63 126 63 129" stroke="#4A3D2E" strokeWidth="2" strokeLinecap="round" />
+      <path d="M67 120 Q68 125 69 128" stroke="#4A3D2E" strokeWidth="2" strokeLinecap="round" />
+      <path d="M93 120 Q91 125 90 128" stroke="#4A3D2E" strokeWidth="2" strokeLinecap="round" />
+      <path d="M96 121 Q96 126 96 129" stroke="#4A3D2E" strokeWidth="2" strokeLinecap="round" />
+      <path d="M99 120 Q101 125 102 128" stroke="#4A3D2E" strokeWidth="2" strokeLinecap="round" />
+
+      {/* ── Tail stub ── */}
+      <motion.path
+        d="M80 95 Q84 102 82 108"
+        stroke="#7A6A52"
         strokeWidth="5"
         strokeLinecap="round"
         fill="none"
-        animate={animate ? { d: ['M10 18 Q60 8 110 18', 'M10 18 Q60 12 110 18', 'M10 18 Q60 8 110 18'] } : undefined}
-        transition={animate ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : undefined}
-      />
-      {/* Small leaves on branch */}
-      <motion.ellipse cx="25" cy="14" rx="5" ry="3" fill="#6B8F5E" transform="rotate(-15 25 14)"
-        animate={animate ? { rotate: [-15, -10, -15] } : undefined}
-        transition={animate ? { duration: 2.5, repeat: Infinity, ease: 'easeInOut' } : undefined}
-      />
-      <motion.ellipse cx="90" cy="14" rx="5" ry="3" fill="#7DAA6E" transform="rotate(15 90 14)"
-        animate={animate ? { rotate: [15, 20, 15] } : undefined}
-        transition={animate ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : undefined}
-      />
-
-      {/* Left arm reaching up to branch */}
-      <motion.path
-        d="M42 28 Q38 22 44 17"
-        stroke="#8B8279"
-        strokeWidth="6"
-        strokeLinecap="round"
-        fill="none"
-        animate={animate ? { d: ['M42 28 Q38 22 44 17', 'M42 30 Q37 23 44 18', 'M42 28 Q38 22 44 17'] } : undefined}
-        transition={animate ? { duration: 3.5, repeat: Infinity, ease: 'easeInOut' } : undefined}
-      />
-      {/* Left claw */}
-      <path d="M43 15 L41 12 M44 15 L44 11 M45 15 L47 12" stroke="#5C564E" strokeWidth="1.5" strokeLinecap="round" />
-
-      {/* Right arm reaching up to branch */}
-      <motion.path
-        d="M78 28 Q82 22 76 17"
-        stroke="#8B8279"
-        strokeWidth="6"
-        strokeLinecap="round"
-        fill="none"
-        animate={animate ? { d: ['M78 28 Q82 22 76 17', 'M78 30 Q83 23 76 18', 'M78 28 Q82 22 76 17'] } : undefined}
-        transition={animate ? { duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 0.3 } : undefined}
-      />
-      {/* Right claw */}
-      <path d="M75 15 L73 12 M76 15 L76 11 M77 15 L79 12" stroke="#5C564E" strokeWidth="1.5" strokeLinecap="round" />
-
-      {/* Body - main torso (hanging) */}
-      <motion.ellipse
-        cx="60" cy="52" rx="22" ry="28"
-        fill="#9B9590"
-        animate={animate ? { ry: [28, 29, 28], cy: [52, 53, 52] } : undefined}
-        transition={animate ? { duration: 3, repeat: Infinity, ease: 'easeInOut' } : undefined}
-      />
-      {/* Belly */}
-      <ellipse cx="60" cy="56" rx="15" ry="18" fill="#ADA7A0" />
-
-      {/* Head */}
-      <motion.g
-        animate={animate ? { rotate: [-2, 2, -1, 3, -2], y: [0, 1, 0, -0.5, 0] } : undefined}
+        animate={animate ? {
+          d: ['M80 95 Q84 102 82 108', 'M80 95 Q86 103 83 110', 'M80 95 Q84 102 82 108'],
+        } : undefined}
         transition={animate ? { duration: 6, repeat: Infinity, ease: 'easeInOut' } : undefined}
-      >
-        <ellipse cx="60" cy="38" rx="18" ry="16" fill="#9B9590" />
-        {/* Face mask - lighter area */}
-        <ellipse cx="60" cy="40" rx="14" ry="12" fill="#C4BEB7" />
-
-        {/* Eye patches (dark) */}
-        <ellipse cx="52" cy="38" rx="6" ry="5" fill="#4A4540" />
-        <ellipse cx="68" cy="38" rx="6" ry="5" fill="#4A4540" />
-
-        {/* Eyes - with slow blink */}
-        <motion.g
-          animate={animate ? { scaleY: [1, 1, 1, 0.1, 1, 1, 1, 1, 1, 0.1, 1] } : undefined}
-          transition={animate ? { duration: 5, repeat: Infinity, ease: 'easeInOut' } : undefined}
-          style={{ transformOrigin: '60px 38px' }}
-        >
-          <circle cx="52" cy="38" r="3" fill="#1F1F1B" />
-          <circle cx="68" cy="38" r="3" fill="#1F1F1B" />
-          {/* Eye shine */}
-          <circle cx="53.2" cy="37" r="1" fill="white" />
-          <circle cx="69.2" cy="37" r="1" fill="white" />
-        </motion.g>
-
-        {/* Nose */}
-        <ellipse cx="60" cy="44" rx="3" ry="2" fill="#5C564E" />
-
-        {/* Sleepy smile */}
-        <motion.path
-          d="M55 47 Q60 50 65 47"
-          stroke="#5C564E"
-          strokeWidth="1.2"
-          fill="none"
-          strokeLinecap="round"
-          animate={animate ? { d: ['M55 47 Q60 50 65 47', 'M55 47 Q60 51 65 47', 'M55 47 Q60 50 65 47'] } : undefined}
-          transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut' } : undefined}
-        />
-
-        {/* Ears */}
-        <circle cx="44" cy="32" r="4" fill="#8B8279" />
-        <circle cx="76" cy="32" r="4" fill="#8B8279" />
-      </motion.g>
-
-      {/* Hind legs (dangling) */}
-      <motion.path
-        d="M48 75 Q44 88 48 95"
-        stroke="#8B8279"
-        strokeWidth="7"
-        strokeLinecap="round"
-        fill="none"
-        animate={animate ? { d: ['M48 75 Q44 88 48 95', 'M48 75 Q42 90 46 97', 'M48 75 Q44 88 48 95'] } : undefined}
-        transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut' } : undefined}
-      />
-      <motion.path
-        d="M72 75 Q76 88 72 95"
-        stroke="#8B8279"
-        strokeWidth="7"
-        strokeLinecap="round"
-        fill="none"
-        animate={animate ? { d: ['M72 75 Q76 88 72 95', 'M72 75 Q78 90 74 97', 'M72 75 Q76 88 72 95'] } : undefined}
-        transition={animate ? { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 } : undefined}
-      />
-      {/* Hind claws */}
-      <path d="M46 95 L44 98 M48 96 L48 99 M50 95 L52 98" stroke="#5C564E" strokeWidth="1.5" strokeLinecap="round" />
-      {/* Tail stub */}
-      <motion.path
-        d="M60 78 Q64 84 62 88"
-        stroke="#8B8279"
-        strokeWidth="4"
-        strokeLinecap="round"
-        fill="none"
-        animate={animate ? { d: ['M60 78 Q64 84 62 88', 'M60 78 Q66 85 63 90', 'M60 78 Q64 84 62 88'] } : undefined}
-        transition={animate ? { duration: 5, repeat: Infinity, ease: 'easeInOut' } : undefined}
       />
 
-      {/* Fur texture lines */}
-      <path d="M50 42 L48 44" stroke="#847E77" strokeWidth="0.8" opacity="0.5" />
-      <path d="M70 42 L72 44" stroke="#847E77" strokeWidth="0.8" opacity="0.5" />
-      <path d="M55 60 L53 63" stroke="#847E77" strokeWidth="0.8" opacity="0.4" />
-      <path d="M65 60 L67 63" stroke="#847E77" strokeWidth="0.8" opacity="0.4" />
-      <path d="M58 68 L57 71" stroke="#847E77" strokeWidth="0.8" opacity="0.3" />
-      <path d="M62 68 L63 71" stroke="#847E77" strokeWidth="0.8" opacity="0.3" />
-
-      {/* Small leaf falling near sloth */}
+      {/* ── Falling leaf ── */}
       <motion.g
         animate={animate ? {
-          x: [0, 15, 30, 20, 35],
-          y: [0, 10, 25, 40, 60],
-          rotate: [0, 45, 90, 135, 180],
-          opacity: [0, 1, 1, 1, 0],
+          x: [0, 12, 25, 18, 30],
+          y: [0, 12, 28, 45, 65],
+          rotate: [0, 40, 90, 140, 180],
+          opacity: [0, 0.8, 0.8, 0.6, 0],
         } : undefined}
-        transition={animate ? { duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 2 } : undefined}
+        transition={animate ? { duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 3 } : undefined}
       >
-        <ellipse cx="95" cy="20" rx="3" ry="1.5" fill="#6B8F5E" transform="rotate(-20 95 20)" />
+        <path d="M125 20 Q128 16 131 20 Q128 18 125 20Z" fill="#6B8F5E" />
+        <path d="M128 17 L128 21" stroke="#5E8A50" strokeWidth="0.5" />
       </motion.g>
     </motion.svg>
   );
@@ -191,19 +281,19 @@ function SlothAvatar({ size = 64, animate = true }: { size?: number; animate?: b
 /* Smaller sloth for chat bubbles */
 function SlothMini() {
   return (
-    <svg width="22" height="22" viewBox="0 0 120 120" fill="none">
-      <ellipse cx="60" cy="52" rx="22" ry="28" fill="#9B9590" />
-      <ellipse cx="60" cy="56" rx="15" ry="18" fill="#ADA7A0" />
-      <ellipse cx="60" cy="38" rx="18" ry="16" fill="#9B9590" />
-      <ellipse cx="60" cy="40" rx="14" ry="12" fill="#C4BEB7" />
-      <ellipse cx="52" cy="38" rx="6" ry="5" fill="#4A4540" />
-      <ellipse cx="68" cy="38" rx="6" ry="5" fill="#4A4540" />
-      <circle cx="52" cy="38" r="3" fill="#1F1F1B" />
-      <circle cx="68" cy="38" r="3" fill="#1F1F1B" />
-      <circle cx="53.2" cy="37" r="1" fill="white" />
-      <circle cx="69.2" cy="37" r="1" fill="white" />
-      <ellipse cx="60" cy="44" rx="3" ry="2" fill="#5C564E" />
-      <path d="M55 47 Q60 50 65 47" stroke="#5C564E" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+    <svg width="22" height="22" viewBox="0 0 160 160" fill="none">
+      <ellipse cx="80" cy="68" rx="26" ry="30" fill="#8C7A62" />
+      <ellipse cx="80" cy="72" rx="17" ry="20" fill="#A89279" />
+      <ellipse cx="80" cy="46" rx="20" ry="17" fill="#8C7A62" />
+      <ellipse cx="80" cy="48" rx="16" ry="13" fill="#C9BBA3" />
+      <path d="M67 42 Q63 48 67 52 Q70 48 67 42Z" fill="#3D3126" />
+      <path d="M93 42 Q97 48 93 52 Q90 48 93 42Z" fill="#3D3126" />
+      <circle cx="70" cy="46" r="3.5" fill="#1A1410" />
+      <circle cx="90" cy="46" r="3.5" fill="#1A1410" />
+      <circle cx="71.3" cy="44.8" r="1.2" fill="white" />
+      <circle cx="91.3" cy="44.8" r="1.2" fill="white" />
+      <ellipse cx="80" cy="52" rx="3.5" ry="2.5" fill="#3D3126" />
+      <path d="M75 55 Q80 58 85 55" stroke="#5C4D3C" strokeWidth="1" fill="none" strokeLinecap="round" />
     </svg>
   );
 }
@@ -362,7 +452,7 @@ export default function Sprite({ plantContext }: { plantContext?: PlantContext }
         className="group relative"
         style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))' }}
       >
-        <SlothAvatar size={80} animate={!open} />
+        <SlothAvatar size={160} animate={!open} />
 
         {/* Speech bubble prompt */}
         {!open && messages.length === 0 && (
