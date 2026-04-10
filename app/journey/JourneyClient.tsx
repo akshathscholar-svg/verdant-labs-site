@@ -14,7 +14,7 @@ const milestones = [
     date: 'Winter 2025',
     title: 'The Spark',
     description:
-      'A collection of rare tropical plants started showing stress with no visible warning signs. By the time leaves curled, the damage was done. The question became: what if you could detect stress before it was visible? Verdant Labs was founded.',
+      'A collection of indoor plants started showing stress with no visible warning signs. By the time leaves curled, the damage was done. The question became: what if you could detect stress before it was visible? Verdant Labs was founded.',
   },
   {
     date: 'Spring 2026',
@@ -24,21 +24,21 @@ const milestones = [
   },
   {
     date: 'Summer 2026',
-    title: 'Hardware Prototype & AI Features',
+    title: 'Working MVP & AI Features',
     description:
-      'Built a working sensor prototype reading moisture, humidity, temperature, and light. Launched the AI-powered plant identifier — snap a photo for instant species ID, care instructions, and grower info.',
+      'Built a working Arduino-based prototype reading moisture, humidity, temperature, and light. Launched the AI-powered plant identifier — snap a photo for instant species ID, care instructions, and grower info. Current MVP focuses on sensor-first early stress detection.',
   },
   {
     date: 'Winter 2026',
-    title: 'App Development & Testing',
+    title: 'Enclosure & App Development',
     description:
-      'Building out the full Canopy AI app experience — the interface that turns sensor data into plain-language care recommendations. Refining the hardware and running real-world tests with plant collections.',
+      'New enclosure development moves Canopy AI closer to a consumer-ready product. Building out the full Canopy AI app experience — the interface that turns sensor data into plain-language care recommendations. Refining the hardware and running real-world tests.',
   },
   {
-    date: 'Spring 2027',
-    title: 'Product Launch',
+    date: '2027',
+    title: 'Consumer Launch',
     description:
-      'Shipping finalized hardware units and the full app to early access members. The complete Canopy AI system — sensor, app, and intelligence — ready for plant owners everywhere.',
+      'Shipping finalized hardware units and the full app to early access members. The complete Canopy AI system — sensor, app, and intelligence — ready for indoor plant owners everywhere. Starting with engaged premium users, then expanding to the broader market.',
   },
 ];
 
@@ -52,7 +52,7 @@ const values = [
     description: 'Plain-language recommendations, not raw numbers.',
   },
   {
-    title: 'Built for collectors',
+    title: 'Built for plant owners',
     description: 'Designed for people who truly care about their plants.',
   },
   {
@@ -223,7 +223,7 @@ export default function JourneyClient() {
                     Founder & CEO, Verdant Labs
                   </p>
                   <p className="mt-4 text-base leading-7 text-[#5A564E]">
-                    Akshath started Verdant Labs after losing several rare tropical
+                    Akshath started Verdant Labs after losing several indoor
                     plants to problems that weren&apos;t visible until it was too late. With
                     a background in engineering and a growing passion for botany, he set
                     out to bridge the gap between raw sensor data and real plant

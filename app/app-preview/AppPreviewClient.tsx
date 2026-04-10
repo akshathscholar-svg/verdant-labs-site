@@ -101,24 +101,24 @@ const sensorIcons = [
 const tiers = [
   {
     name: 'Foundation',
-    hardware: 99,
-    monthly: 9,
+    hardware: 59,
+    monthly: 3.99,
     featured: false,
-    features: ['App dashboard access', 'Real-time status updates', 'Environmental monitoring', 'Basic recommendations'],
+    features: ['App dashboard access', 'Real-time status updates', 'Environmental monitoring', 'Core alerts and basic insights'],
   },
   {
     name: 'Canopy AI',
-    hardware: 149,
-    monthly: 15,
+    hardware: 79,
+    monthly: 7.99,
     featured: true,
-    features: ['Everything in Foundation', 'Species-specific insights', 'Health history timeline', 'Proactive AI advice', 'Trend analysis'],
+    features: ['Everything in Foundation', 'Species-specific insights', 'Proactive AI guidance', 'Health history timeline', 'Trend analysis'],
   },
   {
     name: 'Elite',
-    hardware: 199,
-    monthly: 25,
+    hardware: 99,
+    monthly: 9.99,
     featured: false,
-    features: ['Everything in Canopy AI', 'Advanced stress detection', 'Long-term analysis', 'Priority feature access', 'Multi-plant management'],
+    features: ['Everything in Canopy AI', 'Advanced stress detection', 'Long-term analysis', 'Priority feature access', 'Enhanced plant-care tools'],
   },
 ];
 
@@ -558,7 +558,7 @@ export default function AppPreviewClient() {
             </h2>
             <p className="mt-3 max-w-xl text-base leading-7 text-[#5A564E]">
               Hardware + subscription for complete botanical intelligence.
-              Every tier includes 1 year of access.
+              Every purchase includes 3 months of subscription free.
             </p>
           </Reveal>
 
@@ -583,7 +583,7 @@ export default function AppPreviewClient() {
                     <span className="ml-1 text-sm text-[#5A564E]">device</span>
                   </div>
                   <p className="mt-1 text-sm text-[#5A564E]">
-                    + ${tier.monthly}/mo after year one
+                    + ${tier.monthly}/mo after 3 free months
                   </p>
 
                   <ul className="mt-6 flex-1 space-y-3 text-sm text-[#4F4B44]">

@@ -15,12 +15,12 @@ const brandColors = [
 ];
 
 const keyFacts = [
-  { label: 'Founded', value: 'Winter 2025' },
+  { label: 'Founded', value: '2025' },
   { label: 'Headquarters', value: 'United States' },
   { label: 'Product', value: 'Canopy AI' },
   { label: 'Category', value: 'Botanical Intelligence' },
   { label: 'Sensor Types', value: '4 (Moisture, Temp, Humidity, Light)' },
-  { label: 'Target Launch', value: 'Spring 2027' },
+  { label: 'Business Model', value: 'Hardware + Subscription' },
 ];
 
 export default function PressClient() {
@@ -59,13 +59,14 @@ export default function PressClient() {
                 Company Boilerplate
               </h2>
               <p className="mt-4 text-base leading-7 text-[#5A564E]">
-                Verdant Labs builds Canopy AI, a botanical intelligence system that
-                helps plant owners detect environmental stress early and act with
-                confidence. By pairing real-time ambient sensing with species-specific
-                AI recommendations, Canopy AI turns raw environmental data into
-                plain-language next steps — so plant owners can protect their
-                collections before stress becomes visible. Founded in 2025, Verdant
-                Labs is on a mission to make plant care proactive, not reactive.
+                Verdant Labs builds Canopy AI, a botanical intelligence platform that
+                helps indoor plant owners prevent plant decline through monitoring,
+                early stress detection, and actionable guidance. By pairing real-time
+                ambient sensing with species-specific AI recommendations, Canopy AI
+                turns raw environmental data into plain-language next steps — so
+                plant owners can act before damage worsens. Founded in 2025, Verdant
+                Labs starts with engaged indoor plant owners and is building toward
+                a smarter plant-care platform over time.
               </p>
             </div>
           </Reveal>

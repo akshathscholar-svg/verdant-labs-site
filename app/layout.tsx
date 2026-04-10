@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://verdantlabs.app"),
   title: "Verdant Labs - Botanical Intelligence",
-  description: "Verdant Labs builds Canopy AI, a botanical intelligence system for predictive plant care.",
+  description: "Canopy AI helps indoor plant owners detect stress early and make better care decisions through real-time monitoring, alerts, and guidance.",
   icons: {
     icon: [
       { url: "/favicon.png", sizes: "32x32", type: "image/png" },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Verdant Labs - Botanical Intelligence",
     description:
-      "Canopy AI helps plant owners detect environmental stress early and act with confidence.",
+      "Canopy AI helps indoor plant owners detect stress early and make better care decisions.",
     siteName: "Verdant Labs",
     type: "website",
     images: [
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Verdant Labs - Botanical Intelligence",
     description:
-      "Canopy AI helps plant owners detect environmental stress early and act with confidence.",
+      "Canopy AI helps indoor plant owners detect stress early and make better care decisions.",
     images: ["/logo-icon-512.png"],
   },
 };
@@ -62,7 +62,7 @@ export default function RootLayout({
     url: 'https://verdantlabs.app',
     logo: 'https://verdantlabs.app/logo-icon-512.png',
     description:
-      'Verdant Labs builds Canopy AI, a botanical intelligence system for predictive plant care.',
+      'Canopy AI helps indoor plant owners detect stress early and make better care decisions through real-time monitoring, alerts, and guidance.',
     founder: {
       '@type': 'Person',
       name: 'Akshath Saravanan',

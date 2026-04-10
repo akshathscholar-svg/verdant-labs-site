@@ -28,11 +28,11 @@ const values = [
 ];
 
 const milestones = [
-  { year: '2024', label: 'Research & prototyping begins' },
-  { year: 'Early 2025', label: 'Canopy AI v1 development' },
-  { year: 'Mid 2025', label: 'Beta sensor hardware testing' },
-  { year: 'Late 2025', label: 'Early access launch' },
-  { year: '2026', label: 'Public release & plant library expansion' },
+  { year: '2025', label: 'Research & prototyping begins' },
+  { year: 'Early 2026', label: 'Canopy AI v1 development' },
+  { year: 'Mid 2026', label: 'Working Arduino-based MVP' },
+  { year: 'Late 2026', label: 'Enclosure development & refinement' },
+  { year: '2027', label: 'Consumer-ready launch' },
 ];
 
 export default function AboutClient() {
@@ -55,8 +55,9 @@ export default function AboutClient() {
           </Reveal>
           <Reveal delay={0.2}>
             <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-[#5C584F]">
-              Verdant Labs combines precision sensors with AI to help every plant
-              owner — from beginners to collectors — keep their greenery thriving.
+              Verdant Labs is building Canopy AI, a botanical intelligence platform
+              that helps indoor plant owners prevent plant decline through monitoring,
+              early stress detection, and actionable guidance.
             </p>
           </Reveal>
         </section>
@@ -83,8 +84,7 @@ export default function AboutClient() {
                 The result is <strong>Canopy AI</strong>.
               </p>
               <p>
-                Today we&apos;re a small, focused team of engineers, botanists, and
-                designers working out of San Francisco. We&apos;re building something
+                Today we&apos;re a small, focused team building something
                 we wish existed when we killed our first houseplant — and we think
                 you&apos;ll love it too.
               </p>

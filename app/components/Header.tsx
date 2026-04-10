@@ -34,6 +34,7 @@ const navGroups = [
     links: [
       { href: '/journey', label: 'Our Journey' },
       { href: '/about', label: 'About' },
+      { href: '/meetups', label: 'Meetups' },
       { href: '/contact', label: 'Contact' },
     ],
   },

@@ -47,7 +47,7 @@ const sections: FaqSection[] = [
       {
         question: 'Can I use one sensor for multiple plants?',
         answer:
-          'Each sensor is designed to monitor one plant at a time for the most accurate readings. We recommend one sensor per plant, especially for high-value specimens.',
+          'Each sensor is designed to monitor one plant at a time for the most accurate readings. We recommend one sensor per plant, especially for higher-value plants or large collections.',
       },
     ],
   },
@@ -80,19 +80,19 @@ const sections: FaqSection[] = [
     title: 'Pricing & Availability',
     items: [
       {
-        question: 'How much will it cost?',
+        question: 'How much does it cost?',
         answer:
-          'Final pricing hasn\'t been announced yet. Early access members will receive priority pricing and exclusive launch discounts. Join the waitlist to be first in line.',
+          'Canopy AI uses a hardware + subscription model. Foundation is $59 device + $3.99/mo, Canopy AI is $79 device + $7.99/mo, and Elite is $99 device + $9.99/mo. All purchases include 3 months of subscription free.',
       },
       {
         question: 'Is there a subscription fee?',
         answer:
-          'The Foundation tier includes basic monitoring with no subscription. Canopy AI and Elite tiers include premium features with a small monthly subscription for the AI intelligence layer.',
+          'Yes — all tiers include a monthly subscription after the first 3 free months. The subscription powers the intelligence layer: alerts, recommendations, and care guidance tailored to your plants.',
       },
       {
         question: 'When will it ship?',
         answer:
-          'We\'re targeting a Spring 2027 launch for early access members. Hardware is currently in the prototype refinement stage with real-world testing underway.',
+          'We have a working Arduino-based MVP and are actively developing the consumer-ready enclosure. Early access members will be the first to receive finalized hardware.',
       },
       {
         question: 'Will it be available internationally?',

@@ -50,21 +50,21 @@ export default function Home() {
             <div className="max-w-3xl">
               <Reveal>
                 <p className="mb-4 text-sm font-medium uppercase tracking-[0.28em] text-[#B78A2A]">
-                  Predictive plant care
+                  Smart plant monitoring
                 </p>
               </Reveal>
 
               <Reveal delay={0.1}>
                 <h1 className="hero-shimmer text-4xl font-semibold leading-[1.02] tracking-tight sm:text-5xl lg:text-6xl 2xl:text-7xl">
-                  Protect your plants before stress becomes visible.
+                  Smarter indoor plant care through real-time monitoring and guidance.
                 </h1>
               </Reveal>
 
               <Reveal delay={0.2}>
                 <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5A564E] md:text-xl">
-                  Verdant Labs builds Canopy AI, a botanical intelligence system
-                  that helps plant owners detect environmental stress early and act
-                  with confidence.
+                  Canopy AI helps indoor plant owners detect stress early and make
+                  better care decisions through real-time monitoring, alerts, and
+                  guidance. Purchase the device, get 3 months free.
                 </p>
               </Reveal>
 
@@ -89,15 +89,15 @@ export default function Home() {
               <Reveal delay={0.35}>
                 <div className="mt-12 rounded-[1.9rem] border border-[#E5DBCC] bg-white/80 p-6 shadow-sm">
                   <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
-                    Built For Valuable Collections
+                    Built For Plant Owners
                   </p>
                   <h3 className="mt-3 text-2xl font-semibold tracking-tight">
-                    Botanical intelligence for premium plant owners.
+                    Turn plant data into clear, everyday guidance.
                   </h3>
                   <p className="mt-3 max-w-2xl text-base leading-7 text-[#5C584F]">
-                    Designed for collectors who care about prevention, not guesswork,
-                    with context-rich recommendations that are easier to trust than
-                    a dashboard full of raw sensor data.
+                    Designed for serious indoor plant owners who care about prevention,
+                    not guesswork — with species-specific recommendations that are
+                    easier to trust than a dashboard full of raw sensor data.
                   </p>
 
                   <div className="mt-5 grid gap-3 sm:grid-cols-3">
@@ -124,7 +124,7 @@ export default function Home() {
                         Use Case
                       </p>
                       <p className="mt-2 text-sm text-[#4F4B44]">
-                        Rare plants, home collections, and high-value specimens.
+                        Multiple plants, collections, and higher-value specimens.
                       </p>
                     </div>
                   </div>
@@ -193,7 +193,7 @@ export default function Home() {
 
                       <div className="rounded-[1.5rem] border border-[#E5DBCC] bg-white p-4 sm:p-5">
                         <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
-                          Collector Profile
+                          Plant Owner Profile
                         </p>
                         <ZoomImage
                           src={photoAssets.detailSecondary.src}
@@ -242,7 +242,7 @@ export default function Home() {
               <div className="rounded-2xl border border-[#E5DBCC] bg-white/70 px-5 py-4 text-center backdrop-blur transition hover:border-[#B78A2A]/40 hover:scale-[1.02] hover:shadow-md">
                 <p className="text-2xl font-semibold text-[#B78A2A]">3 Tiers</p>
                 <p className="mt-1 text-xs uppercase tracking-[0.16em] text-[#7A756C]">
-                  For Every Collector
+                  For Every Plant Owner
                 </p>
               </div>
             </Reveal>
@@ -417,7 +417,7 @@ export default function Home() {
             </p>
 
             <h2 className="max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">
-              <TextReveal text="Start with environmental intelligence, then expand into visual monitoring." />
+              <TextReveal text="Affordable tiers for every plant owner." />
             </h2>
           </Reveal>
 
@@ -425,14 +425,20 @@ export default function Home() {
             <Reveal delay={0.1} direction="left" distance={60}>
               <TiltCard className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-2xl font-semibold">Foundation</h3>
+                <div className="mt-3">
+                  <span className="text-3xl font-bold">$59</span>
+                  <span className="ml-1 text-sm text-[#5A564E]">device</span>
+                  <span className="ml-2 text-sm text-[#5A564E]">+ $3.99/mo</span>
+                </div>
+                <p className="mt-1 text-xs text-[#B78A2A] font-medium">3 months included free</p>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
-                  Core environmental monitoring for serious plant owners.
+                  Entry-level monitoring with core alerts and basic visibility.
                 </p>
                 <ul className="mt-6 space-y-3 text-sm leading-6 text-[#4F4B44]">
                   <li>&#8226; Soil moisture monitoring</li>
                   <li>&#8226; Temperature and humidity tracking</li>
                   <li>&#8226; Light sensing</li>
-                  <li>&#8226; App access and recommendations</li>
+                  <li>&#8226; Core alerts and basic plant insights</li>
                 </ul>
               </TiltCard>
             </Reveal>
@@ -440,16 +446,22 @@ export default function Home() {
             <Reveal delay={0.25} direction="up">
               <TiltCard className="h-full rounded-[1.75rem] border border-[#CFA74F] bg-white p-7 shadow-[0_18px_50px_rgba(120,92,28,0.08)] transition hover:shadow-[0_24px_60px_rgba(120,92,28,0.14)]">
                 <p className="text-xs font-medium uppercase tracking-[0.18em] text-[#B78A2A]">
-                  Featured
+                  Recommended
                 </p>
                 <h3 className="mt-3 text-2xl font-semibold">Canopy AI</h3>
+                <div className="mt-3">
+                  <span className="text-3xl font-bold">$79</span>
+                  <span className="ml-1 text-sm text-[#5A564E]">device</span>
+                  <span className="ml-2 text-sm text-[#5A564E]">+ $7.99/mo</span>
+                </div>
+                <p className="mt-1 text-xs text-[#B78A2A] font-medium">3 months included free</p>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
-                  Adds visual intelligence to the core system.
+                  The full Canopy AI experience — smarter recommendations and stronger guidance.
                 </p>
                 <ul className="mt-6 space-y-3 text-sm leading-6 text-[#4F4B44]">
                   <li>&#8226; Everything in Foundation</li>
-                  <li>&#8226; Camera add-on module</li>
-                  <li>&#8226; Visual monitoring</li>
+                  <li>&#8226; Species-specific AI recommendations</li>
+                  <li>&#8226; Proactive care guidance</li>
                   <li>&#8226; Richer plant insight over time</li>
                 </ul>
               </TiltCard>
@@ -458,8 +470,14 @@ export default function Home() {
             <Reveal delay={0.4} direction="right" distance={60}>
               <TiltCard className="h-full rounded-[1.75rem] border border-[#E2D6C2] bg-white p-7 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <h3 className="text-2xl font-semibold">Elite</h3>
+                <div className="mt-3">
+                  <span className="text-3xl font-bold">$99</span>
+                  <span className="ml-1 text-sm text-[#5A564E]">device</span>
+                  <span className="ml-2 text-sm text-[#5A564E]">+ $9.99/mo</span>
+                </div>
+                <p className="mt-1 text-xs text-[#B78A2A] font-medium">3 months included free</p>
                 <p className="mt-3 text-base leading-7 text-[#5A564E]">
-                  Premium intelligence for advanced collectors.
+                  Deeper insights, advanced analytics, and enhanced plant-care tools for collectors.
                 </p>
                 <ul className="mt-6 space-y-3 text-sm leading-6 text-[#4F4B44]">
                   <li>&#8226; Everything in Canopy AI</li>
@@ -486,7 +504,7 @@ export default function Home() {
             </p>
 
             <h2 className="max-w-3xl text-3xl font-semibold tracking-tight md:text-5xl">
-              <TextReveal text="A working hardware prototype is already in development." />
+              <TextReveal text="A working prototype, getting closer to consumer-ready." />
             </h2>
           </Reveal>
 
@@ -494,10 +512,10 @@ export default function Home() {
             <Reveal delay={0.1}>
               <div className="rounded-[1.9rem] border border-[#E5DBCC] bg-white p-8 shadow-sm">
                 <p className="text-base leading-8 text-[#5A564E]">
-                  Verdant Labs has already developed an early hardware prototype
-                  that demonstrates real-time environmental monitoring. The system
-                  is now being refined into a cleaner, more product-like enclosure
-                  for premium plant owners.
+                  Verdant Labs has a working Arduino-based MVP that demonstrates
+                  real-time environmental monitoring. The current prototype tracks
+                  moisture, light, temperature, and humidity. New enclosure development
+                  moves Canopy AI closer to a consumer-ready product.
                 </p>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -506,8 +524,8 @@ export default function Home() {
                       Current Focus
                     </p>
                     <p className="mt-2 text-sm leading-6 text-[#5C584F]">
-                      Cleaner internals, improved shell design, stronger product
-                      presentation, and better recommendations.
+                      Cleaner internals, improved shell design, sensor-first
+                      early stress detection, and better recommendations.
                     </p>
                   </div>
 
@@ -516,7 +534,7 @@ export default function Home() {
                       Next Stage
                     </p>
                     <p className="mt-2 text-sm leading-6 text-[#5C584F]">
-                      Camera add-on development, richer plant analysis, and a more
+                      Consumer-ready enclosure, richer plant analysis, and a more
                       refined intelligence layer.
                     </p>
                   </div>
@@ -617,7 +635,7 @@ export default function Home() {
                 </svg>
               </div>
               <blockquote className="text-xl font-medium leading-8 text-[#1F1F1B] md:text-2xl md:leading-9">
-                I started Verdant Labs because I kept losing rare plants to
+                I started Verdant Labs because I kept losing plants to
                 problems I could not see in time. The technology to prevent that
                 existed — it just had not been packaged into something a plant
                 owner would actually use.
@@ -711,15 +729,15 @@ export default function Home() {
                     Plant owners are paying attention.
                   </p>
                   <p className="text-sm text-[#7A756C]">
-                    Join collectors already on the early access list.
+                    Join plant owners already on the early access list.
                   </p>
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-4 md:justify-end">
                 {[
-                  { quote: 'Finally, proactive plant care.', author: 'Indoor collector' },
-                  { quote: 'Been waiting for something like this.', author: 'Rare plant grower' },
+                  { quote: 'Finally, proactive plant care.', author: 'Indoor plant owner' },
+                  { quote: 'Been waiting for something like this.', author: 'Plant parent' },
                   { quote: 'My monsteras need this.', author: 'Tropical enthusiast' },
                 ].map((t, i) => (
                   <div
@@ -754,7 +772,7 @@ export default function Home() {
             </h2>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[#5A564E]">
-              Be among the first to experience predictive plant care. Join the
+              Be among the first to experience smarter plant care. Join the
               waitlist and we&apos;ll reach out as soon as Canopy AI is ready.
             </p>
           </Reveal>

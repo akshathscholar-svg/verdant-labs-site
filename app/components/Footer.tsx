@@ -31,8 +31,8 @@ export default function Footer() {
               </div>
             </div>
             <p className="mt-4 max-w-xs text-sm leading-6 text-[#7A756C]">
-              Building a smarter, more proactive future for plant ownership
-              through predictive intelligence.
+              Smarter indoor plant care through real-time monitoring and
+              guidance. Hardware + subscription, starting at $59.
             </p>
           </div>
 
@@ -68,7 +68,7 @@ export default function Footer() {
                 akshath.scholar@gmail.com
               </a>
               <p className="text-sm text-[#7A756C]">
-                We&apos;d love to hear from plant enthusiasts, collectors, and
+                We&apos;d love to hear from plant owners, plant parents, and
                 potential partners.
               </p>
             </div>
