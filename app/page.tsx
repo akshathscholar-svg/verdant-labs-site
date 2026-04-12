@@ -27,7 +27,7 @@ export default function Home() {
             {/* Left — Copy */}
             <div className="max-w-2xl">
               <Reveal>
-                <p className="inline-block rounded-full border border-[#E5DBCC] bg-white/60 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.25em] text-[#B78A2A] backdrop-blur">
+                <p className="inline-block rounded-full bg-[#B78A2A] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.25em] text-white shadow-[0_2px_12px_rgba(183,138,42,0.35)]">
                   Predictive Plant Intelligence
                 </p>
               </Reveal>
@@ -429,7 +429,7 @@ export default function Home() {
                           {v === true ? (
                             <span className={j === 3 ? 'text-[#5B8C3E]' : 'text-[#5A564E]'}>●</span>
                           ) : v === 'partial' ? (
-                            <span className="text-[#C4C0B8]">○</span>
+                            <span className={j === 3 ? 'text-[#5B8C3E]/70' : 'text-[#8A857C]'}>●</span>
                           ) : (
                             <span className="text-[#D8D3CA]">—</span>
                           )}
@@ -467,7 +467,7 @@ export default function Home() {
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {/* Foundation */}
             <Reveal delay={0.1}>
-              <div className="flex h-full flex-col rounded-[1.75rem] border border-[#E2D6C2] bg-white p-8 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <TiltCard className="flex h-full flex-col rounded-[1.75rem] border border-[#E2D6C2] bg-white p-8 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8A857C]">
                   Essential
                 </p>
@@ -502,16 +502,16 @@ export default function Home() {
                 </ul>
                 <a
                   href="#early-access"
-                  className="mt-8 block rounded-full border border-[#CFC3AE] bg-white py-3 text-center text-sm font-semibold text-[#1F1F1B] transition hover:border-[#B78A2A] hover:shadow-md"
+                  className="mt-8 block rounded-full border border-[#CFC3AE] bg-white py-3 text-center text-sm font-semibold text-[#1F1F1B] transition hover:border-[#B78A2A] hover:bg-[#B78A2A] hover:text-white hover:shadow-md"
                 >
                   Join Waitlist
                 </a>
-              </div>
+              </TiltCard>
             </Reveal>
 
             {/* Canopy AI — Recommended */}
             <Reveal delay={0.2}>
-              <div className="relative flex h-full flex-col rounded-[1.75rem] border-2 border-[#B78A2A] bg-white p-8 shadow-[0_20px_60px_rgba(183,138,42,0.1)]">
+              <TiltCard className="relative flex h-full flex-col rounded-[1.75rem] border-2 border-[#B78A2A] bg-white p-8 shadow-[0_20px_60px_rgba(183,138,42,0.1)]">
                 <div className="absolute -top-3.5 left-8 rounded-full bg-[#B78A2A] px-4 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-white">
                   Recommended
                 </div>
@@ -559,12 +559,12 @@ export default function Home() {
                 >
                   Request Early Access
                 </a>
-              </div>
+              </TiltCard>
             </Reveal>
 
             {/* Elite */}
             <Reveal delay={0.3}>
-              <div className="flex h-full flex-col rounded-[1.75rem] border border-[#E2D6C2] bg-white p-8 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
+              <TiltCard className="flex h-full flex-col rounded-[1.75rem] border border-[#E2D6C2] bg-white p-8 transition hover:border-[#B78A2A]/30 hover:shadow-lg">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8A857C]">
                   Collector
                 </p>
@@ -605,11 +605,11 @@ export default function Home() {
                 </ul>
                 <a
                   href="#early-access"
-                  className="mt-8 block rounded-full border border-[#CFC3AE] bg-white py-3 text-center text-sm font-semibold text-[#1F1F1B] transition hover:border-[#B78A2A] hover:shadow-md"
+                  className="mt-8 block rounded-full border border-[#CFC3AE] bg-white py-3 text-center text-sm font-semibold text-[#1F1F1B] transition hover:border-[#B78A2A] hover:bg-[#B78A2A] hover:text-white hover:shadow-md"
                 >
                   Join Waitlist
                 </a>
-              </div>
+              </TiltCard>
             </Reveal>
           </div>
         </div>

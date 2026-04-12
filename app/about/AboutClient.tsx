@@ -132,8 +132,8 @@ export default function AboutClient() {
                   <span className="w-24 shrink-0 text-right text-xs font-semibold uppercase tracking-wider text-[#B78A2A]">
                     {m.year}
                   </span>
-                  <div className="relative pt-0.5">
-                    <span className="absolute -left-[7px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-[#B78A2A] bg-[#F7F3EC]" />
+                  <div className="relative pl-5 pt-0.5">
+                    <span className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full border-2 border-[#B78A2A] bg-[#F7F3EC]" />
                     <span className="text-sm text-[#5C584F]">{m.label}</span>
                   </div>
                 </div>

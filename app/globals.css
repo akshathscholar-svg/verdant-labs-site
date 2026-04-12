@@ -29,8 +29,36 @@ html.dark .text-\[\#5A564E\] { color: #9A958C; }
 html.dark .text-\[\#5C584F\] { color: #9A958C; }
 html.dark .text-\[\#4F4B44\] { color: #AAA598; }
 html.dark .text-\[\#3B3933\] { color: #C8C3BA; }
-html.dark .text-\[\#7A756C\] { color: #8A857C; }
-html.dark .text-\[\#8A857C\] { color: #7A756C; }
+html.dark .text-\[\#2E2C28\] { color: #E0DBD2; }
+html.dark .text-\[\#7A756C\] { color: #AAA49A; }
+html.dark .text-\[\#8A857C\] { color: #A09B92; }
+html.dark .text-\[\#7A7668\] { color: #A09B8E; }
+
+/* Additional background overrides for dark mode */
+html.dark .bg-\[\#FBF2EE\] { background-color: #2A1E18; }
+html.dark .bg-\[\#FBF6EC\] { background-color: #2A2518; }
+html.dark .bg-\[\#E8F5E0\] { background-color: #1A2A18; }
+html.dark .bg-\[\#EDE8DE\] { background-color: #1A1A15; }
+html.dark .bg-\[\#FCFBF8\] { background-color: #1A1A15; }
+html.dark .bg-\[\#EFE7D9\] { background-color: #222018; }
+html.dark .bg-white\/60 { background-color: rgb(30 30 24 / 0.6); }
+html.dark .bg-white\/40 { background-color: rgb(30 30 24 / 0.4); }
+html.dark .bg-\[\#F0EBDF\] { background-color: #222018; }
+html.dark .bg-\[\#E5DBCC\] { background-color: #2A2A22; }
+
+/* Gradient dark overrides */
+html.dark .from-\[\#F7F3EC\] { --tw-gradient-from: #141410; }
+html.dark .to-\[\#EDE8DE\] { --tw-gradient-to: #1A1A15; }
+html.dark .from-\[\#EDE8DE\] { --tw-gradient-from: #1A1A15; }
+html.dark .to-\[\#F7F3EC\] { --tw-gradient-to: #141410; }
+html.dark .from-\[\#FCFBF8\] { --tw-gradient-from: #1A1A15; }
+html.dark .to-\[\#EFE7D9\] { --tw-gradient-to: #222018; }
+
+/* Dark mode text on non-overridden light backgrounds */
+html.dark .border-\[\#C4684A\]\/20 { border-color: rgba(196, 104, 74, 0.3); }
+html.dark .border-\[\#B78A2A\]\/25 { border-color: rgba(183, 138, 42, 0.35); }
+html.dark .text-\[\#D8D3CA\] { color: #4A4840; }
+html.dark .text-\[\#C4C0B8\] { color: #5A5750; }
 
 html.dark .border-\[\#E7DECF\] { border-color: #2A2A22; }
 html.dark .border-\[\#E5DBCC\] { border-color: #2A2A22; }
@@ -77,6 +105,20 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: shimmer 4s ease-in-out infinite;
+}
+
+html.dark .hero-shimmer {
+  background: linear-gradient(
+    90deg,
+    #E8E4DC 0%,
+    #E8E4DC 40%,
+    #B78A2A 50%,
+    #E8E4DC 60%,
+    #E8E4DC 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 /* CTA glow pulse */

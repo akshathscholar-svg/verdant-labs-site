@@ -84,9 +84,9 @@ export default function DocsClient() {
                     {guide.sections.map((s) => (
                       <li
                         key={s}
-                        className="flex items-center gap-2 text-sm text-[#7A7668]"
+                        className="flex items-center gap-2 text-sm text-[#5C584F]"
                       >
-                        <span className="h-1 w-1 rounded-full bg-[#B78A2A]" />
+                        <span className="h-1 w-1 shrink-0 rounded-full bg-[#B78A2A]" />
                         {s}
                       </li>
                     ))}

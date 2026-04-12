@@ -190,7 +190,7 @@ export default function CollectionClient() {
         {/* ── Overview Cards ── */}
         <div className="mb-8 grid gap-4 sm:grid-cols-4">
           {[
-            { label: 'Total Plants', value: String(plants.length), color: '#1F1F1B' },
+            { label: 'Total Plants', value: String(plants.length), color: 'var(--foreground)' },
             { label: 'Collection Score', value: String(avgScore), color: avgScore >= 80 ? '#5B8C3E' : '#B78A2A' },
             { label: 'Healthy', value: `${healthyCount}/${plants.length}`, color: '#5B8C3E' },
             { label: 'Active Alerts', value: String(alertCount), color: alertCount > 0 ? '#C4684A' : '#5B8C3E' },
