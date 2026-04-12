@@ -70,9 +70,9 @@ const sections: FaqSection[] = [
           'Yes — Canopy AI will be available as an iOS and Android app. The app is where you\'ll view sensor data, receive recommendations, and manage your plant collection.',
       },
       {
-        question: 'Can I use the AI plant identifier without a sensor?',
+        question: 'Can I use Camera Studio without a sensor?',
         answer:
-          'Absolutely. The AI plant identifier on our website is free to use — just upload or snap a photo. The sensor adds real-time environmental monitoring on top of that.',
+          'Absolutely. Camera Studio on our website is free to use — just upload or snap a photo. The sensor adds real-time environmental monitoring on top of that.',
       },
     ],
   },
@@ -117,7 +117,7 @@ const sections: FaqSection[] = [
       {
         question: 'What if my plant isn\'t in the database?',
         answer:
-          'You can manually enter care parameters, or use the AI plant identifier to snap a photo. We\'re constantly adding new species based on user requests.',
+          'You can manually enter care parameters, or use Camera Studio to snap a photo. We\'re constantly adding new species based on user requests.',
       },
       {
         question: 'How do I contact support?',

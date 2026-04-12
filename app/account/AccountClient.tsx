@@ -435,7 +435,7 @@ export default function AccountClient({ email, fullName, createdAt, device }: Pr
               <LeafIcon size={16} className="text-[#6B8F5E]" />
             </span>
             <div>
-              <p className="text-sm font-medium text-[#1F1F1B]">Plant Identifier</p>
+              <p className="text-sm font-medium text-[#1F1F1B]">Camera Studio</p>
               <p className="text-[11px] text-[#7A756C]">Identify any plant with AI</p>
             </div>
           </Link>

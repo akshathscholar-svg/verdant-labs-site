@@ -416,7 +416,7 @@ export default function PlantsClient() {
               Can&apos;t find your plant?
             </h2>
             <p className="mt-3 text-base text-[#5A564E]">
-              Try our AI-powered plant identifier — snap a photo and get an
+              Try Camera Studio — snap a photo and get an
               instant species ID with a full care profile.
             </p>
             <div className="mt-6 flex justify-center gap-4">

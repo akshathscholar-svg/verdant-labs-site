@@ -26,7 +26,7 @@ const milestones = [
     date: 'Summer 2026',
     title: 'Working MVP & AI Features',
     description:
-      'Built a working Arduino-based prototype reading moisture, humidity, temperature, and light. Launched the AI-powered plant identifier — snap a photo for instant species ID, care instructions, and grower info. Current MVP focuses on sensor-first early stress detection.',
+      'Built a working Arduino-based prototype reading moisture, humidity, temperature, and light. Launched Camera Studio — snap a photo for instant species ID, care instructions, and grower info. Current MVP focuses on sensor-first early stress detection.',
   },
   {
     date: 'Winter 2026',

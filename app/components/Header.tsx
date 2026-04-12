@@ -15,7 +15,8 @@ const navGroups = [
     links: [
       { href: '/how-it-works', label: 'How It Works' },
       { href: '/app-preview', label: 'App Preview' },
-      { href: '/identify', label: 'Plant Identifier' },
+      { href: '/identify', label: 'Camera Studio' },
+      { href: '/collection', label: 'Collection Dashboard' },
       { href: '/plants', label: 'Plant Care Library' },
       { href: '/sensor-demo', label: 'Sensor Demo' },
       { href: '/prototype-dashboard', label: 'Live Dashboard' },

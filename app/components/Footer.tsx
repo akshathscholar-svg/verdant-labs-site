@@ -1,11 +1,14 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const footerNav = [
-  { href: '#problem', label: 'Problem' },
-  { href: '#solution', label: 'Solution' },
-  { href: '#tiers', label: 'Product' },
-  { href: '#prototype', label: 'Prototype' },
-  { href: '#early-access', label: 'Early Access' },
+  { href: '/how-it-works', label: 'How It Works' },
+  { href: '/identify', label: 'Camera Studio' },
+  { href: '/collection', label: 'Collection Dashboard' },
+  { href: '/plants', label: 'Plant Care Library' },
+  { href: '/about', label: 'About' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/#early-access', label: 'Early Access' },
 ];
 
 export default function Footer() {
@@ -44,12 +47,12 @@ export default function Footer() {
             <ul className="mt-4 space-y-3">
               {footerNav.map((link) => (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
                     className="text-sm text-[#5C584F] transition hover:text-[#B78A2A]"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -77,7 +80,7 @@ export default function Footer() {
 
         <div className="mt-12 border-t border-[#E7DECF] pt-8 text-center">
           <p className="text-sm text-[#8A857C]">
-            &copy; 2026 Verdant Labs. Building the future of plant care.
+&copy; {new Date().getFullYear()} Verdant Labs. Building the future of plant care.
           </p>
         </div>
       </div>
