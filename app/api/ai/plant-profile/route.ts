@@ -91,40 +91,36 @@ Please identify this plant and generate the full care profile JSON.`;
     const profile = JSON.parse(jsonMatch[0]);
 
     // Fetch a real plant image from Wikipedia/Wikimedia
-    const searchName = profile.commonName || profile.species || 'houseplant';
-    try {
-      const wikiRes = await fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(searchName.replace(/ /g, '_'))}`,
-        { headers: { 'User-Agent': 'CanopyAI/1.0 (verdantlabs.app)' } },
-      );
-      if (wikiRes.ok) {
-        const wikiData = await wikiRes.json();
-        if (wikiData.thumbnail?.source) {
-          // Get a higher-res version by modifying the thumb URL
-          profile.imageUrl = wikiData.thumbnail.source.replace(/\/\d+px-/, '/600px-');
-        } else if (wikiData.originalimage?.source) {
-          profile.imageUrl = wikiData.originalimage.source;
-        }
-      }
-    } catch {
-      // Wikipedia fetch failed, try species name as fallback
+    const searchNames = [
+      profile.commonName,
+      profile.species,
+    ].filter(Boolean);
+
+    for (const searchName of searchNames) {
+      if (profile.imageUrl) break;
       try {
-        const fallbackRes = await fetch(
-          `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent((profile.species || '').replace(/ /g, '_'))}`,
+        const wikiRes = await fetch(
+          `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(searchName.replace(/ /g, '_'))}`,
           { headers: { 'User-Agent': 'CanopyAI/1.0 (verdantlabs.app)' } },
         );
-        if (fallbackRes.ok) {
-          const fallbackData = await fallbackRes.json();
-          if (fallbackData.thumbnail?.source) {
-            profile.imageUrl = fallbackData.thumbnail.source.replace(/\/\d+px-/, '/600px-');
+        if (wikiRes.ok) {
+          const wikiData = await wikiRes.json();
+          if (wikiData.originalimage?.source) {
+            profile.imageUrl = wikiData.originalimage.source;
+          } else if (wikiData.thumbnail?.source) {
+            profile.imageUrl = wikiData.thumbnail.source;
           }
         }
       } catch {
-        // Give up on image
+        // Try next search name
       }
     }
 
-    // Final fallback if no image found
+    // Use the user's uploaded photo as a fallback
+    if (!profile.imageUrl && photoBase64) {
+      profile.imageUrl = photoBase64;
+    }
+
     if (!profile.imageUrl) {
       profile.imageUrl = null;
     }

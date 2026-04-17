@@ -308,7 +308,7 @@ export default function DashboardClient() {
                     <div className="flex items-stretch">
                       {data.plantImageUrl && (
                         <div className="hidden w-40 shrink-0 sm:block">
-                          <img src={data.plantImageUrl} alt={data.plantSpecies || 'Plant'} className="h-full w-full object-cover" />
+                          <img src={data.plantImageUrl} alt={data.plantSpecies || 'Plant'} className="h-full w-full object-cover" onError={(e) => { (e.currentTarget.parentNode as HTMLElement).style.display = 'none'; }} />
                         </div>
                       )}
                       <div className="flex flex-1 flex-col justify-center gap-2 p-5 sm:p-6">
@@ -325,7 +325,7 @@ export default function DashboardClient() {
                           )}
                         </div>
                         {data.plantImageUrl && (
-                          <img src={data.plantImageUrl} alt={data.plantSpecies || 'Plant'} className="h-28 w-28 rounded-xl border border-[#E5DBCC] object-cover sm:hidden" />
+                          <img src={data.plantImageUrl} alt={data.plantSpecies || 'Plant'} className="h-28 w-28 rounded-xl border border-[#E5DBCC] object-cover sm:hidden" onError={(e) => { e.currentTarget.style.display = 'none'; }} />
                         )}
                         <div>
                           <h3 className="text-lg font-bold tracking-tight text-[#1F1F1B]">
