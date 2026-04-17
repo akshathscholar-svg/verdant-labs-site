@@ -255,6 +255,11 @@ export default function SetupWizard({ deviceId }: Props) {
       if (!res.ok) throw new Error('AI analysis failed');
       const profile = await res.json();
 
+      // Prefer the user's own uploaded photo over the Wikipedia image
+      if (photoBase64) {
+        profile.imageUrl = photoBase64;
+      }
+
       // Save to database
       await saveSetupResults(deviceId, answers, profile);
 
