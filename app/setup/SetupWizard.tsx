@@ -77,6 +77,27 @@ const ISSUES = [
   { value: 'none', label: 'No issues!' },
 ];
 
+/* ── compress image client-side to fit server action limits ── */
+function compressImage(dataUrl: string, maxDim = 1024, quality = 0.7): Promise<string> {
+  return new Promise((resolve) => {
+    const img = new window.Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        if (width > height) { height = (height * maxDim) / width; width = maxDim; }
+        else { width = (width * maxDim) / height; height = maxDim; }
+      }
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d')!;
+      ctx.drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = dataUrl;
+  });
+}
+
 const EXPERIENCE = [
   { value: 'beginner', label: 'Just starting out' },
   { value: 'some', label: 'Some experience' },
@@ -134,14 +155,15 @@ export default function SetupWizard({ deviceId }: Props) {
     setAnswers(prev => ({ ...prev, [key]: value }));
   }
 
-  function handlePhoto(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handlePhoto(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => {
-      const result = reader.result as string;
-      setPhotoPreview(result);
-      setPhotoBase64(result);
+    reader.onload = async () => {
+      const raw = reader.result as string;
+      const compressed = await compressImage(raw);
+      setPhotoPreview(compressed);
+      setPhotoBase64(compressed);
     };
     reader.readAsDataURL(file);
   }
