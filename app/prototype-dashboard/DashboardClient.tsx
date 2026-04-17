@@ -69,7 +69,7 @@ const C = {
   light: '#B78A2A',   // brand gold
 };
 
-const POLL = 60_000;
+const POLL = 10_000;
 
 function statusBadge(s: string) {
   if (s === 'Healthy' || s === 'Stable') return { bg: 'bg-[#6B8F5E]/10', text: 'text-[#6B8F5E]', dot: 'bg-[#6B8F5E]' };
@@ -232,7 +232,7 @@ export default function DashboardClient() {
                 </div>
                 <h1 className="text-2xl font-semibold tracking-tight text-[#1F1F1B] sm:text-3xl md:text-4xl">Monitoring Dashboard</h1>
                 <p className="mt-1.5 max-w-md text-[13px] leading-relaxed text-[#7A756C]">
-                  Canopy AI hardware prototype &mdash; sensor data refreshes every 60&nbsp;seconds.
+                  Canopy AI hardware prototype &mdash; sensor data refreshes every 10&nbsp;seconds.
                 </p>
               </div>
               {data && (
