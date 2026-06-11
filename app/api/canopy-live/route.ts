@@ -8,12 +8,22 @@ async function getToken(): Promise<string> {
     return cachedToken.token;
   }
   
-  const clientId = process.env.ARDUINO_CLIENT_ID_v2;
-  const clientSecret = process.env.ARDUINO_CLIENT_SECRET_v2;
+  // Try both naming conventions
+  const clientId = process.env.ARDUINO_CLIENT_ID_v2 || process.env.ARDUINO_CLIENT_ID;
+  const clientSecret = process.env.ARDUINO_CLIENT_SECRET_v2 || process.env.ARDUINO_CLIENT_SECRET;
+  
+  console.log('Checking credentials:', {
+    hasClientId: !!clientId,
+    hasClientSecret: !!clientSecret,
+    ARDUINO_CLIENT_ID_v2: !!process.env.ARDUINO_CLIENT_ID_v2,
+    ARDUINO_CLIENT_SECRET_v2: !!process.env.ARDUINO_CLIENT_SECRET_v2,
+    ARDUINO_CLIENT_ID: !!process.env.ARDUINO_CLIENT_ID,
+    ARDUINO_CLIENT_SECRET: !!process.env.ARDUINO_CLIENT_SECRET,
+  });
   
   if (!clientId || !clientSecret) {
-    const msg = 'Missing Arduino V2 credentials';
-    console.error(msg, { clientId: !!clientId, clientSecret: !!clientSecret });
+    const msg = 'Missing Arduino credentials - checked ARDUINO_CLIENT_ID_v2, ARDUINO_CLIENT_SECRET_v2, ARDUINO_CLIENT_ID, ARDUINO_CLIENT_SECRET';
+    console.error(msg);
     throw new Error(msg);
   }
   
@@ -92,9 +102,17 @@ async function getCanopyData(thingId: string) {
 
 export async function GET(request: NextRequest) {
   try {
-    const thingId = process.env.ARDUINO_THING_ID_v2;
+    // Try both naming conventions
+    const thingId = process.env.ARDUINO_THING_ID_v2 || process.env.ARDUINO_THING_ID;
+    
+    console.log('Checking Thing ID:', {
+      hasThingId: !!thingId,
+      ARDUINO_THING_ID_v2: !!process.env.ARDUINO_THING_ID_v2,
+      ARDUINO_THING_ID: !!process.env.ARDUINO_THING_ID,
+    });
+    
     if (!thingId) {
-      throw new Error('Missing Arduino V2 Thing ID');
+      throw new Error('Missing Arduino Thing ID - checked ARDUINO_THING_ID_v2 and ARDUINO_THING_ID');
     }
     
     const data = await getCanopyData(thingId);
