@@ -4,6 +4,7 @@ let cachedToken: { token: string; expiresAt: number } | null = null;
 
 async function getToken(): Promise<string> {
   if (cachedToken && Date.now() < cachedToken.expiresAt - 30_000) {
+    console.log('Using cached token');
     return cachedToken.token;
   }
   
@@ -11,8 +12,12 @@ async function getToken(): Promise<string> {
   const clientSecret = process.env.ARDUINO_CLIENT_SECRET_v2;
   
   if (!clientId || !clientSecret) {
-    throw new Error('Missing Arduino V2 credentials');
+    const msg = 'Missing Arduino V2 credentials';
+    console.error(msg, { clientId: !!clientId, clientSecret: !!clientSecret });
+    throw new Error(msg);
   }
+  
+  console.log('Requesting new token from Arduino Cloud');
   
   const res = await fetch('https://api2.arduino.cc/iot/v1/clients/token', {
     method: 'POST',
@@ -25,21 +30,49 @@ async function getToken(): Promise<string> {
     }),
   });
   
-  if (!res.ok) throw new Error('Arduino auth failed: ' + res.status);
+  console.log('Token request status:', res.status);
+  
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('Token request error:', errorText);
+    throw new Error('Arduino auth failed: ' + res.status + ' - ' + errorText.substring(0, 200));
+  }
+  
   const json = await res.json();
+  if (!json.access_token) {
+    console.error('No access token in response:', json);
+    throw new Error('No access token received from Arduino Cloud');
+  }
+  
   cachedToken = { token: json.access_token, expiresAt: Date.now() + json.expires_in * 1000 };
+  console.log('Token obtained successfully, expires in:', json.expires_in, 'seconds');
   return cachedToken.token;
 }
 
 async function getCanopyData(thingId: string) {
   const token = await getToken();
-  const res = await fetch(
-    'https://api2.arduino.cc/iot/v2/things/' + thingId + '/properties',
-    { headers: { Authorization: 'Bearer ' + token }, cache: 'no-store' },
-  );
+  const url = 'https://api2.arduino.cc/iot/v2/things/' + thingId + '/properties';
+  console.log('Fetching from:', url);
   
-  if (!res.ok) throw new Error('Arduino API error: ' + res.status);
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: { 
+      Authorization: 'Bearer ' + token,
+      'Content-Type': 'application/json',
+    },
+  });
+  
+  console.log('Arduino API response status:', res.status);
+  
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error('Arduino API error response:', errorText);
+    throw new Error('Arduino API error: ' + res.status + ' - ' + errorText.substring(0, 200));
+  }
+  
   const properties: Array<{ variable_name: string; last_value: unknown; value_updated_at: string }> = await res.json();
+  console.log('Received properties:', properties.length);
+  
   const map: Record<string, unknown> = {};
   
   for (const p of properties) {
