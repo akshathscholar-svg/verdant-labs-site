@@ -9,12 +9,19 @@ async function getToken(): Promise<string> {
   }
   
   // Try both naming conventions
-  const clientId = process.env.ARDUINO_CLIENT_ID_v2 || process.env.ARDUINO_CLIENT_ID;
+  let clientId = process.env.ARDUINO_CLIENT_ID_v2 || process.env.ARDUINO_CLIENT_ID;
   const clientSecret = process.env.ARDUINO_CLIENT_SECRET_v2 || process.env.ARDUINO_CLIENT_SECRET;
+  
+  // Ensure client_id is ≤ 32 characters (Arduino Cloud requirement)
+  if (clientId && clientId.length > 32) {
+    console.warn(`Client ID too long (${clientId.length} chars), truncating to 32`);
+    clientId = clientId.substring(0, 32);
+  }
   
   console.log('Checking credentials:', {
     hasClientId: !!clientId,
     hasClientSecret: !!clientSecret,
+    clientIdLength: clientId?.length,
     ARDUINO_CLIENT_ID_v2: !!process.env.ARDUINO_CLIENT_ID_v2,
     ARDUINO_CLIENT_SECRET_v2: !!process.env.ARDUINO_CLIENT_SECRET_v2,
     ARDUINO_CLIENT_ID: !!process.env.ARDUINO_CLIENT_ID,
