@@ -29,8 +29,10 @@ export default function DashboardClient() {
   const fetchData = useCallback(async () => {
     try {
       const res = await fetch('/api/canopy-live', { cache: 'no-store' });
-      if (!res.ok) throw new Error('Failed to fetch data');
       const json = await res.json();
+      if (!res.ok) {
+        throw new Error(json.error || 'Failed to fetch data');
+      }
       setData(json);
       setError(null);
     } catch (err) {
